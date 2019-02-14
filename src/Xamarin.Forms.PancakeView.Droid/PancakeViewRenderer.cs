@@ -217,7 +217,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             void DrawOutline(ACanvas canvas, int width, int height, Thickness cornerRadius)
             {
-                // TODO: This doesn't look entirely right yet when using rounded corners.
+                // TODO: This doesn't look entirely right yet when using it with rounded corners.
 
                 using (var paint = new Paint { AntiAlias = true })
                 using (var path = new Path())
@@ -231,6 +231,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                     float bottomLeft = _convertToPixels(cornerRadius.Bottom);
 
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
+
+                    if(_pancake.BorderIsDashed)
+                    {
+                        paint.SetPathEffect(new DashPathEffect(new float[] { 10, 20 }, 0));
+                    }
 
                     paint.StrokeCap = Paint.Cap.Round;
                     paint.StrokeWidth = _pancake.BorderThickness;
