@@ -15,7 +15,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -62,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +106,14 @@
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
       <Project>{ABE29A80-FFA3-40E7-B8C4-87D5D6B1C8C1}</Project>
       <Name>Thewissen.PancakeViewSample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView\Xamarin.Forms.PancakeView.csproj">
+      <Project>{1451F827-437A-40F5-A9D5-1B04455F5887}</Project>
+      <Name>Xamarin.Forms.PancakeView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Droid\Xamarin.Forms.PancakeView.Droid.csproj">
+      <Project>{84969EF0-5581-40A8-B13C-975B9DD25568}</Project>
+      <Name>Xamarin.Forms.PancakeView.Droid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
