@@ -47,7 +47,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 UpdateBackground();
 
                 // Clips the content to the box we provide.
-                this.OutlineProvider = new RoundedCornerOutlineProvider(pancake.CornerRadius, pancake.BorderThickness * 4);
+                this.OutlineProvider = new RoundedCornerOutlineProvider(pancake.CornerRadius, (int)Context.ToPixels(pancake.BorderThickness));
                 this.ClipToOutline = true;
 
                 // If it has a shadow, give it a default Droid looking shadow.
@@ -217,13 +217,15 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             void DrawOutline(ACanvas canvas, int width, int height, Thickness cornerRadius)
             {
-                // TODO: This doesn't look entirely right yet when using it with rounded corners.
+                var borderThickness = _convertToPixels(_pancake.BorderThickness);
+                var halfBorderThickness = borderThickness / 2;
 
+                // TODO: This doesn't look entirely right yet when using it with rounded corners.
                 using (var paint = new Paint { AntiAlias = true })
                 using (var path = new Path())
                 using (Path.Direction direction = Path.Direction.Cw)
                 using (Paint.Style style = Paint.Style.Stroke)
-                using (var rect = new RectF(0 + _pancake.BorderThickness, 0 + _pancake.BorderThickness, width - _pancake.BorderThickness, height - _pancake.BorderThickness))
+                using (var rect = new RectF(halfBorderThickness, halfBorderThickness, width - halfBorderThickness, height - halfBorderThickness))
                 {
                     float topLeft = _convertToPixels(cornerRadius.Left);
                     float topRight = _convertToPixels(cornerRadius.Top);
@@ -232,13 +234,13 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
 
-                    if(_pancake.BorderIsDashed)
+                    if (_pancake.BorderIsDashed)
                     {
                         paint.SetPathEffect(new DashPathEffect(new float[] { 10, 20 }, 0));
                     }
 
                     paint.StrokeCap = Paint.Cap.Round;
-                    paint.StrokeWidth = _pancake.BorderThickness;
+                    paint.StrokeWidth = borderThickness;
                     paint.SetStyle(style);
                     paint.Color = _pancake.BorderColor.ToAndroid();
 
