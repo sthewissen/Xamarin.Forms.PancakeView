@@ -176,16 +176,31 @@ namespace Xamarin.Forms.PancakeView.iOS
             if (pancake.BorderThickness > 0 && _borderLayer != null)
             {
                 var insetBounds = Bounds.Inset(pancake.BorderThickness, pancake.BorderThickness);
-                var cornerPath = UIBezierPath.FromRect(insetBounds);
 
                 // Create arcs for the given corner radius.
-                cornerPath.AddArc(new CGPoint((float)insetBounds.X + insetBounds.Width - pancake.CornerRadius.Top, (float)insetBounds.Y + pancake.CornerRadius.Top), (float)pancake.CornerRadius.Top, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
-                cornerPath.AddArc(new CGPoint((float)insetBounds.X + insetBounds.Width - pancake.CornerRadius.Right, (float)insetBounds.Y + insetBounds.Height - pancake.CornerRadius.Right), (float)pancake.CornerRadius.Right, 0, (float)(Math.PI * .5), true);
-                cornerPath.AddArc(new CGPoint((float)insetBounds.X + pancake.CornerRadius.Bottom, (float)insetBounds.Y + insetBounds.Height - pancake.CornerRadius.Bottom), (float)pancake.CornerRadius.Bottom, (float)(Math.PI * .5), (float)Math.PI, true);
-                cornerPath.AddArc(new CGPoint((float)insetBounds.X + pancake.CornerRadius.Left, (float)insetBounds.Y + pancake.CornerRadius.Left), (float)pancake.CornerRadius.Left, (float)Math.PI, (float)(Math.PI * 1.5), true);
+                var cornerPath = new CGPath();
+
+                // Start of our path is where the top left horizontal starts.
+                cornerPath.MoveToPoint(new CGPoint(pancake.CornerRadius.Left + insetBounds.X, insetBounds.Y));
+
+                // Top line + top right corner
+                cornerPath.AddLineToPoint(new CGPoint(insetBounds.Width - pancake.CornerRadius.Top, insetBounds.Y));
+                cornerPath.AddArc((float)(insetBounds.X + insetBounds.Width - pancake.CornerRadius.Top), (float)(insetBounds.Y + pancake.CornerRadius.Top), (float)pancake.CornerRadius.Top, (float)(Math.PI * 1.5), (float)Math.PI * 2, false);
+
+                // Right side + bottom right corner
+                cornerPath.AddLineToPoint(insetBounds.Width + insetBounds.X, (float)(insetBounds.Height - pancake.CornerRadius.Right));
+                cornerPath.AddArc((float)(insetBounds.X + insetBounds.Width - pancake.CornerRadius.Right), (float)(insetBounds.Y + insetBounds.Height - pancake.CornerRadius.Right), (float)pancake.CornerRadius.Right, 0, (float)(Math.PI * .5), false);
+
+                // Bottom side + bottom left corner
+                cornerPath.AddLineToPoint((float)(insetBounds.X + pancake.CornerRadius.Bottom), insetBounds.Height + insetBounds.Y);
+                cornerPath.AddArc((float)(insetBounds.X + pancake.CornerRadius.Bottom), (float)(insetBounds.Y + insetBounds.Height - pancake.CornerRadius.Bottom), (float)pancake.CornerRadius.Bottom, (float)(Math.PI * .5), (float)Math.PI, false);
+
+                // Left side + top left corner
+                cornerPath.AddLineToPoint(insetBounds.X, (float)(insetBounds.Y + pancake.CornerRadius.Left));
+                cornerPath.AddArc((float)(insetBounds.X + pancake.CornerRadius.Left), (float)(insetBounds.Y + pancake.CornerRadius.Left), (float)pancake.CornerRadius.Left, (float)Math.PI, (float)(Math.PI * 1.5), false);
 
                 _borderLayer.Frame = Bounds;
-                _borderLayer.Path = cornerPath.CGPath;
+                _borderLayer.Path = cornerPath;
 
                 // Dash pattern for the border.
                 if (pancake.BorderIsDashed)
