@@ -33,6 +33,8 @@
     <Authors>Steven Thewissen</Authors>
     <Copyright>Copyright 2019 Steven Thewissen</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageIconUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/icon.png</PackageIconUrl>
     
   </PropertyGroup>
   
