@@ -23,6 +23,7 @@
 
     <PackageLicenseUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/icon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
 
     <Title>PancakeView for Xamarin.Forms</Title>
