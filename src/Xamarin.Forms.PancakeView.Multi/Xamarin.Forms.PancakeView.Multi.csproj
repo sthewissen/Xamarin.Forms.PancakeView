@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+  	<TargetFrameworks>Xamarin.iOS10;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90</TargetFrameworks>
+    
+    <!--Assembly and Namespace info -->
+    <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
+    <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
+    
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+    <Version>1.0.0.0</Version>
+    <PackOnBuild>true</PackOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>default</LangVersion>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+     
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+
+    <LangVersion>latest</LangVersion>
+
+    <PackageLicenseUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
+
+    <Title>PancakeView for Xamarin.Forms</Title>
+    <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
+    <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
+
+    <Owners>Steven Thewissen</Owners>
+    <Authors>Steven Thewissen</Authors>
+    <Copyright>Copyright 2019 Steven Thewissen</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    
+  </PropertyGroup>
+  
+  <!-- Define what happens on build and release -->
+   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DebugType>pdbonly</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+
+    <!--NuGet that bring in good stuff -->
+    <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
+    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
+
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    <Compile Include="Platforms\NetStandard\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <Compile Include="Platforms\iOS\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <Compile Include="Platforms\Android\**\*.cs" />
+  </ItemGroup>
+
+   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+</Project>
