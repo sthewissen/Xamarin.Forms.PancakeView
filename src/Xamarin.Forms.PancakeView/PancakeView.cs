@@ -5,7 +5,7 @@ namespace Xamarin.Forms.PancakeView
     {
         #region properties
 
-        public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(Thickness), typeof(PancakeView), default(Thickness));
+        public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
         public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(PancakeView), default(bool));
 
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(PancakeView), default(int));
@@ -34,9 +34,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientAngleProperty, value); }
         }
 
-        public Thickness CornerRadius
+        public CornerRadius CornerRadius
         {
-            get { return (Thickness)GetValue(CornerRadiusProperty); }
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
 

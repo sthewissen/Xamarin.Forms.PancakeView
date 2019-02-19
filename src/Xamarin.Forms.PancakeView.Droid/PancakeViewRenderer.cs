@@ -47,8 +47,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                 UpdateBackground();
 
                 // Clips the content to the box we provide.
-                this.OutlineProvider = new RoundedCornerOutlineProvider(pancake.CornerRadius, (int)Context.ToPixels(pancake.BorderThickness));
-                this.ClipToOutline = true;
+                if (pancake.IsClippedToBounds)
+                {
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake.CornerRadius, (int)Context.ToPixels(pancake.BorderThickness));
+                    this.ClipToOutline = true;
+                }
 
                 // If it has a shadow, give it a default Droid looking shadow.
                 if (pancake.HasShadow)
@@ -95,8 +98,8 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             readonly PancakeView _pancake;
             readonly Func<double, float> _convertToPixels;
-            bool _isDisposed;
             Bitmap _normalBitmap;
+            bool _isDisposed;
 
             public override int Opacity
             {
@@ -176,7 +179,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 return bitmap;
             }
 
-            void DrawBackground(ACanvas canvas, int width, int height, Thickness cornerRadius, bool pressed)
+            void DrawBackground(ACanvas canvas, int width, int height, CornerRadius cornerRadius, bool pressed)
             {
                 using (var paint = new Paint { AntiAlias = true })
                 using (var path = new Path())
@@ -184,10 +187,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                 using (Paint.Style style = Paint.Style.Fill)
                 using (var rect = new RectF(0, 0, width, height))
                 {
-                    float topLeft = _convertToPixels(cornerRadius.Left);
-                    float topRight = _convertToPixels(cornerRadius.Top);
-                    float bottomRight = _convertToPixels(cornerRadius.Right);
-                    float bottomLeft = _convertToPixels(cornerRadius.Bottom);
+                    float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                    float topRight = _convertToPixels(cornerRadius.TopRight);
+                    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
 
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
 
@@ -215,7 +218,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 }
             }
 
-            void DrawOutline(ACanvas canvas, int width, int height, Thickness cornerRadius)
+            void DrawOutline(ACanvas canvas, int width, int height, CornerRadius cornerRadius)
             {
                 var borderThickness = _convertToPixels(_pancake.BorderThickness);
                 var halfBorderThickness = borderThickness / 2;
@@ -227,10 +230,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                 using (Paint.Style style = Paint.Style.Stroke)
                 using (var rect = new RectF(halfBorderThickness, halfBorderThickness, width - halfBorderThickness, height - halfBorderThickness))
                 {
-                    float topLeft = _convertToPixels(cornerRadius.Left);
-                    float topRight = _convertToPixels(cornerRadius.Top);
-                    float bottomRight = _convertToPixels(cornerRadius.Right);
-                    float bottomLeft = _convertToPixels(cornerRadius.Bottom);
+                    float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                    float topRight = _convertToPixels(cornerRadius.TopRight);
+                    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
 
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
 
@@ -279,15 +282,31 @@ namespace Xamarin.Forms.PancakeView.Droid
                 DrawBackground(canvas, width, height, _pancake.CornerRadius, pressed);
                 DrawOutline(canvas, width, height, _pancake.CornerRadius);
             }
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing && !_isDisposed)
+                {
+                    if (_normalBitmap != null)
+                    {
+                        _normalBitmap.Dispose();
+                        _normalBitmap = null;
+                    }
+
+                    _isDisposed = true;
+                }
+
+                base.Dispose(disposing);
+            }
         }
     }
 
     public class RoundedCornerOutlineProvider : ViewOutlineProvider
     {
-        private readonly Thickness _cornerRadius;
+        private readonly CornerRadius _cornerRadius;
         private readonly int _border;
 
-        public RoundedCornerOutlineProvider(Thickness cornerRadius, int border)
+        public RoundedCornerOutlineProvider(CornerRadius cornerRadius, int border)
         {
             _cornerRadius = cornerRadius;
             _border = border;
@@ -296,7 +315,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         public override void GetOutline(global::Android.Views.View view, Outline outline)
         {
             // TODO: Figure out how to clip individual rounded corners with different radii.
-            outline.SetRoundRect(-1 * (_border / 2) - 1, -1 * (_border / 2), view.Width + (_border / 2) + 2, view.Height + (_border / 2), (float)(_cornerRadius.Top + (_border)));
+            outline.SetRoundRect(-1 * (_border / 2) - 1, -1 * (_border / 2), view.Width + (_border / 2) + 2, view.Height + (_border / 2), (float)(_cornerRadius.TopLeft + (_border)));
         }
     }
 }
