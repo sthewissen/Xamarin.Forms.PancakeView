@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-  	<TargetFrameworks>Xamarin.iOS10;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90</TargetFrameworks>
+  	<TargetFrameworks>Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
     
     <!--Assembly and Namespace info -->
     <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
@@ -50,6 +50,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <Compile Include="Platforms\Shared\**\*.cs" />
 
     <!--NuGet that bring in good stuff -->
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.4.0" PrivateAssets="All" />
@@ -58,7 +59,6 @@
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    <Compile Include="Platforms\NetStandard\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
