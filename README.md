@@ -9,7 +9,24 @@ In a lot of Xamarin.Forms UI work I do I have the need for a layout/view that I 
 
 ## How to use it?
 
-At the moment you can simply clone the repository and include the projects in the ```src``` folder in your Xamarin.Forms and Platform projects. However, once the last few bugs are fixed I will look into making it into a fancy NuGet package :)
+The project is up on NuGet at the following URL:
+
+https://www.nuget.org/packages/Xamarin.Forms.PancakeView
+
+You could also simply clone the repository and include the projects in the ```src``` folder in your Xamarin.Forms and Platform projects. It uses multi-targeting to resolve to the correct platform.
+
+### What can I do with it?
+
+| Property | What it does | Extra info |
+| ------ | ------ | ------ |
+| ```BackgroundGradientAngle``` | A value between 0-360 to define the angle of the background gradient. | |
+| ```BackgroundGradientStartColor``` | The start color of the background gradient. | A ```Color``` object. |
+| ```BackgroundGradientEndColor``` | The end color of the background gradient. | A ```Color``` object. |
+| ```BorderColor``` | The color of the border. | A ```Color``` object. |
+| ```BorderIsDashed``` | Whether or not the border needs to be dashed. | The length of the dash and spacing between them is currently not editable. |
+| ```BorderThickness``` | The thickness of the border. | |
+| ```CornerRadius``` | A ```CornerRadius``` object representing each individual corner's radius. | Clipping using individual corner radii doesn't work on **Android**. In this case the ```TopLeft``` value will be used for all corners. |
+| ```HasShadow``` | Whether or not to draw a shadow beneath the control. | Doesn't work on **Android** yet. |
 
 ## Example
 
