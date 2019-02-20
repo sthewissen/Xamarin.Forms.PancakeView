@@ -3,6 +3,8 @@
 # Xamarin.Forms.PancakeView
 An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!
 
+[![Build status](https://sthewissen.visualstudio.com/PancakeView/_apis/build/status/PancakeView-Deployment-CI)](https://sthewissen.visualstudio.com/PancakeView/_build/latest?definitionId=26) ![](https://img.shields.io/nuget/vpre/Xamarin.Forms.PancakeView.svg)
+
 ## Why PancakeView?
 
 In a lot of Xamarin.Forms UI work I do I have the need for a layout/view that I can use that supports gradients, borders, rounded corners and shadows. Since none of the existing Xamarin.Forms controls fit the bill I decided to roll my own. And why is it called a ```PancakeView``` you ask? Well, pancakes are also round, have shadows and have a glorious gradient color. What better fit can you think of?
