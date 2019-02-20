@@ -130,14 +130,6 @@
       <Project>{ABE29A80-FFA3-40E7-B8C4-87D5D6B1C8C1}</Project>
       <Name>Thewissen.PancakeViewSample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.iOS\Xamarin.Forms.PancakeView.iOS.csproj">
-      <Project>{233B9E0E-6270-4E6C-8300-FFF8B5A04E15}</Project>
-      <Name>Xamarin.Forms.PancakeView.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.iOS\Xamarin.Forms.PancakeView.Standard\Xamarin.Forms.PancakeView.Standard.csproj">
-      <Project>{1451F827-437A-40F5-A9D5-1B04455F5887}</Project>
-      <Name>Xamarin.Forms.PancakeView</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

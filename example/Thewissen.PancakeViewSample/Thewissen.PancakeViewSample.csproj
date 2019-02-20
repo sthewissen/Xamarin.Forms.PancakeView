@@ -13,7 +13,4 @@
     <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
     <PackageReference Include="LiveXAML" Version="2.1.63" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView\Xamarin.Forms.PancakeView.csproj" />
-  </ItemGroup>
 </Project>
