@@ -21,14 +21,15 @@ You could also simply clone the repository and include the projects in the ```sr
 
 | Property | What it does | Extra info |
 | ------ | ------ | ------ |
-| ```BackgroundGradientAngle``` | A value between 0-360 to define the angle of the background gradient. | |
-| ```BackgroundGradientStartColor``` | The start color of the background gradient. | A ```Color``` object. |
-| ```BackgroundGradientEndColor``` | The end color of the background gradient. | A ```Color``` object. |
-| ```BorderColor``` | The color of the border. | A ```Color``` object. |
-| ```BorderIsDashed``` | Whether or not the border needs to be dashed. | The length of the dash and spacing between them is currently not editable. |
-| ```BorderThickness``` | The thickness of the border. | |
-| ```CornerRadius``` | A ```CornerRadius``` object representing each individual corner's radius. | Clipping using individual corner radii doesn't work on **Android**. In this case the ```TopLeft``` value will be used for all corners. |
-| ```HasShadow``` | Whether or not to draw a shadow beneath the control. | Doesn't work on **Android** yet. |
+| `BackgroundGradientAngle` | A value between 0-360 to define the angle of the background gradient. | |
+| `BackgroundGradientStartColor` | The start color of the background gradient. | A ```Color``` object. |
+| `BackgroundGradientEndColor` | The end color of the background gradient. | A ```Color``` object. |
+| `BorderColor` | The color of the border. | A ```Color``` object. |
+| `BorderIsDashed` | Whether or not the border needs to be dashed. | The length of the dash and spacing between them is currently not editable. |
+| `BorderThickness` | The thickness of the border. | |
+| `CornerRadius` | A `CornerRadius` object representing each individual corner's radius. | Uses the `CornerRadius` struct allowing you to specify individual corners. This does have some drawbacks on **Android**. |
+| `HasShadow` | Whether or not to draw a shadow beneath the control. | For this to work on **Android** we need to clip the view. This means that individual corner radii will be lost. In this case the `TopLeft` value will be used for all corners. |
+| `IsClippedToBounds` | Whether or not to clip to the view. | This is only implemented for Android since clipping has consequences for the rounded corners. Clipping using individual corner radii doesn't work on Android. In this case the TopLeft value will be used for all corners. |
 
 ## Example
 
