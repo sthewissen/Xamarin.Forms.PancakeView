@@ -58,6 +58,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                 {
                     this.Elevation = 10;
                     this.TranslationZ = 10;
+
+                    // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake.CornerRadius, (int)Context.ToPixels(pancake.BorderThickness));
+                    this.ClipToOutline = true;
                 }
             }
         }
