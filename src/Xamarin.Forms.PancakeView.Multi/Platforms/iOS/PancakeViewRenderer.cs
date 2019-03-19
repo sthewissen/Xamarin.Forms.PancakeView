@@ -71,7 +71,11 @@ namespace Xamarin.Forms.PancakeView.iOS
                 AddOrUpdateGradientLayer(pancake);
             }
 
-            AddCornerRadius(pancake);
+            if (!pancake.HasShadow)
+            {
+                AddCornerRadius(pancake);
+            }
+
             UpdateBorderLayer(pancake);
         }
 
@@ -99,8 +103,9 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (pancake.HasShadow)
             {
-                // TODO: Ideally we want to extract these to shadows.
-                // However, we're very limited when it comes to shadows on Droid :(
+                // TODO: Ideally we want to be able to have individual corner radii + shadows
+                // However, on iOS we can only do one radius + shadow.
+                Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
                 Layer.ShadowRadius = 10;
                 Layer.ShadowColor = UIColor.Black.CGColor;
                 Layer.ShadowOpacity = 0.4f;
