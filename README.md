@@ -1,4 +1,4 @@
-<img src="https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/pancake.png" width="150px" />
+<img src="https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/icon.png" width="150px" />
 
 # Xamarin.Forms.PancakeView
 An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!
