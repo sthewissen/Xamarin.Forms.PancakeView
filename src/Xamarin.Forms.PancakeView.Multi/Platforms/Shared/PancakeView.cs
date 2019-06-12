@@ -8,7 +8,7 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
         public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(PancakeView), default(bool));
 
-        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(int), typeof(PancakeView), default(int));
+        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
         public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed), typeof(bool), typeof(PancakeView), default(bool));
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(PancakeView), default(Color));
 
@@ -40,9 +40,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(CornerRadiusProperty, value); }
         }
 
-        public int BorderThickness
+        public float BorderThickness
         {
-            get { return (int)GetValue(BorderThicknessProperty); }
+            get { return (float)GetValue(BorderThicknessProperty); }
             set { SetValue(BorderThicknessProperty, value); }
         }
 
