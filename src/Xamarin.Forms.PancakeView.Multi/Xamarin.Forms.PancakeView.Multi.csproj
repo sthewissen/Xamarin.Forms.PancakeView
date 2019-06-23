@@ -55,7 +55,7 @@
     <Compile Include="Platforms\Shared\**\*.cs" />
 
     <!--NuGet that bring in good stuff -->
-    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
+    <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
 
   </ItemGroup>
 
