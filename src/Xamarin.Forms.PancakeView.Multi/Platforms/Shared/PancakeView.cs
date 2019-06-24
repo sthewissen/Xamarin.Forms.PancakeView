@@ -11,6 +11,7 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
         public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed), typeof(bool), typeof(PancakeView), default(bool));
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(PancakeView), default(Color));
+        public static readonly BindableProperty DrawBorderOnOutsideProperty = BindableProperty.Create(nameof(DrawBorderOnOutside), typeof(bool), typeof(PancakeView), default(bool));
 
         public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
@@ -62,6 +63,12 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (bool)GetValue(HasShadowProperty); }
             set { SetValue(HasShadowProperty, value); }
+        }
+
+        public bool DrawBorderOnOutside
+        {
+            get { return (bool)GetValue(DrawBorderOnOutsideProperty); }
+            set { SetValue(DrawBorderOnOutsideProperty, value); }
         }
 
         #endregion
