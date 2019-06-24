@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -12,6 +12,6 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
     <PackageReference Include="LiveXAML" Version="2.1.63" />
-    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.0.21" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.0.24-beta" />
   </ItemGroup>
 </Project>

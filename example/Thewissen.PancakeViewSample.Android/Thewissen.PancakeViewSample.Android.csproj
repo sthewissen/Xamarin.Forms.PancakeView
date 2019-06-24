@@ -109,6 +109,12 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-xhdpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-hdpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-mdpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-ldpi\monkey.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -119,6 +125,7 @@
     <Folder Include="Assets\" />
     <Folder Include="Resources\drawable-mdpi\" />
     <Folder Include="Resources\drawable-ldpi\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
