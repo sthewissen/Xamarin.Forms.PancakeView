@@ -105,7 +105,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             //Create path to clip the child         
             using (var path = new Path())
             {
-                path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control, 1), Path.Direction.Ccw);
+                path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
 
                 canvas.Save();
                 canvas.ClipPath(path);
@@ -120,12 +120,12 @@ namespace Xamarin.Forms.PancakeView.Droid
             return result;
         }
 
-        private float[] GetRadii(PancakeView control, int factor)
+        private float[] GetRadii(PancakeView control)
         {
-            float topLeft = Context.ToPixels(control.CornerRadii.TopLeft) / factor;
-            float topRight = Context.ToPixels(control.CornerRadii.TopRight) / factor;
-            float bottomRight = Context.ToPixels(control.CornerRadii.BottomRight) / factor;
-            float bottomLeft = Context.ToPixels(control.CornerRadii.BottomLeft) / factor;
+            float topLeft = Context.ToPixels(control.CornerRadii.TopLeft);
+            float topRight = Context.ToPixels(control.CornerRadii.TopRight);
+            float bottomRight = Context.ToPixels(control.CornerRadii.BottomRight);
+            float bottomLeft = Context.ToPixels(control.CornerRadii.BottomLeft);
 
             var radii = new[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft };
 
@@ -153,7 +153,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                                         control.DrawBorderOnOutside && !control.HasShadow ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
                                         control.DrawBorderOnOutside && !control.HasShadow ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
             {
-                path.AddRoundRect(rect, GetRadii(control, 2), direction);
+                path.AddRoundRect(rect, GetRadii(control), direction);
 
                 if (control.BorderIsDashed)
                 {
