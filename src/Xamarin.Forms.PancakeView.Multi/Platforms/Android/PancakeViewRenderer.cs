@@ -16,7 +16,7 @@ using Controls = Xamarin.Forms.PancakeView;
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.Droid
 {
-    public class PancakeViewRenderer : VisualElementRenderer<ContentView>
+    public class PancakeViewRenderer : FrameRenderer
     {
         bool _disposed;
 
@@ -35,7 +35,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 #pragma warning restore 0219
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<ContentView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<Frame> e)
         {
             base.OnElementChanged(e);
 
@@ -56,7 +56,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                     this.TranslationZ = 10;
 
                     // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
-                    this.OutlineProvider = new RoundedCornerOutlineProvider(Context.ToPixels(pancake.CornerRadius.TopLeft), (int)Context.ToPixels(pancake.BorderThickness));
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(Context.ToPixels(pancake.CornerRadii.TopLeft), (int)Context.ToPixels(pancake.BorderThickness));
                     this.ClipToOutline = true;
                 }
             }
@@ -66,7 +66,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             base.OnElementPropertyChanged(sender, e);
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
+                e.PropertyName == PancakeView.CornerRadiiProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
@@ -105,7 +105,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             //Create path to clip the child         
             using (var path = new Path())
             {
-                path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
+                path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control, 1), Path.Direction.Ccw);
 
                 canvas.Save();
                 canvas.ClipPath(path);
@@ -120,12 +120,12 @@ namespace Xamarin.Forms.PancakeView.Droid
             return result;
         }
 
-        private float[] GetRadii(PancakeView control)
+        private float[] GetRadii(PancakeView control, int factor)
         {
-            float topLeft = Context.ToPixels(control.CornerRadius.TopLeft);
-            float topRight = Context.ToPixels(control.CornerRadius.TopRight);
-            float bottomRight = Context.ToPixels(control.CornerRadius.BottomRight);
-            float bottomLeft = Context.ToPixels(control.CornerRadius.BottomLeft);
+            float topLeft = Context.ToPixels(control.CornerRadii.TopLeft) / factor;
+            float topRight = Context.ToPixels(control.CornerRadii.TopRight) / factor;
+            float bottomRight = Context.ToPixels(control.CornerRadii.BottomRight) / factor;
+            float bottomLeft = Context.ToPixels(control.CornerRadii.BottomLeft) / factor;
 
             var radii = new[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft };
 
@@ -153,7 +153,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                                         control.DrawBorderOnOutside && !control.HasShadow ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
                                         control.DrawBorderOnOutside && !control.HasShadow ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
             {
-                path.AddRoundRect(rect, GetRadii(control), direction);
+                path.AddRoundRect(rect, GetRadii(control, 2), direction);
 
                 if (control.BorderIsDashed)
                 {
@@ -293,7 +293,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 else
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
 
-                if (_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color))
+                if (_pancake.BackgroundGradientStartColor != default(Xamarin.Forms.Color) && _pancake.BackgroundGradientEndColor != default(Xamarin.Forms.Color))
                 {
                     var angle = _pancake.BackgroundGradientAngle / 360.0;
 
@@ -320,7 +320,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         void PancakeViewOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
+                e.PropertyName == PancakeView.CornerRadiiProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
@@ -345,7 +345,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         void DrawCanvas(ACanvas canvas, int width, int height, bool pressed)
         {
-            DrawBackground(canvas, width, height, _pancake.CornerRadius, pressed);
+            DrawBackground(canvas, width, height, _pancake.CornerRadii, pressed);
         }
 
         protected override void Dispose(bool disposing)
