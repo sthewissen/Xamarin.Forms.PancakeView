@@ -62,17 +62,17 @@ namespace Xamarin.Forms.PancakeView.iOS
             }
         }
 
-        //protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    base.OnElementPropertyChanged(sender, e);
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
 
-        //    if (e.PropertyName == VisualElement.ColorProperty.PropertyName)
-        //        SetBackgroundColor(Element.BackgroundColor);
-        //    else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
-        //        SetCornerRadius();
-        //    else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
-        //        SetNeedsDisplay();
-        //}
+            if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+                SetBackgroundColor(Element.BackgroundColor);
+            else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+                SetCornerRadius();
+            else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
+                SetNeedsDisplay();
+        }
 
         public override void Draw(CGRect rect)
         {
@@ -108,7 +108,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             _actualView.Layer.Mask = maskLayer;
             _actualView.Layer.MasksToBounds = true;
 
-            if (pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color))
+            if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) || (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
             {
                 var angle = pancake.BackgroundGradientAngle / 360.0;
 
@@ -124,8 +124,20 @@ namespace Xamarin.Forms.PancakeView.iOS
                     Frame = Bounds,
                     StartPoint = new CGPoint(1 - a, b),
                     EndPoint = new CGPoint(1 - c, d),
-                    Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() }
                 };
+
+                if (pancake.BackgroundGradientStops != null)
+                {
+                    // A range of colors is given. Let's add them.
+                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Location).ToList();
+                    gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Location)).ToArray();
+                }
+                else
+                {
+                    // Only two colors provided, use that.
+                    gradientLayer.Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() };
+                }
 
                 // If there is already a gradient background layer, remove it before inserting.
                 if (_actualView.Layer.Sublayers == null || (_actualView.Layer.Sublayers != null && !_actualView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAGradientLayer))))
@@ -136,7 +148,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 else
                 {
                     // Remove the current gradient layer and insert it again.
-                    var gradLayer = _actualView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAGradientLayer)).FirstOrDefault();
+                    var gradLayer = _actualView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAGradientLayer));
 
                     if (gradLayer != null)
                         gradLayer.RemoveFromSuperLayer();
@@ -164,7 +176,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 else
                 {
                     // Remove the current background layer and insert it again.
-                    var gradLayer = _actualView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAShapeLayer)).FirstOrDefault();
+                    var gradLayer = _actualView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAShapeLayer));
 
                     if (gradLayer != null)
                         gradLayer.RemoveFromSuperLayer();
@@ -188,8 +200,8 @@ namespace Xamarin.Forms.PancakeView.iOS
                     Name = "borderLayer"
                 };
 
-                var frameBounds = Bounds; // pancake.DrawBorderOnOutside ? Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) : Bounds;
-                var insetBounds = pancake.DrawBorderOnOutside ? Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) : Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2);
+                var frameBounds = Bounds;
+                var insetBounds = pancake.BorderDrawingStyle == BorderDrawingStyle.Outside ? Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) : Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2);
 
                 // Create arcs for the given corner radius.
                 var cornerPath = new CGPath();
@@ -254,7 +266,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 }
                 else
                 {
-                    var existingBorderLayer = _wrapperView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer").FirstOrDefault();
+                    var existingBorderLayer = _wrapperView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer");
 
                     if (existingBorderLayer != null)
                         existingBorderLayer.RemoveFromSuperLayer();
