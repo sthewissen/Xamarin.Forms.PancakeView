@@ -14,10 +14,17 @@ using Controls = Xamarin.Forms.PancakeView;
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.iOS
 {
-    public class PancakeViewRenderer : VisualElementRenderer<ContentView>
+    public class PancakeViewRenderer : ViewRenderer<PancakeView, UIView>
     {
-        private CAGradientLayer _gradientLayer;
-        private CAShapeLayer _borderLayer;
+        private UIView _actualView;
+        private UIView _wrapperView;
+
+        private UIColor _colorToRender;
+        private CGSize _previousSize;
+        private nfloat _topLeft;
+        private nfloat _topRight;
+        private nfloat _bottomLeft;
+        private nfloat _bottomRight;
 
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
@@ -30,143 +37,78 @@ namespace Xamarin.Forms.PancakeView.iOS
 #pragma warning restore 0219
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<ContentView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<PancakeView> e)
         {
             base.OnElementChanged(e);
 
             if (e.NewElement != null)
             {
-                var pancake = (Element as PancakeView);
+                Validate(Element as PancakeView);
 
-                // Angle needs to be between 0-360.
-                if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
-                    throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
+                _actualView = new UIView();
+                _wrapperView = new UIView();
 
-                Setup(pancake);
+                foreach (var item in NativeView.Subviews)
+                {
+                    _actualView.AddSubview(item);
+                }
+
+                _wrapperView.AddSubview(_actualView);
+
+                SetNativeControl(_wrapperView);
+
+                SetBackgroundColor(Element.BackgroundColor);
+                SetCornerRadius();
             }
         }
 
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        //protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    base.OnElementPropertyChanged(sender, e);
+
+        //    if (e.PropertyName == VisualElement.ColorProperty.PropertyName)
+        //        SetBackgroundColor(Element.BackgroundColor);
+        //    else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+        //        SetCornerRadius();
+        //    else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
+        //        SetNeedsDisplay();
+        //}
+
+        public override void Draw(CGRect rect)
         {
-            base.OnElementPropertyChanged(sender, e);
+            _actualView.Frame = Bounds;
+            _wrapperView.Frame = Bounds;
 
-            var pancake = (Element as PancakeView);
+            DrawBackground();
+            DrawShadow();
+            DrawBorder();
 
-            // If the border is changed, we need to change the border layer we created. 
-            if (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName)
-                Setup(pancake);
+            base.Draw(rect);
+
+            _previousSize = Bounds.Size;
         }
 
-        public override void LayoutSubviews()
+        private void DrawBackground()
         {
-            base.LayoutSubviews();
+            var pancake = Element as PancakeView;
+            var cornerPath = new UIBezierPath();
 
-            var pancake = (Element as PancakeView);
+            cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - _topRight, (float)Bounds.Y + _topRight), _topRight, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
+            cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - _bottomRight, (float)Bounds.Y + Bounds.Height - _bottomRight), _bottomRight, 0, (float)(Math.PI * .5), true);
+            cornerPath.AddArc(new CGPoint((float)Bounds.X + _bottomLeft, (float)Bounds.Y + Bounds.Height - _bottomLeft), _bottomLeft, (float)(Math.PI * .5), (float)Math.PI, true);
+            cornerPath.AddArc(new CGPoint((float)Bounds.X + _topLeft, (float)Bounds.Y + _topLeft), (float)_topLeft, (float)Math.PI, (float)(Math.PI * 1.5), true);
 
-            // If both background gradient colors are set, we can add the gradient layer.
+            // The layer used to mask other layers we draw on the background.
+            var maskLayer = new CAShapeLayer
+            {
+                Frame = Bounds,
+                Path = cornerPath.CGPath
+            };
+
+            _actualView.Layer.Mask = maskLayer;
+            _actualView.Layer.MasksToBounds = true;
+
             if (pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color))
-            {
-                AddOrUpdateGradientLayer(pancake);
-            }
-
-            if (!pancake.HasShadow)
-            {
-                AddCornerRadius(pancake);
-            }
-
-            UpdateBorderLayer(pancake);
-        }
-
-        private void Setup(PancakeView pancake)
-        {
-            // Create the border layer
-            if (pancake.BorderThickness > 0)
-            {
-                if (_borderLayer == null)
-                    _borderLayer = new CAShapeLayer();
-
-                // Set the border color to clear if it's not set.
-                if (pancake.BorderColor == Xamarin.Forms.Color.Default)
-                    _borderLayer.StrokeColor = UIColor.Clear.CGColor;
-                else
-                    _borderLayer.StrokeColor = pancake.BorderColor.ToCGColor();
-
-                _borderLayer.FillColor = null;
-                _borderLayer.LineWidth = pancake.BorderThickness;
-
-                // There's no border layer yet, insert it.
-                if (Layer.Sublayers == null || (Layer.Sublayers != null && !Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer))))
-                {
-                    Layer.AddSublayer(_borderLayer);
-                }
-                else
-                {
-                    var borderLayer = Layer.Sublayers.Where(x => x.GetType() == typeof(CAShapeLayer)).FirstOrDefault();
-
-                    if (borderLayer != null)
-                        borderLayer.RemoveFromSuperLayer();
-
-                    Layer.AddSublayer(_borderLayer);
-                }
-            }
-
-            if (pancake.HasShadow)
-            {
-                // TODO: Ideally we want to be able to have individual corner radii + shadows
-                // However, on iOS we can only do one radius + shadow.
-                Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
-                Layer.ShadowRadius = 10;
-                Layer.ShadowColor = UIColor.Black.CGColor;
-                Layer.ShadowOpacity = 0.4f;
-                Layer.ShadowOffset = new SizeF();
-                Layer.MasksToBounds = false;
-
-                // Set the content of PancakeView to also have corner radius and clip it to show shadow.
-                if (pancake.IsClippedToBounds && NativeView.Subviews.Any())
-                {
-                    NativeView.Subviews[0].Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
-                    NativeView.Subviews[0].ClipsToBounds = true;
-                }
-            }
-            else
-            {
-                Layer.ShadowOpacity = 0;
-            }
-
-            // Set the rasterization for performance optimization.
-            Layer.RasterizationScale = UIScreen.MainScreen.Scale;
-            Layer.ShouldRasterize = true;
-        }
-
-        private void AddCornerRadius(PancakeView pancake)
-        {
-            if (pancake.CornerRadius.BottomLeft + pancake.CornerRadius.BottomRight + pancake.CornerRadius.TopLeft + pancake.CornerRadius.TopRight > 0)
-            {
-                var cornerPath = new UIBezierPath();
-
-                // Create arcs for the given corner radius.
-                cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - pancake.CornerRadius.TopRight, (float)Bounds.Y + pancake.CornerRadius.TopRight), (float)pancake.CornerRadius.TopRight, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
-                cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - pancake.CornerRadius.BottomRight, (float)Bounds.Y + Bounds.Height - pancake.CornerRadius.BottomRight), (float)pancake.CornerRadius.BottomRight, 0, (float)(Math.PI * .5), true);
-                cornerPath.AddArc(new CGPoint((float)Bounds.X + pancake.CornerRadius.BottomLeft, (float)Bounds.Y + Bounds.Height - pancake.CornerRadius.BottomLeft), (float)pancake.CornerRadius.BottomLeft, (float)(Math.PI * .5), (float)Math.PI, true);
-                cornerPath.AddArc(new CGPoint((float)Bounds.X + pancake.CornerRadius.TopLeft, (float)Bounds.Y + pancake.CornerRadius.TopLeft), (float)pancake.CornerRadius.TopLeft, (float)Math.PI, (float)(Math.PI * 1.5), true);
-
-                var maskLayer = new CAShapeLayer
-                {
-                    Frame = Bounds,
-                    Path = cornerPath.CGPath
-                };
-
-                Layer.Mask = maskLayer;
-                Layer.MasksToBounds = true;
-            }
-        }
-
-        private void AddOrUpdateGradientLayer(PancakeView pancake)
-        {
-            // Init the gradient layer.
-            if (_gradientLayer == null)
             {
                 var angle = pancake.BackgroundGradientAngle / 360.0;
 
@@ -176,38 +118,78 @@ namespace Xamarin.Forms.PancakeView.iOS
                 var c = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
                 var d = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
 
-                _gradientLayer = new CAGradientLayer
+                // Create a gradient layer that draws our background.
+                var gradientLayer = new CAGradientLayer
                 {
                     Frame = Bounds,
                     StartPoint = new CGPoint(1 - a, b),
                     EndPoint = new CGPoint(1 - c, d),
                     Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() }
                 };
-            }
 
-            if (Layer.Sublayers == null || (Layer.Sublayers != null && !Layer.Sublayers.Any(x => x.GetType() == typeof(CAGradientLayer))))
-            {
-                // There's no gradient layer yet, insert it.
-                Layer.InsertSublayer(_gradientLayer, 0);
+                // If there is already a gradient background layer, remove it before inserting.
+                if (_actualView.Layer.Sublayers == null || (_actualView.Layer.Sublayers != null && !_actualView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAGradientLayer))))
+                {
+                    // There's no gradient layer yet, insert it.
+                    _actualView.Layer.InsertSublayer(gradientLayer, 0);
+                }
+                else
+                {
+                    // Remove the current gradient layer and insert it again.
+                    var gradLayer = _actualView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAGradientLayer)).FirstOrDefault();
+
+                    if (gradLayer != null)
+                        gradLayer.RemoveFromSuperLayer();
+
+                    _actualView.Layer.InsertSublayer(gradientLayer, 0);
+                }
             }
             else
             {
-                var gradLayer = Layer.Sublayers.Where(x => x.GetType() == typeof(CAGradientLayer)).FirstOrDefault();
+                // Create a shape layer that draws our background.
+                var shapeLayer = new CAShapeLayer
+                {
+                    Frame = Bounds,
+                    Path = cornerPath.CGPath,
+                    MasksToBounds = true,
+                    FillColor = _colorToRender.CGColor
+                };
 
-                if (gradLayer != null)
-                    gradLayer.RemoveFromSuperLayer();
+                // If there is already a background layer, remove it before inserting.
+                if (_actualView.Layer.Sublayers == null || (_actualView.Layer.Sublayers != null && !_actualView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer))))
+                {
+                    // There's no background layer yet, insert it.
+                    _actualView.Layer.InsertSublayer(shapeLayer, 0);
+                }
+                else
+                {
+                    // Remove the current background layer and insert it again.
+                    var gradLayer = _actualView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAShapeLayer)).FirstOrDefault();
 
-                Layer.InsertSublayer(_gradientLayer, 0);
+                    if (gradLayer != null)
+                        gradLayer.RemoveFromSuperLayer();
+
+                    _actualView.Layer.InsertSublayer(shapeLayer, 0);
+                }
             }
         }
 
-        private void UpdateBorderLayer(PancakeView pancake)
+        private void DrawBorder()
         {
-            // The border layer needs to be updated because the Bounds are only available later.
-            if (pancake.BorderThickness > 0 && _borderLayer != null)
+            var pancake = Element as PancakeView;
+
+            if (pancake.BorderThickness > 0)
             {
-                var density = (nfloat)UIScreen.MainScreen.Scale;
-                var insetBounds = Bounds.Inset(pancake.DrawBorderOnOutside ? 0 : pancake.BorderThickness / density, pancake.DrawBorderOnOutside ? 0 : pancake.BorderThickness / density);
+                var borderLayer = new CAShapeLayer
+                {
+                    StrokeColor = pancake.BorderColor == Color.Default ? UIColor.Clear.CGColor : pancake.BorderColor.ToCGColor(),
+                    FillColor = null,
+                    LineWidth = pancake.BorderThickness,
+                    Name = "borderLayer"
+                };
+
+                var frameBounds = Bounds; // pancake.DrawBorderOnOutside ? Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) : Bounds;
+                var insetBounds = pancake.DrawBorderOnOutside ? Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) : Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2);
 
                 // Create arcs for the given corner radius.
                 var cornerPath = new CGPath();
@@ -253,18 +235,108 @@ namespace Xamarin.Forms.PancakeView.iOS
                     // Left side + top left corner
                     cornerPath.AddLineToPoint(insetBounds.X, (float)(insetBounds.Y + pancake.CornerRadius.TopLeft));
                     cornerPath.AddArc((float)(insetBounds.X + pancake.CornerRadius.TopLeft), (float)(insetBounds.Y + pancake.CornerRadius.TopLeft), (float)pancake.CornerRadius.TopLeft, (float)Math.PI, (float)(Math.PI * 1.5), false);
-
                 }
 
-                _borderLayer.Path = cornerPath;
-                _borderLayer.Frame = Bounds;
+                borderLayer.Path = cornerPath;
+                borderLayer.Frame = frameBounds;
+                borderLayer.Position = new CGPoint(frameBounds.Width / 2, frameBounds.Height / 2);
 
                 // Dash pattern for the border.
                 if (pancake.BorderIsDashed)
                 {
-                    _borderLayer.LineDashPattern = new NSNumber[] { new NSNumber(5), new NSNumber(2) };
+                    borderLayer.LineDashPattern = new NSNumber[] { new NSNumber(6), new NSNumber(3) };
+                }
+
+                // There's no border layer yet, insert it.
+                if (_wrapperView.Layer.Sublayers == null || (_wrapperView.Layer.Sublayers != null && !_wrapperView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer")))
+                {
+                    _wrapperView.Layer.AddSublayer(borderLayer);
+                }
+                else
+                {
+                    var existingBorderLayer = _wrapperView.Layer.Sublayers.Where(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer").FirstOrDefault();
+
+                    if (existingBorderLayer != null)
+                        existingBorderLayer.RemoveFromSuperLayer();
+
+                    _wrapperView.Layer.AddSublayer(borderLayer);
                 }
             }
+        }
+
+        public override void LayoutSubviews()
+        {
+            if (_previousSize != Bounds.Size)
+                SetNeedsDisplay();
+
+            base.LayoutSubviews();
+        }
+
+        private void Validate(PancakeView pancake)
+        {
+            // Angle needs to be between 0-360.
+            if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
+                throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
+        }
+
+        void SetCornerRadius()
+        {
+            if (Element == null)
+                return;
+
+            var elementCornerRadius = (Element as PancakeView).CornerRadius;
+
+            _topLeft = (float)elementCornerRadius.TopLeft;
+            _topRight = (float)elementCornerRadius.TopRight;
+            _bottomLeft = (float)elementCornerRadius.BottomLeft;
+            _bottomRight = (float)elementCornerRadius.BottomRight;
+
+            SetNeedsDisplay();
+        }
+
+        protected override void SetBackgroundColor(Color color)
+        {
+            if (Element == null)
+                return;
+
+            var elementColor = Element.BackgroundColor;
+
+            if (!elementColor.IsDefault)
+                _colorToRender = elementColor.ToUIColor();
+            else
+                _colorToRender = color.ToUIColor();
+
+            SetNeedsDisplay();
+        }
+
+        private void DrawShadow()
+        {
+            var pancake = Element as PancakeView;
+
+            if (pancake.HasShadow)
+            {
+                // Ideally we want to be able to have individual corner radii + shadows
+                // However, on iOS we can only do one radius + shadow.
+                _wrapperView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
+                _wrapperView.Layer.ShadowRadius = 10;
+                _wrapperView.Layer.ShadowColor = UIColor.Black.CGColor;
+                _wrapperView.Layer.ShadowOpacity = 0.4f;
+                _wrapperView.Layer.ShadowOffset = new SizeF();
+                _wrapperView.Layer.ShadowPath = UIBezierPath.FromRoundedRect(Bounds, (nfloat)pancake.CornerRadius.TopLeft).CGPath;
+
+                _actualView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
+                _actualView.ClipsToBounds = true;
+            }
+            else
+            {
+                _wrapperView.Layer.ShadowOpacity = 0;
+            }
+
+            // Set the rasterization for performance optimization.
+            _wrapperView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+            _wrapperView.Layer.ShouldRasterize = true;
+            _actualView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+            _actualView.Layer.ShouldRasterize = true;
         }
     }
 }
