@@ -100,11 +100,13 @@ namespace Xamarin.Forms.PancakeView.iOS
                 else
                     _borderLayer.FillColor = pancake.BackgroundColor.ToCGColor();
 
-                _borderLayer.LineWidth = pancake.BorderThickness * 2;
+                _borderLayer.LineWidth = pancake.BorderThickness;
 
                 // There's no border layer yet, insert it.
                 if (Layer.Sublayers == null || (Layer.Sublayers != null && !Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer))))
                     Layer.InsertSublayer(_borderLayer, 0);
+
+                UpdateBorderLayer(pancake);
             }
 
             if (pancake.HasShadow)
@@ -129,15 +131,17 @@ namespace Xamarin.Forms.PancakeView.iOS
             Layer.ShouldRasterize = true;
         }
 
-        private CGPath CreateCornerPath(PancakeView pancake)
+        private CGPath CreateCornerPath(PancakeView pancake, bool addBorderInset)
         {
             var cornerPath = new UIBezierPath();
 
+            var insetBounds = addBorderInset ? this.Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2) : this.Bounds;
+
             // Create arcs for the given corner radius.
-            cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - pancake.CornerRadii.TopRight, (float)Bounds.Y + pancake.CornerRadii.TopRight), (float)pancake.CornerRadii.TopRight, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
-            cornerPath.AddArc(new CGPoint((float)Bounds.X + Bounds.Width - pancake.CornerRadii.BottomRight, (float)Bounds.Y + Bounds.Height - pancake.CornerRadii.BottomRight), (float)pancake.CornerRadii.BottomRight, 0, (float)(Math.PI * .5), true);
-            cornerPath.AddArc(new CGPoint((float)Bounds.X + pancake.CornerRadii.BottomLeft, (float)Bounds.Y + Bounds.Height - pancake.CornerRadii.BottomLeft), (float)pancake.CornerRadii.BottomLeft, (float)(Math.PI * .5), (float)Math.PI, true);
-            cornerPath.AddArc(new CGPoint((float)Bounds.X + pancake.CornerRadii.TopLeft, (float)Bounds.Y + pancake.CornerRadii.TopLeft), (float)pancake.CornerRadii.TopLeft, (float)Math.PI, (float)(Math.PI * 1.5), true);
+            cornerPath.AddArc(new CGPoint((float)insetBounds.X + insetBounds.Width - pancake.CornerRadii.TopRight, (float)insetBounds.Y + pancake.CornerRadii.TopRight), (float)pancake.CornerRadii.TopRight, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
+            cornerPath.AddArc(new CGPoint((float)insetBounds.X + insetBounds.Width - pancake.CornerRadii.BottomRight, (float)insetBounds.Y + insetBounds.Height - pancake.CornerRadii.BottomRight), (float)pancake.CornerRadii.BottomRight, 0, (float)(Math.PI * .5), true);
+            cornerPath.AddArc(new CGPoint((float)insetBounds.X + pancake.CornerRadii.BottomLeft, (float)insetBounds.Y + insetBounds.Height - pancake.CornerRadii.BottomLeft), (float)pancake.CornerRadii.BottomLeft, (float)(Math.PI * .5), (float)Math.PI, true);
+            cornerPath.AddArc(new CGPoint((float)insetBounds.X + pancake.CornerRadii.TopLeft, (float)insetBounds.Y + pancake.CornerRadii.TopLeft), (float)pancake.CornerRadii.TopLeft, (float)Math.PI, (float)(Math.PI * 1.5), true);
 
             cornerPath.ClosePath();
 
@@ -151,7 +155,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 var maskLayer = new CAShapeLayer
                 {
                     Frame = Bounds,
-                    Path = this.CreateCornerPath(pancake),
+                    Path = this.CreateCornerPath(pancake, false),
                 };
 
                 Layer.Mask = maskLayer;
@@ -194,7 +198,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             if (pancake.BorderThickness > 0 && _borderLayer != null)
             {
                 _borderLayer.Frame = Bounds;
-                _borderLayer.Path = this.CreateCornerPath(pancake);
+                _borderLayer.Path = this.CreateCornerPath(pancake, true);
 
                 // Dash pattern for the border.
                 if (pancake.BorderIsDashed)
