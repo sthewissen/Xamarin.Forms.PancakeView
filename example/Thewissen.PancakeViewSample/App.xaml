@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.App">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.App" xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     <Application.Resources>
         <ResourceDictionary>
             <OnPlatform x:TypeArguments="x:String" x:Key="LatoBold">
@@ -10,6 +10,14 @@
               <On Platform="iOS" Value="Lato-Regular"/>
               <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
             </OnPlatform>
+            <x:Array x:Key="Rainbow" Type="{x:Type yummy:GradientStop}">
+                <yummy:GradientStop Color="Red" Location="0" />
+                <yummy:GradientStop Color="Orange" Location="0.2" />
+                <yummy:GradientStop Color="Yellow" Location="0.4" />
+                <yummy:GradientStop Color="Green" Location="0.6" />
+                <yummy:GradientStop Color="Blue" Location="0.8" />
+                <yummy:GradientStop Color="Purple" Location="1" />
+            </x:Array>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
