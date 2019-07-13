@@ -41,6 +41,14 @@ namespace Xamarin.Forms.PancakeView.Droid
             {
                 var pancake = (Element as PancakeView);
 
+                // HACK: When there are no children we add a Grid element to trigger DrawChild.
+                // This should be inmproved upon, but I haven't found out a nice way to be able to clip
+                // the children and add the border on top without using DrawChild.
+                if (pancake.Content == null)
+                {
+                    pancake.Content = new Grid();
+                }
+
                 // Angle needs to be between 0-360.
                 if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
                     throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
@@ -183,8 +191,6 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             // TODO: Figure out how to clip individual rounded corners with different radii.
             outline.SetRoundRect(new Rect(0, 0, view.Width, view.Height), _cornerRadius);
-
-            // outline.SetRoundRect(-1 * (_border / 2) - 1, -1 * (_border / 2), view.Width + (_border / 2) + 2, view.Height + (_border / 2), (float)(_cornerRadius.TopLeft + (_border)));
         }
     }
 
