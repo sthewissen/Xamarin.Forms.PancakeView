@@ -1,15 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Graphics.Drawables.Shapes;
-using Android.Util;
 using Android.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.Droid;
 using Xamarin.Forms.Platform.Android;
-using AButton = Android.Widget.Button;
 using ACanvas = Android.Graphics.Canvas;
 using Controls = Xamarin.Forms.PancakeView;
 
@@ -42,6 +40,14 @@ namespace Xamarin.Forms.PancakeView.Droid
             if (e.NewElement != null && e.OldElement == null)
             {
                 var pancake = (Element as PancakeView);
+
+                // HACK: When there are no children we add a Grid element to trigger DrawChild.
+                // This should be inmproved upon, but I haven't found out a nice way to be able to clip
+                // the children and add the border on top without using DrawChild.
+                if (pancake.Content == null)
+                {
+                    pancake.Content = new Grid();
+                }
 
                 // Angle needs to be between 0-360.
                 if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
@@ -148,10 +154,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             using (Path.Direction direction = Path.Direction.Cw)
             using (Paint.Style style = Paint.Style.Stroke)
 
-            using (var rect = new RectF(control.DrawBorderOnOutside && !control.HasShadow ? -halfBorderThickness : halfBorderThickness,
-                                        control.DrawBorderOnOutside && !control.HasShadow ? -halfBorderThickness : halfBorderThickness,
-                                        control.DrawBorderOnOutside && !control.HasShadow ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
-                                        control.DrawBorderOnOutside && !control.HasShadow ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
+            using (var rect = new RectF(control.BorderDrawingStyle == BorderDrawingStyle.Outside && !control.HasShadow ? -halfBorderThickness : halfBorderThickness,
+                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !control.HasShadow ? -halfBorderThickness : halfBorderThickness,
+                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !control.HasShadow ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
+                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !control.HasShadow ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
             {
                 path.AddRoundRect(rect, GetRadii(control), direction);
 
@@ -185,8 +191,6 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             // TODO: Figure out how to clip individual rounded corners with different radii.
             outline.SetRoundRect(new Rect(0, 0, view.Width, view.Height), _cornerRadius);
-
-            // outline.SetRoundRect(-1 * (_border / 2) - 1, -1 * (_border / 2), view.Width + (_border / 2) + 2, view.Height + (_border / 2), (float)(_cornerRadius.TopLeft + (_border)));
         }
     }
 
@@ -293,7 +297,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 else
                     path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
 
-                if (_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color))
+                if ((_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color)) || (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Any()))
                 {
                     var angle = _pancake.BackgroundGradientAngle / 360.0;
 
@@ -303,8 +307,22 @@ namespace Xamarin.Forms.PancakeView.Droid
                     var c = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
                     var d = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
 
-                    var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, _pancake.BackgroundGradientStartColor.ToAndroid(), _pancake.BackgroundGradientEndColor.ToAndroid(), Shader.TileMode.Clamp);
-                    paint.SetShader(shader);
+                    if (_pancake.BackgroundGradientStops != null)
+                    {
+                        // A range of colors is given. Let's add them.
+                        var orderedStops = _pancake.BackgroundGradientStops.OrderBy(x => x.Location).ToList();
+                        var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
+                        var locations = orderedStops.Select(x => x.Location).ToArray();
+
+                        var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
+                        paint.SetShader(shader);
+                    }
+                    else
+                    {
+                        // Only two colors provided, use that.
+                        var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, _pancake.BackgroundGradientStartColor.ToAndroid(), _pancake.BackgroundGradientEndColor.ToAndroid(), Shader.TileMode.Clamp);
+                        paint.SetShader(shader);
+                    }
                 }
                 else
                 {
