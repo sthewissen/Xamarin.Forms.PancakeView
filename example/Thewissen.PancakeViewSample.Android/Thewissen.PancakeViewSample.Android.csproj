@@ -115,6 +115,12 @@
     <AndroidResource Include="Resources\drawable-hdpi\monkey.jpg" />
     <AndroidResource Include="Resources\drawable-mdpi\monkey.jpg" />
     <AndroidResource Include="Resources\drawable-ldpi\monkey.jpg" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\gc.jpg" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\gc.jpg" />
+    <AndroidResource Include="Resources\drawable-xhdpi\gc.jpg" />
+    <AndroidResource Include="Resources\drawable-hdpi\gc.jpg" />
+    <AndroidResource Include="Resources\drawable-mdpi\gc.jpg" />
+    <AndroidResource Include="Resources\drawable-ldpi\gc.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

@@ -12,6 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
     <PackageReference Include="LiveXAML" Version="2.1.63" />
-    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.0.24-beta" />
+    <PackageReference Include="FreshMvvm" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.0.25-beta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\" />
+    <Folder Include="PageModels\" />
   </ItemGroup>
 </Project>
