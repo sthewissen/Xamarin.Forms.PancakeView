@@ -40,6 +40,8 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 | `BackgroundGradientAngle` | A value between 0-360 to define the angle of the background gradient. | |
 | `BackgroundGradientStartColor` | The start color of the background gradient. | A ```Color``` object. |
 | `BackgroundGradientEndColor` | The end color of the background gradient. | A ```Color``` object. |
+| `BackgroundGradientStops` | A list of `GradientStop` objects that define a multi color gradient. | `Location` is a value between 0-1 defining the location within the gradient. |
+| `BorderDrawingStyle` | Whether to draw the border on the inside or outside of the control. | |
 | `BorderColor` | The color of the border. | A ```Color``` object. |
 | `BorderIsDashed` | Whether or not the border needs to be dashed. | The length of the dash and spacing between them is currently not editable. |
 | `BorderThickness` | The thickness of the border. | |
