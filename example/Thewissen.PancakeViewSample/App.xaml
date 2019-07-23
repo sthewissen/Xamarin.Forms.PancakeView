@@ -11,12 +11,12 @@
               <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
             </OnPlatform>
             <x:Array x:Key="Rainbow" Type="{x:Type yummy:GradientStop}">
-                <yummy:GradientStop Color="Red" Location="0" />
-                <yummy:GradientStop Color="Orange" Location="0.2" />
-                <yummy:GradientStop Color="Yellow" Location="0.4" />
-                <yummy:GradientStop Color="Green" Location="0.6" />
-                <yummy:GradientStop Color="Blue" Location="0.8" />
-                <yummy:GradientStop Color="Purple" Location="1" />
+                <yummy:GradientStop Color="Red" Offset="0" />
+                <yummy:GradientStop Color="Orange" Offset="0.2" />
+                <yummy:GradientStop Color="Yellow" Offset="0.4" />
+                <yummy:GradientStop Color="Green" Offset="0.6" />
+                <yummy:GradientStop Color="Blue" Offset="0.8" />
+                <yummy:GradientStop Color="Purple" Offset="1" />
             </x:Array>
         </ResourceDictionary>
     </Application.Resources>
