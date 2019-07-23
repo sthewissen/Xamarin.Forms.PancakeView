@@ -132,9 +132,9 @@ namespace Xamarin.Forms.PancakeView.iOS
                 if (pancake.BackgroundGradientStops != null)
                 {
                     // A range of colors is given. Let's add them.
-                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Location).ToList();
+                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                     gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Location)).ToArray();
+                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
                 }
                 else
                 {

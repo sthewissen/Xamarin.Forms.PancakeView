@@ -2,11 +2,11 @@
 {
     public class GradientStop
     {
-        private float location;
+        private float offset;
 
-        public float Location
+        public float Offset
         {
-            get => location;
+            get => offset;
             set
             {
                 // Value needs to be 0-1.
@@ -15,7 +15,7 @@
                 else if (value < 0)
                     value = 0;
 
-                location = value;
+                offset = value;
             }
         }
 

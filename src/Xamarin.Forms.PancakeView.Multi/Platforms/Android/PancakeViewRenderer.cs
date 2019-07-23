@@ -310,9 +310,9 @@ namespace Xamarin.Forms.PancakeView.Droid
                     if (_pancake.BackgroundGradientStops != null)
                     {
                         // A range of colors is given. Let's add them.
-                        var orderedStops = _pancake.BackgroundGradientStops.OrderBy(x => x.Location).ToList();
+                        var orderedStops = _pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                         var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
-                        var locations = orderedStops.Select(x => x.Location).ToArray();
+                        var locations = orderedStops.Select(x => x.Offset).ToArray();
 
                         var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
                         paint.SetShader(shader);
