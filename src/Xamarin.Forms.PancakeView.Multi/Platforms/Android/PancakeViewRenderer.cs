@@ -76,6 +76,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
@@ -166,10 +171,41 @@ namespace Xamarin.Forms.PancakeView.Droid
                     paint.SetPathEffect(new DashPathEffect(new float[] { 10, 20 }, 0));
                 }
 
+                if ((_pancake.BorderGradientStartColor != default(Color) && _pancake.BorderGradientEndColor != default(Color)) || (_pancake.BorderGradientStops != null && _pancake.BorderGradientStops.Any()))
+                {
+                    var angle = _pancake.BorderGradientAngle / 360.0;
+
+                    // Calculate the new positions based on angle between 0-360.
+                    var a = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
+                    var b = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
+                    var c = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
+                    var d = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
+
+                    if (_pancake.BorderGradientStops != null)
+                    {
+                        // A range of colors is given. Let's add them.
+                        var orderedStops = _pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                        var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
+                        var locations = orderedStops.Select(x => x.Offset).ToArray();
+
+                        var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
+                        paint.SetShader(shader);
+                    }
+                    else
+                    {
+                        // Only two colors provided, use that.
+                        var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, _pancake.BorderGradientStartColor.ToAndroid(), _pancake.BorderGradientEndColor.ToAndroid(), Shader.TileMode.Clamp);
+                        paint.SetShader(shader);
+                    }
+                }
+                else
+                {
+                    paint.Color = control.BorderColor.ToAndroid();
+                }
+
                 paint.StrokeCap = Paint.Cap.Square;
                 paint.StrokeWidth = borderThickness;
                 paint.SetStyle(style);
-                paint.Color = control.BorderColor.ToAndroid();
 
                 canvas.DrawPath(path, paint);
             }

@@ -17,9 +17,13 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
-
         public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops), typeof(IEnumerable<GradientStop>), typeof(PancakeView), defaultValue: default(IEnumerable<GradientStop>));
 
+        public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+        public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+        public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
+        public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops), typeof(IEnumerable<GradientStop>), typeof(PancakeView), defaultValue: default(IEnumerable<GradientStop>));
+        
         public Color BackgroundGradientStartColor
         {
             get { return (Color)GetValue(BackgroundGradientStartColorProperty); }
@@ -36,6 +40,36 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (int)GetValue(BackgroundGradientAngleProperty); }
             set { SetValue(BackgroundGradientAngleProperty, value); }
+        }
+
+        public IEnumerable<GradientStop> BackgroundGradientStops
+        {
+            get { return (IEnumerable<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
+            set { SetValue(BackgroundGradientStopsProperty, value); }
+        }
+
+        public Color BorderGradientStartColor
+        {
+            get { return (Color)GetValue(BorderGradientStartColorProperty); }
+            set { SetValue(BorderGradientStartColorProperty, value); }
+        }
+
+        public Color BorderGradientEndColor
+        {
+            get { return (Color)GetValue(BorderGradientEndColorProperty); }
+            set { SetValue(BorderGradientEndColorProperty, value); }
+        }
+
+        public int BorderGradientAngle
+        {
+            get { return (int)GetValue(BorderGradientAngleProperty); }
+            set { SetValue(BorderGradientAngleProperty, value); }
+        }
+
+        public IEnumerable<GradientStop> BorderGradientStops
+        {
+            get { return (IEnumerable<GradientStop>)GetValue(BorderGradientStopsProperty); }
+            set { SetValue(BorderGradientStopsProperty, value); }
         }
 
         public CornerRadius CornerRadius
@@ -72,12 +106,6 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (BorderDrawingStyle)GetValue(BorderDrawingStyleProperty); }
             set { SetValue(BorderDrawingStyleProperty, value); }
-        }
-
-        public IEnumerable<GradientStop> BackgroundGradientStops
-        {
-            get { return (IEnumerable<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
-            set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
         #endregion
