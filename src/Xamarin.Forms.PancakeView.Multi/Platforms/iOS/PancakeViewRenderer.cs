@@ -355,3 +355,4 @@ namespace Xamarin.Forms.PancakeView.iOS
         }
     }
 }
+}

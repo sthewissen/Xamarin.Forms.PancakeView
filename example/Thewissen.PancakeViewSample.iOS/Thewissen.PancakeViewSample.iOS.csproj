@@ -131,9 +131,7 @@
       <Name>Thewissen.PancakeViewSample</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BundleResource Include="Resources\Lato-Bold.ttf" />
     <BundleResource Include="Resources\Lato-Regular.ttf" />
