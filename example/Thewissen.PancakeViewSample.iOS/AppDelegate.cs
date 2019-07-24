@@ -1,6 +1,5 @@
 ﻿using Foundation;
 using UIKit;
-using Xamarin.Forms.PancakeView.iOS;
 
 namespace Thewissen.PancakeViewSample.iOS
 {
@@ -22,8 +21,6 @@ namespace Thewissen.PancakeViewSample.iOS
             global::Xamarin.Forms.Forms.Init();
 
             LoadApplication(new App());
-
-            PancakeViewRenderer.Init();
 
             return base.FinishedLaunching(app, options);
         }
