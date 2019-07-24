@@ -124,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
+    <PackageReference Include="Xamarin.Forms.PancakeView">
+      <Version>1.2.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
