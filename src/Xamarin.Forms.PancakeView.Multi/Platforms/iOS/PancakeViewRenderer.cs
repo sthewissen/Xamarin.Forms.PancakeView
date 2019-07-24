@@ -73,11 +73,11 @@ namespace Xamarin.Forms.PancakeView.iOS
             else if (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible)
                 SetNeedsDisplay();
             else if ((e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName)
-            	|| (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName))
-		SetNeedsDisplay();
-	}
+                || (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName))
+                SetNeedsDisplay();
+        }
 
-	public override void Draw(CGRect rect)
+        public override void Draw(CGRect rect)
         {
             _actualView.Frame = Bounds;
             _wrapperView.Frame = Bounds;
