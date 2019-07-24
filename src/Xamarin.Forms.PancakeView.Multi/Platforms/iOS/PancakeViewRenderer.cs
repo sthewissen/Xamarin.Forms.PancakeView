@@ -208,8 +208,9 @@ namespace Xamarin.Forms.PancakeView.iOS
 
                 // Create arcs for the given corner radius.
                 var cornerPath = new CGPath();
+                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
 
-                if (!pancake.HasShadow)
+                if (!hasShadowOrElevation)
                 {
                     // Start of our path is where the top left horizontal starts.
                     cornerPath.MoveToPoint(new CGPoint(pancake.CornerRadius.TopLeft + insetBounds.X, insetBounds.Y));
