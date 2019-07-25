@@ -18,4 +18,7 @@
     <Folder Include="Pages\" />
     <Folder Include="PageModels\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
+  </ItemGroup>
 </Project>
