@@ -263,19 +263,70 @@ namespace Xamarin.Forms.PancakeView.iOS
                     borderLayer.LineDashPattern = new NSNumber[] { new NSNumber(6), new NSNumber(3) };
                 }
 
-                // There's no border layer yet, insert it.
-                if (_wrapperView.Layer.Sublayers == null || (_wrapperView.Layer.Sublayers != null && !_wrapperView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer")))
+                if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
                 {
-                    _wrapperView.Layer.AddSublayer(borderLayer);
+                    var angle = pancake.BorderGradientAngle / 360.0;
+
+                    // Calculate the new positions based on angle between 0-360.
+                    var a = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
+                    var b = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
+                    var c = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
+                    var d = Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
+
+                    // Create a gradient layer that draws our background.
+                    var gradientLayer = new CAGradientLayer
+                    {
+                        Frame = Bounds,
+                        StartPoint = new CGPoint(1 - a, b),
+                        EndPoint = new CGPoint(1 - c, d),
+                        Mask = borderLayer,
+                        Name = "borderLayer"
+                    };
+
+                    if (pancake.BorderGradientStops != null)
+                    {
+                        // A range of colors is given. Let's add them.
+                        var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                        gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                        gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
+                    }
+                    else
+                    {
+                        // Only two colors provided, use that.
+                        gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
+                    }
+
+                    // There's no border layer yet, insert it.
+                    if (_wrapperView.Layer.Sublayers == null || (_wrapperView.Layer.Sublayers != null && !_wrapperView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAGradientLayer) && x.Name == "borderLayer")))
+                    {
+                        _wrapperView.Layer.AddSublayer(gradientLayer);
+                    }
+                    else
+                    {
+                        var existingBorderLayer = _wrapperView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAGradientLayer) && x.Name == "borderLayer");
+
+                        if (existingBorderLayer != null)
+                            existingBorderLayer.RemoveFromSuperLayer();
+
+                        _wrapperView.Layer.AddSublayer(gradientLayer);
+                    }
                 }
                 else
                 {
-                    var existingBorderLayer = _wrapperView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer");
+                    // There's no border layer yet, insert it.
+                    if (_wrapperView.Layer.Sublayers == null || (_wrapperView.Layer.Sublayers != null && !_wrapperView.Layer.Sublayers.Any(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer")))
+                    {
+                        _wrapperView.Layer.AddSublayer(borderLayer);
+                    }
+                    else
+                    {
+                        var existingBorderLayer = _wrapperView.Layer.Sublayers.FirstOrDefault(x => x.GetType() == typeof(CAShapeLayer) && x.Name == "borderLayer");
 
-                    if (existingBorderLayer != null)
-                        existingBorderLayer.RemoveFromSuperLayer();
+                        if (existingBorderLayer != null)
+                            existingBorderLayer.RemoveFromSuperLayer();
 
-                    _wrapperView.Layer.AddSublayer(borderLayer);
+                        _wrapperView.Layer.AddSublayer(borderLayer);
+                    }
                 }
             }
         }
