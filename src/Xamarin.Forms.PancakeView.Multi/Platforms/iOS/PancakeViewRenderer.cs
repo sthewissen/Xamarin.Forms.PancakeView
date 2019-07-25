@@ -208,8 +208,9 @@ namespace Xamarin.Forms.PancakeView.iOS
 
                 // Create arcs for the given corner radius.
                 var cornerPath = new CGPath();
+                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
 
-                if (!pancake.HasShadow)
+                if (!hasShadowOrElevation)
                 {
                     // Start of our path is where the top left horizontal starts.
                     cornerPath.MoveToPoint(new CGPoint(pancake.CornerRadius.TopLeft + insetBounds.X, insetBounds.Y));
@@ -326,19 +327,23 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         private void DrawShadow()
         {
-            var pancake = Element as PancakeView;
+            var pancake = Element;
+
+            bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+            nfloat cornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
 
             if (pancake.HasShadow)
             {
-                // Ideally we want to be able to have individual corner radii + shadows
-                // However, on iOS we can only do one radius + shadow.
-                _wrapperView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
-                _wrapperView.Layer.ShadowRadius = 10;
-                _wrapperView.Layer.ShadowColor = UIColor.Black.CGColor;
-                _wrapperView.Layer.ShadowOpacity = 0.4f;
-                _wrapperView.Layer.ShadowOffset = new SizeF();
-                _wrapperView.Layer.ShadowPath = UIBezierPath.FromRoundedRect(Bounds, (nfloat)pancake.CornerRadius.TopLeft).CGPath;
+                DrawDefaultShadow(_wrapperView.Layer, Bounds, cornerRadius);
+            }
 
+            if (pancake.Elevation > 0)
+            {
+                DrawElevation(_wrapperView.Layer, pancake.Elevation, Bounds, cornerRadius);
+            }
+
+            if (hasShadowOrElevation)
+            {
                 _actualView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
                 _actualView.ClipsToBounds = true;
             }
@@ -347,11 +352,39 @@ namespace Xamarin.Forms.PancakeView.iOS
                 _wrapperView.Layer.ShadowOpacity = 0;
             }
 
+
             // Set the rasterization for performance optimization.
             _wrapperView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
             _wrapperView.Layer.ShouldRasterize = true;
             _actualView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
             _actualView.Layer.ShouldRasterize = true;
+        }
+
+        private void DrawDefaultShadow(CALayer layer, CGRect bounds, nfloat cornerRadius)
+        {
+            // Ideally we want to be able to have individual corner radii + shadows
+            // However, on iOS we can only do one radius + shadow.
+            layer.CornerRadius = cornerRadius;
+            layer.ShadowRadius = 10;
+            layer.ShadowColor = UIColor.Black.CGColor;
+            layer.ShadowOpacity = 0.4f;
+            layer.ShadowOffset = new SizeF();
+            layer.ShadowPath = UIBezierPath.FromRoundedRect(bounds, cornerRadius).CGPath;
+        }
+
+        /// <summary>
+        /// source: https://medium.com/material-design-for-ios/part-1-elevation-e48ff795c693
+        /// </summary>
+        private void DrawElevation(CALayer layer, int elevation, CGRect bounds, nfloat cornerRadius)
+        {
+            layer.CornerRadius = cornerRadius;
+            layer.ShadowRadius = elevation;
+            layer.ShadowColor = UIColor.Black.CGColor;
+            layer.ShadowOpacity = 0.24f;
+            layer.ShadowOffset = new CGSize(0, elevation);
+            layer.ShadowPath = UIBezierPath.FromRoundedRect(bounds, cornerRadius).CGPath;
+
+            layer.MasksToBounds = false;
         }
     }
 }
