@@ -57,6 +57,12 @@
     <!--NuGet that bring in good stuff -->
     <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
 
+    <Compile Include="Platforms\Android\PancakeDrawable.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Include="Platforms\Android\RoundedCornerOutlineProvider.cs">
+      <SubType></SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
