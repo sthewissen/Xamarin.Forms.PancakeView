@@ -10,7 +10,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         
         public MainPageModel()
         {
-            OpenDebugModeCommand = new Command(async (x) => await CoreMethods.PushPageModel<DebugPageModel>(true, true));
+            OpenDebugModeCommand = new Command(async (x) => await CoreMethods.PushPageModel<RegularPolygonPageModel>(true, true));
         }
     }
 }
