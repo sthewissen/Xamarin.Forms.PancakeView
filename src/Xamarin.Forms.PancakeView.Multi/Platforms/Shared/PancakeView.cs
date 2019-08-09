@@ -28,7 +28,6 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
         public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops), typeof(IEnumerable<GradientStop>), typeof(PancakeView), defaultValue: default(IEnumerable<GradientStop>));
 
-        public static readonly BindableProperty IsRegularProperty = BindableProperty.Create(nameof(IsRegular), typeof(bool), typeof(PancakeView), default(bool));
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
         public int Sides
@@ -125,12 +124,6 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (BorderDrawingStyle)GetValue(BorderDrawingStyleProperty); }
             set { SetValue(BorderDrawingStyleProperty, value); }
-        }
-
-        public bool IsRegular
-        {
-            get { return (bool)GetValue(IsRegularProperty); }
-            set { SetValue(IsRegularProperty, value); }
         }
 
         public double OffsetAngle
