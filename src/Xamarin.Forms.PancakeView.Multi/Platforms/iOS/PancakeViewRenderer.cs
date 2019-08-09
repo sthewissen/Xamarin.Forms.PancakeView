@@ -169,6 +169,10 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         private void DrawBackground()
         {
+            // remove previous background layer if any
+            var prevBackgroundLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == "backgroundLayer");
+            prevBackgroundLayer?.RemoveFromSuperLayer();
+
             var pancake = Element as PancakeView;
             var layerName = "backgroundLayer";
 
@@ -246,6 +250,10 @@ namespace Xamarin.Forms.PancakeView.iOS
             // remove previous background layer if any
             var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
+
+            // remove previous broder
+            var prevBorder = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == "borderLayer");
+            prevBorder?.RemoveFromSuperLayer();
 
             if (pancake.BorderThickness > 0)
             {
@@ -438,6 +446,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             // If there is already a layer with the given name, remove it before inserting.
             if (viewToAddTo.Layer.Sublayers != null && layer != null)
             {
+                // There's no background layer yet, insert it.
                 if (position > -1)
                     viewToAddTo.Layer.InsertSublayer(layer, position);
                 else
