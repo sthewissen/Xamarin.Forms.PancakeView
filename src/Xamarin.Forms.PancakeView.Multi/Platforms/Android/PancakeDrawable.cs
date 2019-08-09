@@ -103,7 +103,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             {
                 var path = new Path();
 
-                if (_pancake.IsRegular)
+                if (_pancake.Sides != 4)
                 {
                     path = PolygonUtils.GetPolygonCornerPath(width, height, _pancake.Sides, _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
                 }
@@ -172,7 +172,6 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
-                e.PropertyName == PancakeView.IsRegularProperty.PropertyName ||
                 e.PropertyName == PancakeView.SidesProperty.PropertyName ||
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)
             {
