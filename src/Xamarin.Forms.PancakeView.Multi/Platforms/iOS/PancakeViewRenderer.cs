@@ -70,11 +70,22 @@ namespace Xamarin.Forms.PancakeView.iOS
                 SetBackgroundColor(Element.BackgroundColor);
             else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
                 SetCornerRadius();
+            else if ((e.PropertyName == PancakeView.BorderColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName))
+                DrawBorder();
             else if ((e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName))
+                    (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.ElevationProperty.PropertyName))
                 SetNeedsDisplay();
         }
 
@@ -185,7 +196,8 @@ namespace Xamarin.Forms.PancakeView.iOS
                     Frame = Bounds,
                     Path = cornerPath.CGPath,
                     MasksToBounds = true,
-                    FillColor = _colorToRender.CGColor
+                    FillColor = _colorToRender.CGColor,
+                    Name = "backgroundLayer"
                 };
 
                 AddOrRemoveLayer(shapeLayer, 0, _actualView);
@@ -195,6 +207,10 @@ namespace Xamarin.Forms.PancakeView.iOS
         private void DrawBorder()
         {
             var pancake = Element as PancakeView;
+
+            // remove previous broder
+            var prevBorder = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == "borderLayer");
+            prevBorder?.RemoveFromSuperLayer();
 
             if (pancake.BorderThickness > 0)
             {
@@ -234,7 +250,6 @@ namespace Xamarin.Forms.PancakeView.iOS
                 {
                     var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle);
                     gradientLayer.Mask = borderLayer;
-                    gradientLayer.Name = "borderLayer";
 
                     if (pancake.BorderGradientStops != null)
                     {
@@ -335,7 +350,8 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 Frame = Bounds,
                 StartPoint = new CGPoint(1 - a, b),
-                EndPoint = new CGPoint(1 - c, d)
+                EndPoint = new CGPoint(1 - c, d),
+                Name = "gradientLayer"
             };
         }
 
@@ -367,6 +383,10 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         public void AddOrRemoveLayer(CALayer layer, int position, UIView viewToAddTo)
         {
+            // removing the gradient/border layer
+            var prevLayer = viewToAddTo.Layer.Sublayers?.FirstOrDefault(x => x.Name == "gradientLayer" || x.Name == "backgroundLayer");
+            prevLayer?.RemoveFromSuperLayer();
+
             // If there is already a background layer, remove it before inserting.
             if (viewToAddTo.Layer.Sublayers == null || (viewToAddTo.Layer.Sublayers != null && !viewToAddTo.Layer.Sublayers.Any(x => x.GetType() == layer.GetType())))
             {
@@ -381,8 +401,8 @@ namespace Xamarin.Forms.PancakeView.iOS
                 // Remove the current background layer and insert it again.
                 var gradLayer = viewToAddTo.Layer.Sublayers.FirstOrDefault(x => x.GetType() == layer.GetType());
 
-                if (gradLayer != null)
-                    gradLayer.RemoveFromSuperLayer();
+                // if (gradLayer != null)
+                //    gradLayer.RemoveFromSuperLayer();
 
                 if (position > -1)
                     viewToAddTo.Layer.InsertSublayer(layer, position);
