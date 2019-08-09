@@ -98,50 +98,104 @@
     <AndroidResource Include="Resources\drawable-hdpi\pancake.png" />
     <AndroidResource Include="Resources\drawable-mdpi\pancake.png" />
     <AndroidResource Include="Resources\drawable-ldpi\pancake.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\unicorn.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\unicorn.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\unicorn.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\unicorn.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\unicorn.png" />
-    <AndroidResource Include="Resources\drawable-ldpi\unicorn.png" />
     <AndroidResource Include="Resources\mipmap-hdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-xhdpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-hdpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-mdpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-ldpi\monkey.jpg" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-xhdpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-hdpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-mdpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-ldpi\gc.jpg" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pancakes1.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-xxhdpi\pancakes1.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-xhdpi\pancakes1.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-hdpi\pancakes1.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-mdpi\pancakes1.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-ldpi\monkey.png">
+    <AndroidResource Include="Resources\drawable-ldpi\pancakes1.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-ldpi\pancakes2.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-ldpi\pancakes3.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pancakes4.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pancakes4.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pancakes4.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pancakes4.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pancakes4.jpg">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-ldpi\pancakes4.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

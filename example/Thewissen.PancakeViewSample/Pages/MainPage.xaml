@@ -25,7 +25,7 @@
             <Label Margin="0,32,0,0" Text="ROUNDED CORNERS /W IMAGES" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Round each corner individually or simply round them all the same. Content is clipped." FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView BackgroundColor="Orange" BorderIsDashed="true" CornerRadius="60,0,0,60" HorizontalOptions="FillAndExpand" HeightRequest="150">
-                <Image Source="unicorn.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                <Image Source="pancakes4.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
             </yummy:PancakeView>
             <Label Margin="0,32,0,0" Text="BORDERS" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Borders follow along with your rounded corners. We also support fancy dashed borders." FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
@@ -56,7 +56,7 @@
             <Label Text="Because transparent is a color too." FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="20">
                 <Grid>
-                    <Image Source="gc.jpg" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                    <Image Source="pancakes2.jpg" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
                     <yummy:PancakeView Opacity="0.7">
                         <yummy:PancakeView.BackgroundGradientStops>
                             <x:Array Type="{x:Type yummy:GradientStop}">
@@ -71,7 +71,7 @@
             <Label Margin="0,32,0,0" Text="THE FULL MONTY" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="All together now!" FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView HasShadow="true" BorderIsDashed="true" BorderColor="OrangeRed" BorderThickness="3" BorderDrawingStyle="Outside" CornerRadius="60,0,0,60" HorizontalOptions="FillAndExpand" HeightRequest="150">
-                <Image Source="monkey.jpg" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                <Image Source="pancakes1.jpg" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
             </yummy:PancakeView>
             <Label Margin="0,32,0,0" Text="WAIT THERE'S MORE!!" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="More than circles and rectangles. Click here to find out more!" FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center">
@@ -80,7 +80,7 @@
                 </Label.GestureRecognizers>
             </Label>
             <yummy:PancakeView IsRegular="True" HasShadow="True" Sides="3" BackgroundColor="Orange" BorderIsDashed="true" CornerRadius="20" HorizontalOptions="FillAndExpand" HeightRequest="150">
-                <Image Source="unicorn.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                <Image Source="pancakes3.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
             </yummy:PancakeView>
         </StackLayout>
     </ScrollView>

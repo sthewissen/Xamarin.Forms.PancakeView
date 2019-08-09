@@ -16,6 +16,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         private bool hasShadow;
         private bool hasGradientStopsBorder;
         private bool hasGradientStopsBackground;
+        private bool hasIrregularCornerRadius;
         private bool borderIsDashed;
         private bool testClipping;
         private int elevation;
@@ -222,6 +223,15 @@ namespace Thewissen.PancakeViewSample.PageModels
             {
                 cornerRadius = value;
                 RaisePropertyChanged(nameof(CornerRadius));
+            }
+        }
+
+        public bool HasIrregularCornerRadius
+        {
+            get => hasIrregularCornerRadius; set
+            {
+                hasIrregularCornerRadius = value;
+                RaisePropertyChanged(nameof(HasIrregularCornerRadius));
             }
         }
 
