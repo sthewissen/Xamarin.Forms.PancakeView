@@ -94,7 +94,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (hasShadowOrElevation)
             {
-                if (!pancake.IsRegular || (pancake.IsRegular && pancake.CornerRadius.TopLeft == 0))
+                if (pancake.Sides == 4 || (pancake.Sides != 4 && pancake.CornerRadius.TopLeft == 0))
                 {
                     // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
                     this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
@@ -125,8 +125,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
                 e.PropertyName == PancakeView.SidesProperty.PropertyName ||
-                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.IsRegularProperty.PropertyName)
+                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)
             {
                 Validate(Element as PancakeView);
 
@@ -161,7 +160,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             SetClipChildren(true);
 
             //Create path to clip the child
-            if (control.IsRegular)
+            if (control.Sides != 4)
             {
                 using (var path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
                 {
@@ -222,7 +221,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                                         control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
             {
                 Path path = null;
-                if (control.IsRegular)
+                if (control.Sides != 4)
                 {
                     path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
                 }
