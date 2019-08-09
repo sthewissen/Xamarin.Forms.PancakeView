@@ -169,7 +169,7 @@
                     <Label Grid.Row="15" Text="OffsetAngle" VerticalOptions="Center" />    
                     <StackLayout Grid.Row="15" Grid.Column="1" Spacing="16" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
                         <Label FontSize="12" Text="{Binding OffsetAngle}" VerticalOptions="Center" />       
-                        <Slider Maximum="20" Minimum="0" Value="{Binding OffsetAngle}" ThumbImageSource="monkey.png" MinimumTrackColor="{Binding RandomColor}" VerticalOptions="Center" />
+                        <Slider Maximum="360" Minimum="0" Value="{Binding OffsetAngle}" ThumbImageSource="monkey.png" MinimumTrackColor="{Binding RandomColor}" VerticalOptions="Center" />
                     </StackLayout>
                 </Grid>
                 

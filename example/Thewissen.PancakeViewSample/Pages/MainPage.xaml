@@ -79,7 +79,7 @@
                     <TapGestureRecognizer Command="{Binding OpenPolygonMoreCommand}" />
                 </Label.GestureRecognizers>
             </Label>
-            <yummy:PancakeView IsRegular="True" HasShadow="True" Sides="3" BackgroundColor="Orange" BorderIsDashed="true" CornerRadius="20" HorizontalOptions="FillAndExpand" HeightRequest="150">
+            <yummy:PancakeView HasShadow="True" Sides="3" BackgroundColor="Orange" BorderIsDashed="true" CornerRadius="20" HorizontalOptions="FillAndExpand" HeightRequest="150">
                 <Image Source="pancakes3.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
             </yummy:PancakeView>
         </StackLayout>

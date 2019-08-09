@@ -142,6 +142,9 @@
     <ImageAsset Include="Assets.xcassets\pancakes4.imageset\Contents.json">
       <Visible>False</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
