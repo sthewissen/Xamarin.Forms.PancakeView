@@ -87,6 +87,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                     this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
                     this.ClipToOutline = true;
                 }
+                else
+                {
+                    this.OutlineProvider = null;
+                    this.ClipToOutline = false;
+                }
             }
         }
 
@@ -116,7 +121,9 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         void UpdateBackground()
         {
-            this.SetBackground(new PancakeDrawable(Element as PancakeView, Context.ToPixels));
+            var pancake = Element as PancakeView;
+            this.SetBackground(new PancakeDrawable(pancake, Context.ToPixels));
+            SetupShadow(pancake);
         }
 
         protected override void Dispose(bool disposing)
