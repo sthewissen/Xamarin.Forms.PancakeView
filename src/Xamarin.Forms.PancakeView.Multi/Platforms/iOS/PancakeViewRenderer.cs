@@ -150,6 +150,10 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         private void DrawBackground()
         {
+            // remove previous background layer if any
+            var prevBackgroundLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == "backgroundLayer");
+            prevBackgroundLayer?.RemoveFromSuperLayer();
+
             var pancake = Element as PancakeView;
             var cornerPath = new UIBezierPath();
 
@@ -172,6 +176,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 // Create a gradient layer that draws our background.
                 var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle);
+                gradientLayer.Name = "backgroundLayer";
 
                 if (pancake.BackgroundGradientStops != null)
                 {
@@ -250,6 +255,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 {
                     var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle);
                     gradientLayer.Mask = borderLayer;
+                    gradientLayer.Name = "borderLayer";
 
                     if (pancake.BorderGradientStops != null)
                     {
@@ -350,8 +356,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 Frame = Bounds,
                 StartPoint = new CGPoint(1 - a, b),
-                EndPoint = new CGPoint(1 - c, d),
-                Name = "gradientLayer"
+                EndPoint = new CGPoint(1 - c, d)
             };
         }
 
@@ -383,10 +388,6 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         public void AddOrRemoveLayer(CALayer layer, int position, UIView viewToAddTo)
         {
-            // removing the gradient/border layer
-            var prevLayer = viewToAddTo.Layer.Sublayers?.FirstOrDefault(x => x.Name == "gradientLayer" || x.Name == "backgroundLayer");
-            prevLayer?.RemoveFromSuperLayer();
-
             // If there is already a background layer, remove it before inserting.
             if (viewToAddTo.Layer.Sublayers == null || (viewToAddTo.Layer.Sublayers != null && !viewToAddTo.Layer.Sublayers.Any(x => x.GetType() == layer.GetType())))
             {
@@ -398,12 +399,6 @@ namespace Xamarin.Forms.PancakeView.iOS
             }
             else
             {
-                // Remove the current background layer and insert it again.
-                var gradLayer = viewToAddTo.Layer.Sublayers.FirstOrDefault(x => x.GetType() == layer.GetType());
-
-                // if (gradLayer != null)
-                //    gradLayer.RemoveFromSuperLayer();
-
                 if (position > -1)
                     viewToAddTo.Layer.InsertSublayer(layer, position);
                 else
