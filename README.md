@@ -9,6 +9,8 @@ An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows
 
 In a lot of Xamarin.Forms UI work I do I have the need for a layout/view that I can use that supports gradients, borders, rounded corners and shadows. Since none of the existing Xamarin.Forms controls fit the bill I decided to roll my own. And why is it called a ```PancakeView``` you ask? Well, pancakes are also round, have shadows and have a glorious gradient color. What better fit can you think of?
 
+<img src="https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/pancake.gif" width="400px" />
+
 ## How to use it?
 
 The project is up on NuGet at the following URL:
@@ -52,7 +54,3 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 | `CornerRadius` | A `CornerRadius` object representing each individual corner's radius. | Uses the `CornerRadius` struct allowing you to specify individual corners. This does have some drawbacks. |
 | `HasShadow` | Whether or not to draw a shadow beneath the control. | For this to work we need to clip the view. This means that individual corner radii will be lost. In this case the `TopLeft` value will be used for all corners. |
 | `Elevation` | The Material Design elevation desired. | For this to work we need to clip the view. This means that individual corner radii will be lost. In this case the `TopLeft` value will be used for all corners. |
-
-## Example
-
-<img src="https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/pancake.gif" width="400px" />
