@@ -81,9 +81,12 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (hasShadowOrElevation)
             {
-                // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
-                this.OutlineProvider = new RoundedCornerOutlineProvider(Context.ToPixels(pancake.CornerRadius.TopLeft), (int)Context.ToPixels(pancake.BorderThickness));
-                this.ClipToOutline = true;
+                if (!pancake.IsRegular || (pancake.IsRegular && pancake.CornerRadius.TopLeft == 0))
+                {
+                    // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
+                    this.ClipToOutline = true;
+                }
             }
         }
 
@@ -102,7 +105,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
+                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
+                e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.IsRegularProperty.PropertyName)
             {
                 UpdateBackground();
             }
@@ -132,13 +138,24 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             SetClipChildren(true);
 
-            //Create path to clip the child         
-            using (var path = new Path())
+            //Create path to clip the child
+            if (control.IsRegular)
             {
-                path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
+                using (var path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                {
+                    canvas.Save();
+                    canvas.ClipPath(path);
+                }
+            }
+            else
+            {
+                using (var path = new Path())
+                {
+                    path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
 
-                canvas.Save();
-                canvas.ClipPath(path);
+                    canvas.Save();
+                    canvas.ClipPath(path);
+                }
             }
 
             // Draw the child first so that the border shows up above it.        
@@ -175,16 +192,23 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             // TODO: This doesn't look entirely right yet when using it with rounded corners.
             using (var paint = new Paint { AntiAlias = true })
-            using (var path = new Path())
             using (Path.Direction direction = Path.Direction.Cw)
             using (Paint.Style style = Paint.Style.Stroke)
-
             using (var rect = new RectF(control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
                                         control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
                                         control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
                                         control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
             {
-                path.AddRoundRect(rect, GetRadii(control), direction);
+                Path path = null;
+                if (control.IsRegular)
+                {
+                    path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
+                }
+                else
+                {
+                    path = new Path();
+                    path.AddRoundRect(rect, GetRadii(control), direction);
+                }
 
                 if (control.BorderIsDashed)
                 {
