@@ -115,6 +115,12 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

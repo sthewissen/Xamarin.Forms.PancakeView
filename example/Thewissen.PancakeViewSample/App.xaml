@@ -12,13 +12,17 @@
               <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
             </OnPlatform>
             <x:Array x:Key="Rainbow" Type="{x:Type yummy:GradientStop}">
-                <yummy:GradientStop Color="Red" Offset="0" />
-                <yummy:GradientStop Color="Orange" Offset="0.2" />
-                <yummy:GradientStop Color="Yellow" Offset="0.4" />
-                <yummy:GradientStop Color="Green" Offset="0.6" />
-                <yummy:GradientStop Color="Blue" Offset="0.8" />
-                <yummy:GradientStop Color="Purple" Offset="1" />
+                <yummy:GradientStop Color="#f3855b" Offset="0" />
+                <yummy:GradientStop Color="#fbcf93" Offset="0.2" />
+                <yummy:GradientStop Color="#fbe960" Offset="0.4" />
+                <yummy:GradientStop Color="#a0e67a" Offset="0.6" />
+                <yummy:GradientStop Color="#33c6ee" Offset="0.8" />
+                <yummy:GradientStop Color="#c652ba" Offset="1" />
             </x:Array>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

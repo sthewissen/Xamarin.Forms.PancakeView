@@ -67,18 +67,33 @@ namespace Xamarin.Forms.PancakeView.iOS
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
                 SetBackgroundColor(Element.BackgroundColor);
+            }
             else if (e.PropertyName == BoxView.CornerRadiusProperty.PropertyName)
+            {
                 SetCornerRadius();
-            else if ((e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
+            }
+            else if ((e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
+                    (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.IsRegularProperty.PropertyName))
+            {
                 SetNeedsDisplay();
+            }
         }
 
         private void Validate(PancakeView pancake)
@@ -145,6 +160,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             var pancake = Element as PancakeView;
 
             UIBezierPath cornerPath = null;
+
             if (pancake.IsRegular)
             {
                 cornerPath = GetPolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
