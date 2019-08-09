@@ -50,14 +50,27 @@ namespace Xamarin.Forms.PancakeView.Droid
                     pancake.Content = new Grid();
                 }
 
-                // Angle needs to be between 0-360.
-                if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
-                    throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
+                Validate(pancake);
 
                 UpdateBackground();
 
                 SetupShadow(pancake);
             }
+        }
+
+        private void Validate(PancakeView pancake)
+        {
+            // Angle needs to be between 0-360.
+            if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
+                throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
+
+            if (pancake.OffsetAngle < 0 || pancake.OffsetAngle > 360)
+                throw new ArgumentException("Please provide a valid offset angle.", nameof(Controls.PancakeView.OffsetAngle));
+
+            // min value for sides is 3
+            if (pancake.Sides < 3)
+                throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
+
         }
 
         private void SetupShadow(PancakeView pancake)
@@ -115,6 +128,8 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.IsRegularProperty.PropertyName)
             {
+                Validate(Element as PancakeView);
+
                 UpdateBackground();
             }
         }
