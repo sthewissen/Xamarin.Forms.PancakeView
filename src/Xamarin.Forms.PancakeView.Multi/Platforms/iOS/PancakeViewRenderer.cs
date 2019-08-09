@@ -66,6 +66,8 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             base.OnElementPropertyChanged(sender, e);
 
+            Validate(Element as PancakeView);
+
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
                 SetBackgroundColor(Element.BackgroundColor);
@@ -74,24 +76,27 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 SetCornerRadius();
             }
+            else if ((e.PropertyName == PancakeView.BorderColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName))
+            {
+                DrawBorder();
+            }
             else if ((e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.SidesProperty.PropertyName))
             {
-                Validate(Element as PancakeView);
                 SetNeedsDisplay();
             }
         }
@@ -167,11 +172,15 @@ namespace Xamarin.Forms.PancakeView.iOS
             var pancake = Element as PancakeView;
             var layerName = "backgroundLayer";
 
+            // remove previous background layer if any
+            var prevBackgroundLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
+            prevBackgroundLayer?.RemoveFromSuperLayer();
+
             UIBezierPath cornerPath = null;
 
             if (pancake.Sides != 4)
             {
-                cornerPath = GetPolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
+                cornerPath = ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
             }
             else
             {
@@ -195,7 +204,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) || (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
             {
                 // Create a gradient layer that draws our background.
-                var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle);
+                var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle, Bounds);
                 gradientLayer.Name = layerName;
 
                 if (pancake.BackgroundGradientStops != null)
@@ -211,7 +220,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                     gradientLayer.Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() };
                 }
 
-                AddOrUpdateLayer(gradientLayer, 0, _actualView, layerName);
+                AddLayer(gradientLayer, 0, _actualView);
             }
             else
             {
@@ -225,7 +234,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                     Name = layerName
                 };
 
-                AddOrUpdateLayer(shapeLayer, 0, _actualView, layerName);
+                AddLayer(shapeLayer, 0, _actualView);
             }
         }
 
@@ -233,6 +242,10 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             var pancake = Element as PancakeView;
             var layerName = "borderLayer";
+
+            // remove previous background layer if any
+            var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
+            prevBorderLayer?.RemoveFromSuperLayer();
 
             if (pancake.BorderThickness > 0)
             {
@@ -244,29 +257,22 @@ namespace Xamarin.Forms.PancakeView.iOS
                     Name = layerName
                 };
 
-                var frameBounds = Bounds;
-                var insetBounds = pancake.BorderDrawingStyle == BorderDrawingStyle.Outside ?
-                    Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) :
-                    Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2);
+                // TODO: Figure out how BorderDrawingStyle will have to work...
+                //var frameBounds = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
+                //var insetBounds = pancake.BorderDrawingStyle == BorderDrawingStyle.Outside ?
+                //    Bounds.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2)) :
+                //    Bounds.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2);
 
                 // Create arcs for the given corner radius.
                 bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
 
-                if (!hasShadowOrElevation)
-                {
-                    borderLayer.Path = pancake.Sides != 4 ?
-                        GetPolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
-                        CreateCornerPath(pancake.CornerRadius.TopLeft, pancake.CornerRadius.TopRight, pancake.CornerRadius.BottomRight, pancake.CornerRadius.BottomLeft, insetBounds);
-                }
-                else
-                {
-                    borderLayer.Path = pancake.Sides != 4 ?
-                        GetPolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
-                        CreateCornerPath(pancake.CornerRadius.TopLeft, pancake.CornerRadius.TopLeft, pancake.CornerRadius.TopLeft, pancake.CornerRadius.TopLeft, insetBounds);
-                }
+                borderLayer.Path = pancake.Sides != 4 ?
+                    ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
+                    ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius).CGPath; // insetBounds?
 
-                borderLayer.Frame = frameBounds;
-                borderLayer.Position = new CGPoint(frameBounds.Width / 2, frameBounds.Height / 2);
+                borderLayer.StrokeColor = UIColor.Black.CGColor;
+                borderLayer.Frame = borderLayer.Path.BoundingBox;
+                borderLayer.Position = new CGPoint(borderLayer.Path.BoundingBox.Width / 2, borderLayer.Path.BoundingBox.Height / 2);
 
                 // Dash pattern for the border.
                 if (pancake.BorderIsDashed)
@@ -276,7 +282,7 @@ namespace Xamarin.Forms.PancakeView.iOS
 
                 if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
                 {
-                    var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle);
+                    var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, borderLayer.Path.BoundingBox);
                     gradientLayer.Mask = borderLayer;
                     gradientLayer.Name = "borderLayer";
 
@@ -293,11 +299,11 @@ namespace Xamarin.Forms.PancakeView.iOS
                         gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
                     }
 
-                    AddOrUpdateLayer(gradientLayer, -1, _wrapperView, layerName);
+                    AddLayer(gradientLayer, -1, _wrapperView);
                 }
                 else
                 {
-                    AddOrUpdateLayer(borderLayer, -1, _wrapperView, layerName);
+                    AddLayer(borderLayer, -1, _wrapperView);
                 }
             }
         }
@@ -351,7 +357,7 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (pancake.Sides != 4)
             {
-                layer.ShadowPath = GetPolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
+                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
             }
             else
             {
@@ -372,7 +378,7 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (pancake.Sides != 4)
             {
-                layer.ShadowPath = GetPolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
+                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
             }
             else
             {
@@ -382,10 +388,8 @@ namespace Xamarin.Forms.PancakeView.iOS
             layer.MasksToBounds = false;
         }
 
-        private CAGradientLayer CreateGradientLayer(int angle)
+        private CAGradientLayer CreateGradientLayer(int angle, CGRect rect)
         {
-            var pancake = Element as PancakeView;
-
             var totalAngle = angle / 360.0;
 
             // Calculate the new positions based on angle between 0-360.
@@ -397,7 +401,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             // Create a gradient layer that draws our background.
             return new CAGradientLayer
             {
-                Frame = pancake.Sides != 4 ? GetPolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath.PathBoundingBox : Bounds,
+                Frame = rect,
                 StartPoint = new CGPoint(1 - a, b),
                 EndPoint = new CGPoint(1 - c, d)
             };
@@ -429,81 +433,16 @@ namespace Xamarin.Forms.PancakeView.iOS
             return cornerPath;
         }
 
-        public void AddOrUpdateLayer(CALayer layer, int position, UIView viewToAddTo, string layerToRemove)
+        public void AddLayer(CALayer layer, int position, UIView viewToAddTo)
         {
             // If there is already a layer with the given name, remove it before inserting.
-            if (viewToAddTo.Layer.Sublayers != null)
+            if (viewToAddTo.Layer.Sublayers != null && layer != null)
             {
-                var existingLayer = viewToAddTo.Layer.Sublayers.FirstOrDefault(x => x.Name == layerToRemove);
-
-                if (existingLayer != null)
-                    existingLayer.RemoveFromSuperLayer();
+                if (position > -1)
+                    viewToAddTo.Layer.InsertSublayer(layer, position);
+                else
+                    viewToAddTo.Layer.AddSublayer(layer);
             }
-
-            if (position > -1)
-                viewToAddTo.Layer.InsertSublayer(layer, position);
-            else
-                viewToAddTo.Layer.AddSublayer(layer);
-        }
-
-        private static UIBezierPath GetPolygonPath(CGRect rect, int sides, double cornerRadius = 0.0, double rotationOffset = 0.0)
-        {
-            var offsetRadians = rotationOffset * Math.PI / 180;
-            var path = new UIBezierPath();
-            var theta = 2 * Math.PI / sides;
-
-            var width = (-cornerRadius + Math.Min(rect.Size.Width, rect.Size.Height)) / 2;
-            var center = new CGPoint(rect.Width / 2, rect.Height / 2);
-
-            var radius = width + cornerRadius - (Math.Cos(theta) * cornerRadius) / 2;
-
-            var angle = offsetRadians;
-            var corner = new CGPoint(center.X + (radius - cornerRadius) * Math.Cos(angle), center.Y + (radius - cornerRadius) * Math.Sin(angle));
-            path.MoveTo(new CGPoint(corner.X + cornerRadius * Math.Cos(angle + theta), corner.Y + cornerRadius * Math.Sin(angle + theta)));
-
-            for (var i = 0; i < sides; i++)
-            {
-                angle += theta;
-                corner = new CGPoint(center.X + (radius - cornerRadius) * Math.Cos(angle), center.Y + (radius - cornerRadius) * Math.Sin(angle));
-                var tip = new CGPoint(center.X + radius * Math.Cos(angle), center.Y + radius * Math.Sin(angle));
-                var start = new CGPoint(corner.X + cornerRadius * Math.Cos(angle - theta), corner.Y + cornerRadius * Math.Sin(angle - theta));
-                var end = new CGPoint(corner.X + cornerRadius * Math.Cos(angle + theta), corner.Y + cornerRadius * Math.Sin(angle + theta));
-
-                path.AddLineTo(start);
-                path.AddQuadCurveToPoint(end, tip);
-            }
-            path.ClosePath();
-            return path;
-        }
-
-        private static UIBezierPath GetPolygonCornerPath(CGRect rect, int sides, double cornerRadius = 0.0, double rotationOffset = 0.0)
-        {
-            var offsetRadians = rotationOffset * Math.PI / 180;
-            var path = new UIBezierPath();
-            var theta = 2 * Math.PI / sides;
-
-            var width = (-cornerRadius + Math.Min(rect.Size.Width, rect.Size.Height)) / 2;
-            var center = new CGPoint(rect.Width / 2, rect.Height / 2);
-
-            var radius = width + cornerRadius - (Math.Cos(theta) * cornerRadius) / 2;
-
-            var angle = offsetRadians;
-            var corner = new CGPoint(center.X + (radius - cornerRadius) * Math.Cos(angle), center.Y + (radius - cornerRadius) * Math.Sin(angle));
-            path.MoveTo(new CGPoint(corner.X + cornerRadius * Math.Cos(angle + theta), corner.Y + cornerRadius * Math.Sin(angle + theta)));
-
-            for (var i = 0; i < sides; i++)
-            {
-                angle += theta;
-                corner = new CGPoint(center.X + (radius - cornerRadius) * Math.Cos(angle), center.Y + (radius - cornerRadius) * Math.Sin(angle));
-                var tip = new CGPoint(center.X + radius * Math.Cos(angle), center.Y + radius * Math.Sin(angle));
-                var start = new CGPoint(corner.X + cornerRadius * Math.Cos(angle - theta), corner.Y + cornerRadius * Math.Sin(angle - theta));
-                var end = new CGPoint(corner.X + cornerRadius * Math.Cos(angle + theta), corner.Y + cornerRadius * Math.Sin(angle + theta));
-
-                path.AddLineTo(start);
-                path.AddQuadCurveToPoint(end, tip);
-            }
-            path.ClosePath();
-            return path;
         }
     }
 }
