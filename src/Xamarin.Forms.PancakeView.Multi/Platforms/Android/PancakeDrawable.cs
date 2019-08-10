@@ -169,9 +169,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                 e.PropertyName == PancakeView.SidesProperty.PropertyName ||
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)
             {

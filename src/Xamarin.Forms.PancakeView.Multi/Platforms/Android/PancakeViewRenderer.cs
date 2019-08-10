@@ -52,7 +52,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 Validate(pancake);
 
-                UpdateBackground();
+                this.SetBackground(new PancakeDrawable(pancake, Context.ToPixels));
 
                 SetupShadow(pancake);
             }
@@ -75,6 +75,10 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         private void SetupShadow(PancakeView pancake)
         {
+            // clear previous shadow/elevation
+            this.Elevation = 0;
+            this.TranslationZ = 0;
+
             bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
 
             // If it has a shadow, give it a default Droid looking shadow.
@@ -110,34 +114,31 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            var pancake = Element as PancakeView;
+            Validate(pancake);
+
             base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
+            if (e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
-                e.PropertyName == PancakeView.SidesProperty.PropertyName ||
-                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)
+                e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
+                e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
             {
-                Validate(Element as PancakeView);
-
-                UpdateBackground();
+                Invalidate();
             }
-        }
 
-        void UpdateBackground()
-        {
-            var pancake = Element as PancakeView;
-            this.SetBackground(new PancakeDrawable(pancake, Context.ToPixels));
-            SetupShadow(pancake);
+            if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
+                e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
+                e.PropertyName == PancakeView.ElevationProperty.PropertyName)
+            {
+                SetupShadow(pancake);
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -151,9 +152,9 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
         }
 
-        protected override bool DrawChild(ACanvas canvas, global::Android.Views.View child, long drawingTime)
+        protected override void OnDraw(ACanvas canvas)
         {
-            if (Element == null) return false;
+            if (Element == null) return;
 
             var control = (PancakeView)Element;
 
@@ -179,13 +180,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 }
             }
 
-            // Draw the child first so that the border shows up above it.        
-            var result = base.DrawChild(canvas, child, drawingTime);
-            canvas.Restore();
-
             DrawBorder(canvas, control);
-
-            return result;
         }
 
         private float[] GetRadii(PancakeView control)
