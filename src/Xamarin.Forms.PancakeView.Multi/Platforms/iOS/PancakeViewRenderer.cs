@@ -435,9 +435,9 @@ namespace Xamarin.Forms.PancakeView.iOS
 
 		public void AddLayer(CALayer layer, int position, UIView viewToAddTo)
 		{
-			// If there is already a layer with the given name, remove it before inserting.
-			if (viewToAddTo.Layer.Sublayers != null && layer != null)
-			{
+            // If there is already a layer with the given name, remove it before inserting.
+            if (layer != null)
+            {
 				// There's no background layer yet, insert it.
 				if (position > -1)
 					viewToAddTo.Layer.InsertSublayer(layer, position);
