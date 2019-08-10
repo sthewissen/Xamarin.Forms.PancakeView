@@ -25,11 +25,13 @@ namespace Thewissen.PancakeViewSample.PageModels
         private int offsetAngle;
         private int borderGradientAngle;
         private int backgroundGradientAngle;
-        private int cornerRadius = 20;
+        private CornerRadius cornerRadius = 20;
         private int backgroundColorR;
         private int backgroundColorG;
         private int backgroundColorB;
         private int backgroundColorA = 255;
+
+        private int sliderCornerRadius = 20;
 
         public ICommand CloseDebugModeCommand { get; set; }
         public Color RandomColor => GetRandomColor();
@@ -216,7 +218,7 @@ namespace Thewissen.PancakeViewSample.PageModels
             }
         }
 
-        public int CornerRadius
+        public CornerRadius CornerRadius
         {
             get => cornerRadius;
             set
@@ -226,12 +228,32 @@ namespace Thewissen.PancakeViewSample.PageModels
             }
         }
 
+        public int SliderCornerRadius
+        {
+            get => sliderCornerRadius;
+            set
+            {
+                sliderCornerRadius = value;
+                RaisePropertyChanged(nameof(SliderCornerRadius));
+                CornerRadius = value;
+            }
+        }
+
         public bool HasIrregularCornerRadius
         {
             get => hasIrregularCornerRadius; set
             {
                 hasIrregularCornerRadius = value;
                 RaisePropertyChanged(nameof(HasIrregularCornerRadius));
+
+                if(hasIrregularCornerRadius)
+                {
+                    CornerRadius = new CornerRadius(10, 30, 10, 50);
+                }
+                else
+                {
+                    CornerRadius = SliderCornerRadius;
+                }
             }
         }
 

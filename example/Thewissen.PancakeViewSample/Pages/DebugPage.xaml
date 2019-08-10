@@ -40,9 +40,6 @@
                             <DataTrigger TargetType="custom:PancakeView" Binding="{Binding HasGradientStopsBackground}" Value="true">
                                 <Setter Property="BackgroundGradientStops" Value="{x:StaticResource Rainbow}" />
                             </DataTrigger>
-                            <DataTrigger TargetType="custom:PancakeView" Binding="{Binding HasIrregularCornerRadius}" Value="true">
-                                <Setter Property="CornerRadius" Value="10,30,10,50" />
-                            </DataTrigger>
                         </custom:PancakeView.Triggers>
                         <Image Source="pancakes2.jpg" Aspect="AspectFill"  IsVisible="{Binding TestClipping}" />
                     </custom:PancakeView>
@@ -132,8 +129,8 @@
 
                     <Label Grid.Row="9" Text="CornerRadius" VerticalOptions="Center" />    
                     <StackLayout Grid.Row="9" Grid.Column="1" Spacing="16" HorizontalOptions="EndAndExpand" Orientation="Horizontal">
-                        <Label FontSize="12" Text="{Binding CornerRadius}" VerticalOptions="Center" />       
-                        <Slider Maximum="50" Minimum="0" Value="{Binding CornerRadius}" ThumbImageSource="monkey.png" MinimumTrackColor="{Binding RandomColor}" VerticalOptions="Center" />
+                        <Label FontSize="12" Text="{Binding SliderCornerRadius}" VerticalOptions="Center" />       
+                        <Slider Maximum="50" Minimum="0" Value="{Binding SliderCornerRadius}" ThumbImageSource="monkey.png" MinimumTrackColor="{Binding RandomColor}" VerticalOptions="Center" />
                     </StackLayout>
 
                     <Label Grid.Row="10" Text="IrregularCornerRadius" VerticalOptions="Center" />    
