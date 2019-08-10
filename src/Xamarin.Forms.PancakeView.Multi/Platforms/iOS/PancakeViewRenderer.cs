@@ -273,18 +273,17 @@ namespace Xamarin.Forms.PancakeView.iOS
 
                 if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
                 {
-                    var gradientFrame = borderLayer.Frame.Inset(-(pancake.BorderThickness / 2), -(pancake.BorderThickness / 2));
+                    var gradientFrame = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
                     var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, gradientFrame);
-                    gradientLayer.Position = layerPosition;
+                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - (pancake.BorderThickness), (gradientFrame.Height / 2) - (pancake.BorderThickness));
 
                     // Create a clone from the border layer and use that one as the mask.
                     // Why? Because the mask and the border somehow can't be the same, so
                     // don't want to do adjustments to borderLayer because it would influence the border.
                     var maskLayer = new CAShapeLayer()
                     {
-                        Frame = borderLayer.Frame.Inset(pancake.BorderThickness / 2, pancake.BorderThickness / 2),
                         Path = borderLayer.Path,
-                        Position = borderLayer.Position,
+                        Position = new CGPoint(pancake.BorderThickness, pancake.BorderThickness),
                         FillColor = null,
                         LineWidth = pancake.BorderThickness,
                         StrokeColor = UIColor.Red.CGColor,
