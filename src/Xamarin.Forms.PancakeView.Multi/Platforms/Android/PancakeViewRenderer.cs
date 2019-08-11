@@ -183,6 +183,43 @@ namespace Xamarin.Forms.PancakeView.Droid
             DrawBorder(canvas, control);
         }
 
+        protected override bool DrawChild(ACanvas canvas, global::Android.Views.View child, long drawingTime)
+        {
+            if (Element == null) return false;
+
+            var control = (PancakeView)Element;
+
+            SetClipChildren(true);
+
+            //Create path to clip the child         
+            if (control.Sides != 4)
+            {
+                using (var path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                {
+                    canvas.Save();
+                    canvas.ClipPath(path);
+                }
+            }
+            else
+            {
+                using (var path = new Path())
+                {
+                    path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
+
+                    canvas.Save();
+                    canvas.ClipPath(path);
+                }
+            }
+
+            // Draw the child first so that the border shows up above it.        
+            var result = base.DrawChild(canvas, child, drawingTime);
+            canvas.Restore();
+
+            DrawBorder(canvas, control);
+
+            return result;
+        }
+
         private float[] GetRadii(PancakeView control)
         {
             float topLeft = Context.ToPixels(control.CornerRadius.TopLeft);
@@ -228,7 +265,9 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (control.BorderIsDashed)
                 {
-                    paint.SetPathEffect(new DashPathEffect(new float[] { 10, 20 }, 0));
+                    // dashes merge when thickness is increased
+                    // off-distance should be scaled according to thickness
+                    paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * control.BorderThickness }, 0));
                 }
 
                 if ((control.BorderGradientStartColor != default(Color) && control.BorderGradientEndColor != default(Color)) || (control.BorderGradientStops != null && control.BorderGradientStops.Any()))
