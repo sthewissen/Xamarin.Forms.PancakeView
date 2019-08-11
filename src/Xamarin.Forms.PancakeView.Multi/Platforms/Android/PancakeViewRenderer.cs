@@ -18,6 +18,7 @@ namespace Xamarin.Forms.PancakeView.Droid
     public class PancakeViewRenderer : VisualElementRenderer<ContentView>
     {
         bool _disposed;
+        private PancakeDrawable _drawable;
 
         public PancakeViewRenderer(Context context) : base(context)
         {
@@ -52,7 +53,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 Validate(pancake);
 
-                this.SetBackground(new PancakeDrawable(pancake, Context.ToPixels));
+                this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
 
                 SetupShadow(pancake);
             }
@@ -125,19 +126,26 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
-                e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
+                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName)
             {
                 Invalidate();
             }
-
-            if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
-                e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.SidesProperty.PropertyName ||
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
                 e.PropertyName == PancakeView.ElevationProperty.PropertyName)
             {
                 SetupShadow(pancake);
+            }
+            else if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
+            {
+                Invalidate();
+                SetupShadow(pancake);
+            }
+            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
+                _drawable.Dispose();
+                this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
             }
         }
 
@@ -147,7 +155,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (disposing && !_disposed)
             {
-                Background.Dispose();
+                _drawable?.Dispose();
                 _disposed = true;
             }
         }
