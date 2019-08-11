@@ -203,7 +203,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                     _normalBitmap = null;
                 }
 
-                _pancake?.PropertyChanged -= PancakeViewOnPropertyChanged;
+                if (_pancake != null)
+                {
+                    _pancake.PropertyChanged -= PancakeViewOnPropertyChanged;
+                }
 
                 _isDisposed = true;
             }
