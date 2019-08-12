@@ -23,6 +23,11 @@
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
             </Style>
+            <Style TargetType="Slider">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="WidthRequest" Value="100" />
+                <Setter Property="MaximumTrackColor" Value="Gray" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
