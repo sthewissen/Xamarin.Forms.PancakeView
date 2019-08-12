@@ -247,74 +247,77 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         private void DrawBorder(ACanvas canvas, PancakeView control)
         {
-            var borderThickness = Context.ToPixels(control.BorderThickness);
-            var halfBorderThickness = borderThickness / 2;
-            bool hasShadowOrElevation = control.HasShadow || control.Elevation > 0;
-
-            // TODO: This doesn't look entirely right yet when using it with rounded corners.
-            using (var paint = new Paint { AntiAlias = true })
-            using (Path.Direction direction = Path.Direction.Cw)
-            using (Paint.Style style = Paint.Style.Stroke)
-            using (var rect = new RectF(control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
-                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
-                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
-                                        control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
+            if (control.BorderThickness > 0)
             {
-                Path path = null;
-                if (control.Sides != 4)
-                {
-                    path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
-                }
-                else
-                {
-                    path = new Path();
-                    path.AddRoundRect(rect, GetRadii(control), direction);
-                }
+                var borderThickness = Context.ToPixels(control.BorderThickness);
+                var halfBorderThickness = borderThickness / 2;
+                bool hasShadowOrElevation = control.HasShadow || control.Elevation > 0;
 
-                if (control.BorderIsDashed)
+                // TODO: This doesn't look entirely right yet when using it with rounded corners.
+                using (var paint = new Paint { AntiAlias = true })
+                using (Path.Direction direction = Path.Direction.Cw)
+                using (Paint.Style style = Paint.Style.Stroke)
+                using (var rect = new RectF(control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
+                                            control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
+                                            control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
+                                            control.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
                 {
-                    // dashes merge when thickness is increased
-                    // off-distance should be scaled according to thickness
-                    paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * control.BorderThickness }, 0));
-                }
-
-                if ((control.BorderGradientStartColor != default(Color) && control.BorderGradientEndColor != default(Color)) || (control.BorderGradientStops != null && control.BorderGradientStops.Any()))
-                {
-                    var angle = control.BorderGradientAngle / 360.0;
-
-                    // Calculate the new positions based on angle between 0-360.
-                    var a = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
-                    var b = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
-                    var c = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
-                    var d = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
-
-                    if (control.BorderGradientStops != null)
+                    Path path = null;
+                    if (control.Sides != 4)
                     {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = control.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
-                        var locations = orderedStops.Select(x => x.Offset).ToArray();
-
-                        var shader = new LinearGradient(canvas.Width - (float)a, (float)b, canvas.Width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
-                        paint.SetShader(shader);
+                        path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
                     }
                     else
                     {
-                        // Only two colors provided, use that.
-                        var shader = new LinearGradient(canvas.Width - (float)a, (float)b, canvas.Width - (float)c, (float)d, control.BorderGradientStartColor.ToAndroid(), control.BorderGradientEndColor.ToAndroid(), Shader.TileMode.Clamp);
-                        paint.SetShader(shader);
+                        path = new Path();
+                        path.AddRoundRect(rect, GetRadii(control), direction);
                     }
-                }
-                else
-                {
-                    paint.Color = control.BorderColor.ToAndroid();
-                }
 
-                paint.StrokeCap = Paint.Cap.Square;
-                paint.StrokeWidth = borderThickness;
-                paint.SetStyle(style);
+                    if (control.BorderIsDashed)
+                    {
+                        // dashes merge when thickness is increased
+                        // off-distance should be scaled according to thickness
+                        paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * control.BorderThickness }, 0));
+                    }
 
-                canvas.DrawPath(path, paint);
+                    if ((control.BorderGradientStartColor != default(Color) && control.BorderGradientEndColor != default(Color)) || (control.BorderGradientStops != null && control.BorderGradientStops.Any()))
+                    {
+                        var angle = control.BorderGradientAngle / 360.0;
+
+                        // Calculate the new positions based on angle between 0-360.
+                        var a = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
+                        var b = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
+                        var c = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
+                        var d = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
+
+                        if (control.BorderGradientStops != null)
+                        {
+                            // A range of colors is given. Let's add them.
+                            var orderedStops = control.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                            var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
+                            var locations = orderedStops.Select(x => x.Offset).ToArray();
+
+                            var shader = new LinearGradient(canvas.Width - (float)a, (float)b, canvas.Width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
+                            paint.SetShader(shader);
+                        }
+                        else
+                        {
+                            // Only two colors provided, use that.
+                            var shader = new LinearGradient(canvas.Width - (float)a, (float)b, canvas.Width - (float)c, (float)d, control.BorderGradientStartColor.ToAndroid(), control.BorderGradientEndColor.ToAndroid(), Shader.TileMode.Clamp);
+                            paint.SetShader(shader);
+                        }
+                    }
+                    else
+                    {
+                        paint.Color = control.BorderColor.ToAndroid();
+                    }
+
+                    paint.StrokeCap = Paint.Cap.Square;
+                    paint.StrokeWidth = borderThickness;
+                    paint.SetStyle(style);
+
+                    canvas.DrawPath(path, paint);
+                }
             }
         }
     }
