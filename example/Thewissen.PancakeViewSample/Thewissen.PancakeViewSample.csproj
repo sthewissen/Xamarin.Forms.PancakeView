@@ -12,7 +12,6 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
     <PackageReference Include="FreshMvvm" Version="3.0.0" />
-    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />

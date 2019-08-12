@@ -115,6 +115,36 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%401x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-76x76%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-App-83.5x83.5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\pancakes1.imageset\pancakes1%403x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes1.imageset\pancakes1%402x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes1.imageset\pancakes1.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes1.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\pancakes2.imageset\pancakes2%403x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes2.imageset\pancakes2%402x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes2.imageset\pancakes2.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes2.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\pancakes3.imageset\pancakes3%403x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes3.imageset\pancakes3%402x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes3.imageset\pancakes3.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes3.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\pancakes4.imageset\pancakes4%403x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes4.imageset\pancakes4%402x.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes4.imageset\pancakes4.jpg" />
+    <ImageAsset Include="Assets.xcassets\pancakes4.imageset\Contents.json">
+      <Visible>False</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -142,15 +172,6 @@
     <BundleResource Include="Resources\pancake%403x.png" />
     <BundleResource Include="Resources\pancake%402x.png" />
     <BundleResource Include="Resources\pancake.png" />
-    <BundleResource Include="Resources\unicorn%403x.png" />
-    <BundleResource Include="Resources\unicorn%402x.png" />
-    <BundleResource Include="Resources\unicorn.png" />
-    <BundleResource Include="Resources\monkey%403x.jpg" />
-    <BundleResource Include="Resources\monkey%402x.jpg" />
-    <BundleResource Include="Resources\monkey.jpg" />
-    <BundleResource Include="Resources\gc%403x.jpg" />
-    <BundleResource Include="Resources\gc%402x.jpg" />
-    <BundleResource Include="Resources\gc.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

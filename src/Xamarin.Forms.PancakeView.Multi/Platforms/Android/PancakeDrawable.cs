@@ -98,20 +98,31 @@ namespace Xamarin.Forms.PancakeView.Droid
         void DrawBackground(ACanvas canvas, int width, int height, CornerRadius cornerRadius, bool pressed)
         {
             using (var paint = new Paint { AntiAlias = true })
-            using (var path = new Path())
             using (Path.Direction direction = Path.Direction.Cw)
             using (Paint.Style style = Paint.Style.Fill)
-            using (var rect = new RectF(0, 0, width, height))
             {
-                float topLeft = _convertToPixels(cornerRadius.TopLeft);
-                float topRight = _convertToPixels(cornerRadius.TopRight);
-                float bottomRight = _convertToPixels(cornerRadius.BottomRight);
-                float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
+                var path = new Path();
 
-                if (!_pancake.HasShadow || _pancake.Elevation > 0)
-                    path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
+                if (_pancake.Sides != 4)
+                {
+                    path = PolygonUtils.GetPolygonCornerPath(width, height, _pancake.Sides, _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
+                }
                 else
-                    path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
+                {
+
+                    using (var rect = new RectF(0, 0, width, height))
+                    {
+                        float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                        float topRight = _convertToPixels(cornerRadius.TopRight);
+                        float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                        float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
+
+                        if (!_pancake.HasShadow || _pancake.Elevation > 0)
+                            path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
+                        else
+                            path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
+                    }
+                }
 
                 if ((_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color)) || (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Any()))
                 {
@@ -158,9 +169,9 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
+                e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
+                e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+                e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)
             {
                 if (_normalBitmap == null)
                     return;
@@ -190,6 +201,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                 {
                     _normalBitmap.Dispose();
                     _normalBitmap = null;
+                }
+
+                if (_pancake != null)
+                {
+                    _pancake.PropertyChanged -= PancakeViewOnPropertyChanged;
                 }
 
                 _isDisposed = true;
