@@ -53,6 +53,14 @@ namespace Xamarin.Forms.PancakeView.iOS
                     _actualView.AddSubview(item);
                 }
 
+                if (NativeView.GestureRecognizers != null)
+                {
+                    foreach (var gesture in NativeView.GestureRecognizers)
+                    {
+                        _actualView.AddGestureRecognizer(gesture);
+                    }
+                }
+
                 _wrapperView.AddSubview(_actualView);
 
                 SetNativeControl(_wrapperView);
