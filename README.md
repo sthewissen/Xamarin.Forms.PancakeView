@@ -54,3 +54,5 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 | `CornerRadius` | A `CornerRadius` object representing each individual corner's radius. | Uses the `CornerRadius` struct allowing you to specify individual corners. This does have some drawbacks. |
 | `HasShadow` | Whether or not to draw a shadow beneath the control. | For this to work we need to clip the view. This means that individual corner radii will be lost. In this case the `TopLeft` value will be used for all corners. |
 | `Elevation` | The Material Design elevation desired. | For this to work we need to clip the view. This means that individual corner radii will be lost. In this case the `TopLeft` value will be used for all corners. |
+| `OffsetAngle` | The rotation of the `PancakeView` when `Sides` is not its default value of 4. |  |
+| `Sides` | The amount of sides to the shape. | Changes the `PancakeView` from being 4-sided to what you provide here. |
