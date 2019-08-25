@@ -3,7 +3,7 @@
 # Xamarin.Forms.PancakeView
 An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!
 
-[![Build status](https://sthewissen.visualstudio.com/PancakeView/_apis/build/status/PancakeView-Deployment-CI)](https://sthewissen.visualstudio.com/PancakeView/_build/latest?definitionId=26) ![](https://img.shields.io/nuget/vpre/Xamarin.Forms.PancakeView.svg)
+[![Build status](https://sthewissen.visualstudio.com/PancakeView/_apis/build/status/PancakeView-Deployment-CI)](https://sthewissen.visualstudio.com/PancakeView/_build/latest?definitionId=26) [![](https://img.shields.io/nuget/vpre/Xamarin.Forms.PancakeView.svg)](https://nuget.org/packages/Xamarin.Forms.PancakeView)
 
 ## Why PancakeView?
 
