@@ -2,11 +2,11 @@
 
   <PropertyGroup>
   	<TargetFrameworks>netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
-    
+
     <!--Assembly and Namespace info -->
     <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
     <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
-    
+
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
     <AssemblyVersion>1.2.0</AssemblyVersion>
     <AssemblyFileVersion>1.2.0</AssemblyFileVersion>
@@ -15,7 +15,7 @@
     <NeutralLanguage>en</NeutralLanguage>
     <LangVersion>default</LangVersion>
     <DefineConstants>$(DefineConstants);</DefineConstants>
-     
+
     <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
 
@@ -35,22 +35,23 @@
     <Authors>Steven Thewissen</Authors>
     <Copyright>Copyright 2019 Steven Thewissen</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
   </PropertyGroup>
-  
+
   <!-- Define what happens on build and release -->
    <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DebugType>pdbonly</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Compile Include="Platforms\Shared\**\*.cs" />
 
