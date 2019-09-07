@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Android.Graphics;
+using Android.Graphics.Drawables;
+using System;
 using System.ComponentModel;
 using System.Linq;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Xamarin.Forms;
-using Xamarin.Forms.PancakeView;
 using Xamarin.Forms.Platform.Android;
 using ACanvas = Android.Graphics.Canvas;
 
@@ -36,32 +34,41 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (width <= 0 || height <= 0)
             {
-                if (_normalBitmap != null)
-                {
-                    _normalBitmap.Dispose();
-                    _normalBitmap = null;
-                }
+                DisposeBitmap();
+
                 return;
             }
 
-            if (_normalBitmap == null || _normalBitmap.Height != height || _normalBitmap.Width != width)
+            try
             {
-                // If the user changes the orientation of the screen, make sure to destroy reference before
-                // reassigning a new bitmap reference.
-                if (_normalBitmap != null)
+                if (_normalBitmap == null || _normalBitmap.Height != height || _normalBitmap.Width != width)
                 {
-                    _normalBitmap.Dispose();
-                    _normalBitmap = null;
-                }
+                    // If the user changes the orientation of the screen, make sure to destroy reference before
+                    // reassigning a new bitmap reference.
+                    DisposeBitmap();
 
+                    _normalBitmap = CreateBitmap(false, width, height);
+                }
+            }
+            catch (ObjectDisposedException)
+            {
+                // This bitmap will sometimes be disposed as ListView/CollectionView scrolling or refreshing happens,
+                // so we re-create the bitmap again.
                 _normalBitmap = CreateBitmap(false, width, height);
             }
 
-            Bitmap bitmap = _normalBitmap;
-
             using (var paint = new Paint())
             {
-                canvas.DrawBitmap(bitmap, 0, 0, paint);
+                canvas.DrawBitmap(_normalBitmap, 0, 0, paint);
+            }
+        }
+
+        private void DisposeBitmap()
+        {
+            if (_normalBitmap != null)
+            {
+                _normalBitmap.Dispose();
+                _normalBitmap = null;
             }
         }
 
@@ -197,11 +204,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             if (disposing && !_isDisposed)
             {
-                if (_normalBitmap != null)
-                {
-                    _normalBitmap.Dispose();
-                    _normalBitmap = null;
-                }
+                DisposeBitmap();
 
                 if (_pancake != null)
                 {
