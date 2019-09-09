@@ -1,5 +1,3 @@
-name: 'PancakeView Deployment'
-
 pool:
   name: Hosted VS2017
   demands: msbuild
