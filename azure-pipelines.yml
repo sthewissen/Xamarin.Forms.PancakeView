@@ -1,4 +1,4 @@
-name: PancakeView Deployment
+name: 'PancakeView Deployment'
 
 pool:
   name: Hosted VS2017
