@@ -1,18 +1,17 @@
-name: 1.1$(rev:.r)
+# set the version numbering, this results in 1.0.1 for the first build incrementing that way.
+name: 1.0$(rev:.r)
 
+# the machine and prerequisites to run this build on
 pool:
   name: Hosted VS2017
   demands: msbuild
 
-# Your build pipeline references an undefined variable named ‘BuildConfiguration’. 
-# Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. 
-# See https://go.microsoft.com/fwlink/?linkid=865972
-
+# all of the steps in this build
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
+  displayName: 'Use NuGet 4.9.3'
   inputs:
-    versionSpec: 4.4.1
+    versionSpec: 4.9.3
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
@@ -37,7 +36,7 @@ steps:
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
     SourceFolder: '$(build.sourcesdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**\*.nupkg'
+    Contents: '**\*.nupkg'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
 - task: PublishBuildArtifacts@1
