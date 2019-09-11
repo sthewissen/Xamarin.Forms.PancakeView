@@ -1,6 +1,12 @@
 # Defines that a commit to the master branch should trigger this build
 trigger:
-- master
+  branches:
+    include:
+      - master 
+  paths:
+    exclude:
+      - README.md
+      - images/*
 
 # Defines that PRs against this branch should also trigger this build
 pr:
