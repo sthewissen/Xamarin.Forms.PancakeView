@@ -1,5 +1,5 @@
 # set the version numbering, this results in 1.0.1 for the first build incrementing that way.
-name: 1.0$(rev:.r)
+name: 1.2$(rev:.r)
 
 pool:
   name: Hosted VS2017
