@@ -7,6 +7,8 @@ trigger:
     exclude:
       - README.md
       - images/*
+      - ci-build-pipeline.yml
+      - cd-build-pipeline.yml
 
 # Defines that PRs against this branch should also trigger this build
 pr:
