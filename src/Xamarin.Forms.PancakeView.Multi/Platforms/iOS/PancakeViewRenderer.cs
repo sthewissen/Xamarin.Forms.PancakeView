@@ -211,7 +211,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle, Bounds);
                 gradientLayer.Name = layerName;
 
-                if (pancake.BackgroundGradientStops != null)
+                if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Count > 0)
                 {
                     // A range of colors is given. Let's add them.
                     var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
@@ -301,7 +301,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                     gradientLayer.Mask = maskLayer;
                     gradientLayer.Name = layerName;
 
-                    if (pancake.BorderGradientStops != null)
+                    if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
                     {
                         // A range of colors is given. Let's add them.
                         var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();

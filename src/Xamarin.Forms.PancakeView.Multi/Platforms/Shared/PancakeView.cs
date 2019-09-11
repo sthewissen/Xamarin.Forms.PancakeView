@@ -21,12 +21,28 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
-        public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops), typeof(IEnumerable<GradientStop>), typeof(PancakeView), defaultValue: default(IEnumerable<GradientStop>));
+
+        internal static readonly BindablePropertyKey BackgroundGradientStopsPropertyKey = BindableProperty.CreateReadOnly(nameof(BackgroundGradientStops), typeof(IList<GradientStop>), typeof(PancakeView), defaultValue: default(IList<GradientStop>),
+        defaultValueCreator: bindable =>
+        {
+            var collection = new List<GradientStop>();
+            return collection;
+        });
+
+        public static readonly BindableProperty BackgroundGradientStopsProperty = BackgroundGradientStopsPropertyKey.BindableProperty;
 
         public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
-        public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops), typeof(IEnumerable<GradientStop>), typeof(PancakeView), defaultValue: default(IEnumerable<GradientStop>));
+
+        public static readonly BindablePropertyKey BorderGradientStopsPropertyKey = BindableProperty.CreateReadOnly(nameof(BorderGradientStops), typeof(IList<GradientStop>), typeof(PancakeView), defaultValue: default(IList<GradientStop>),
+        defaultValueCreator: bindable =>
+        {
+            var collection = new List<GradientStop>();
+            return collection;
+        });
+
+        public static readonly BindableProperty BorderGradientStopsProperty = BorderGradientStopsPropertyKey.BindableProperty;
 
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
@@ -54,9 +70,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientAngleProperty, value); }
         }
 
-        public IEnumerable<GradientStop> BackgroundGradientStops
+        public IList<GradientStop> BackgroundGradientStops
         {
-            get { return (IEnumerable<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
+            get { return (IList<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
             set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
@@ -78,9 +94,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderGradientAngleProperty, value); }
         }
 
-        public IEnumerable<GradientStop> BorderGradientStops
+        public IList<GradientStop> BorderGradientStops
         {
-            get { return (IEnumerable<GradientStop>)GetValue(BorderGradientStopsProperty); }
+            get { return (IList<GradientStop>)GetValue(BorderGradientStopsProperty); }
             set { SetValue(BorderGradientStopsProperty, value); }
         }
 

@@ -141,7 +141,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                     var c = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
                     var d = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
 
-                    if (_pancake.BackgroundGradientStops != null)
+                    if (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Count > 0)
                     {
                         // A range of colors is given. Let's add them.
                         var orderedStops = _pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();

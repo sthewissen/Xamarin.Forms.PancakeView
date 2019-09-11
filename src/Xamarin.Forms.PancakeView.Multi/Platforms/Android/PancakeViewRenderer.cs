@@ -290,7 +290,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                         var c = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
                         var d = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
 
-                        if (control.BorderGradientStops != null)
+                        if (control.BorderGradientStops != null && control.BorderGradientStops.Count > 0)
                         {
                             // A range of colors is given. Let's add them.
                             var orderedStops = control.BorderGradientStops.OrderBy(x => x.Offset).ToList();
