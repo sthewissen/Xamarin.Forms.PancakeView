@@ -1,17 +1,6 @@
 # set the version numbering, this results in 1.0.1 for the first build incrementing that way.
 name: 1.2$(rev:.r)
 
-trigger:
-  branches:
-    include:
-      - master 
-  paths:
-    exclude:
-      - README.md
-      - images/*
-      - ci-build-pipeline.yml
-      - cd-build-pipeline.yml
-
 pool:
   name: Hosted VS2017
   demands: msbuild
