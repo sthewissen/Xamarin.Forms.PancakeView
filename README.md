@@ -35,7 +35,7 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 </yummy:PancakeView>
 ```
 
-### What can I do with it?
+## Property reference
 
 | Property | What it does | Extra info |
 | ------ | ------ | ------ |
