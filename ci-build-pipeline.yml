@@ -12,7 +12,7 @@ trigger:
 
 # Defines that PRs against this branch should also trigger this build
 pr:
-- master
+  - master
 
 pool:
   name: Hosted VS2017
