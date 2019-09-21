@@ -35,6 +35,28 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 </yummy:PancakeView>
 ```
 
+## Platform support
+At the time of this writing PancakeView has full support for iOS and Android, but only partial support for UWP. The matrix below shows which features are and aren't supported on UWP. Feel like implementing one of them? I'm taking PRs! ☺️
+
+| Property | iOS | Android | UWP |
+| ------ | ------ | ------ | ------ |
+| `BackgroundGradientAngle` | ✅ | ✅ | ✅ |
+| `BackgroundGradientStartColor` | ✅ | ✅ | ✅ |
+| `BackgroundGradientEndColor` | ✅ | ✅ | ✅ |
+| `BackgroundGradientStops` | ✅ | ✅ | ✅ |
+| `BorderColor` | ✅ | ✅ | ✅ |
+| `BorderGradientAngle` | ✅ | ✅ | ✅ |
+| `BorderGradientStartColor` | ✅ | ✅ | ✅ |
+| `BorderGradientEndColor` | ✅ | ✅ | ✅ |
+| `BorderGradientStops` | ✅ | ✅ | ✅ |
+| `BorderIsDashed` | ✅ | ✅ | ❌ |
+| `BorderThickness` | ✅ | ✅ | ✅ |
+| `CornerRadius` | ✅ | ✅ | ✅ |
+| `HasShadow` | ✅ | ✅ | ❌ |
+| `Elevation` | ✅ | ✅ | ❌ |
+| `OffsetAngle` | ✅ | ✅ | ❌ |
+| `Sides` | ✅ | ✅ | ❌|
+
 ## Property reference
 
 | Property | What it does | Extra info |
