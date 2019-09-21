@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage NavigationPage.HasNavigationBar="false" xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" ios:Page.UseSafeArea="true"
              xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.Pages.MainPage"
-             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView">
     <ScrollView>
         <StackLayout Spacing="0" Padding="40">
             <Label Margin="0,32,0,0" Text="Hello PancakeView!" FontFamily="{StaticResource LatoBold}" HorizontalTextAlignment="Center" HorizontalOptions="Center" FontSize="28" />
@@ -19,7 +19,7 @@
             <yummy:PancakeView BackgroundGradientAngle="45" HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="10" BackgroundGradientStops="{StaticResource Rainbow}" />
             <Label Margin="0,32,0,0" Text="ROUNDED CORNERS" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Round each corner individually or simply round them all the same. Content is clipped." FontFamily="{StaticResource LatoRegular}" FontSize="14" Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <yummy:PancakeView BackgroundColor="Purple" BorderThickness="4" CornerRadius="40,0,0,100" HorizontalOptions="FillAndExpand" HeightRequest="150">
+            <yummy:PancakeView BackgroundColor="Purple" HasShadow="true" BorderThickness="4" CornerRadius="40,0,0,100" HorizontalOptions="FillAndExpand" HeightRequest="150">
                 <Label Text="Hi, I'm a label inside this little box." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" />
             </yummy:PancakeView>
             <Label Margin="0,32,0,0" Text="ROUNDED CORNERS /W IMAGES" FontFamily="{StaticResource LatoBold}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />

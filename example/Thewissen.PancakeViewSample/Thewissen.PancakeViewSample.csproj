@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.581479" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="FreshMvvm" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -18,6 +18,14 @@
     <Folder Include="PageModels\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
+    <Compile Update="BorderDrawingStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GradientStop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PancakeView.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
