@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="FreshMvvm" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />
@@ -19,12 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Update="BorderDrawingStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="GradientStop.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="PancakeView.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

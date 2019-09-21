@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.App"
-             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView">
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     <Application.Resources>
         <ResourceDictionary>
             <OnPlatform x:TypeArguments="x:String" x:Key="LatoBold">
-              <On Platform="iOS" Value="Lato-Bold"/>
-              <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
+                <On Platform="iOS" Value="Lato-Bold"/>
+                <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
+                <On Platform="UWP" Value="/Assets/Lato-Bold.ttf#Bold"/>
             </OnPlatform>
             <OnPlatform x:TypeArguments="x:String" x:Key="LatoRegular">
-              <On Platform="iOS" Value="Lato-Regular"/>
-              <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
+                <On Platform="iOS" Value="Lato-Regular"/>
+                <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
+                <On Platform="UWP" Value="/Assets/Lato-Regular.ttf#Regular"/>
             </OnPlatform>
             <x:Array x:Key="Rainbow" Type="{x:Type yummy:GradientStop}">
                 <yummy:GradientStop Color="#f3855b" Offset="0" />
