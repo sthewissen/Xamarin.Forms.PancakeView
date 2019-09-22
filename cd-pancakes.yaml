@@ -1,0 +1,54 @@
+# set the version numbering, this results in 1.0.1 for the first build incrementing that way.
+name: 1.2$(rev:.r)
+
+trigger:
+  branches:
+    include:
+      - master 
+  paths:
+    exclude:
+      - README.md
+      - images/*
+      - ci-pancakes.yml
+      - cd-pancakes.yml
+
+pool:
+  name: Hosted VS2017
+  demands: msbuild
+
+#Your build pipeline references an undefined variable named ‘BuildConfiguration’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.9.3'
+  inputs:
+    versionSpec: 4.9.3
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: 'src\**\*.sln'
+
+- task: MSBuild@1
+  displayName: 'Build beta'
+  inputs:
+    solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+    msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber)-beta /p:PackageOutputPath=$(build.artifactstagingdirectory)/beta /p:AssemblyFileVersion=$(Build.BuildNumber)  '
+    clean: true
+
+- task: MSBuild@1
+  displayName: 'Build final'
+  inputs:
+    solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+    msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber) /p:PackageOutputPath=$(build.artifactstagingdirectory)/final /p:AssemblyFileVersion=$(Build.BuildNumber) '
+    clean: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: '**\bin\$(BuildConfiguration)\**\*.nupkg'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
