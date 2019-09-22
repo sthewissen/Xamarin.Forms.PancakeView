@@ -4,21 +4,23 @@
     <Application.Resources>
         <ResourceDictionary>
             <OnPlatform x:TypeArguments="x:String" x:Key="LatoBold">
-              <On Platform="iOS" Value="Lato-Bold"/>
-              <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
+                <On Platform="iOS" Value="Lato-Bold"/>
+                <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
+                <On Platform="UWP" Value="/Assets/Lato-Bold.ttf#Bold"/>
             </OnPlatform>
             <OnPlatform x:TypeArguments="x:String" x:Key="LatoRegular">
-              <On Platform="iOS" Value="Lato-Regular"/>
-              <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
+                <On Platform="iOS" Value="Lato-Regular"/>
+                <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
+                <On Platform="UWP" Value="/Assets/Lato-Regular.ttf#Regular"/>
             </OnPlatform>
-            <x:Array x:Key="Rainbow" Type="{x:Type yummy:GradientStop}">
+            <yummy:GradientStopCollection x:Key="Rainbow">
                 <yummy:GradientStop Color="#f3855b" Offset="0" />
                 <yummy:GradientStop Color="#fbcf93" Offset="0.2" />
                 <yummy:GradientStop Color="#fbe960" Offset="0.4" />
                 <yummy:GradientStop Color="#a0e67a" Offset="0.6" />
                 <yummy:GradientStop Color="#33c6ee" Offset="0.8" />
                 <yummy:GradientStop Color="#c652ba" Offset="1" />
-            </x:Array>
+            </yummy:GradientStopCollection>
             <Style TargetType="Label">
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />

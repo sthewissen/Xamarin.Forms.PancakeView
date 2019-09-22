@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Xamarin.Forms.PancakeView.Droid;
+// using Xamarin.Forms.PancakeView.Droid;
 
 namespace Thewissen.PancakeViewSample.Droid
 {
@@ -17,7 +17,7 @@ namespace Thewissen.PancakeViewSample.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
 
-            PancakeViewRenderer.Init();
+            // PancakeViewRenderer.Init();
         }
     }
 }

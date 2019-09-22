@@ -1,7 +1,9 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/1.6.61">
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
 
   <PropertyGroup>
-  	<TargetFrameworks>netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
+    <TargetFrameworks></TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
 
     <!--Assembly and Namespace info -->
     <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
@@ -24,7 +26,7 @@
     <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
-    <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, view</PackageTags>
+    <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
 
     <Title>PancakeView for Xamarin.Forms</Title>
     <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
@@ -55,7 +57,7 @@
     <Compile Include="Platforms\Shared\**\*.cs" />
 
     <!--NuGet that bring in good stuff -->
-    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
@@ -67,6 +69,16 @@
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
     <Compile Include="Platforms\Android\**\*.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+    <Compile Include="Platforms\UWP\**\*.cs" />
+    <!--
+    If you need to add sdk references:
+     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+    -->
   </ItemGroup>
 
    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
