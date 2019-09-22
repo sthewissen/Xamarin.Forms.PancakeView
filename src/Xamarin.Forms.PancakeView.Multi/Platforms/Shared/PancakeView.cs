@@ -63,9 +63,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientAngleProperty, value); }
         }
 
-        public IList<GradientStop> BackgroundGradientStops
+        public GradientStopCollection BackgroundGradientStops
         {
-            get { return (IList<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
+            get { return (GradientStopCollection)GetValue(BackgroundGradientStopsProperty); }
             set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
@@ -87,9 +87,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderGradientAngleProperty, value); }
         }
 
-        public IList<GradientStop> BorderGradientStops
+        public GradientStopCollection BorderGradientStops
         {
-            get { return (IList<GradientStop>)GetValue(BorderGradientStopsProperty); }
+            get { return (GradientStopCollection)GetValue(BorderGradientStopsProperty); }
             set { SetValue(BorderGradientStopsProperty, value); }
         }
 
