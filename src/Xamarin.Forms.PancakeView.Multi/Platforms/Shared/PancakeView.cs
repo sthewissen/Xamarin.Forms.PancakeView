@@ -22,27 +22,21 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
 
-        internal static readonly BindablePropertyKey BackgroundGradientStopsPropertyKey = BindableProperty.CreateReadOnly(nameof(BackgroundGradientStops), typeof(IList<GradientStop>), typeof(PancakeView), defaultValue: default(IList<GradientStop>),
+        public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops), typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
         defaultValueCreator: bindable =>
         {
-            var collection = new List<GradientStop>();
-            return collection;
+            return new GradientStopCollection();
         });
-
-        public static readonly BindableProperty BackgroundGradientStopsProperty = BackgroundGradientStopsPropertyKey.BindableProperty;
 
         public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
         public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
 
-        public static readonly BindablePropertyKey BorderGradientStopsPropertyKey = BindableProperty.CreateReadOnly(nameof(BorderGradientStops), typeof(IList<GradientStop>), typeof(PancakeView), defaultValue: default(IList<GradientStop>),
+        public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops), typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
         defaultValueCreator: bindable =>
         {
-            var collection = new List<GradientStop>();
-            return collection;
+            return new GradientStopCollection();
         });
-
-        public static readonly BindableProperty BorderGradientStopsProperty = BorderGradientStopsPropertyKey.BindableProperty;
 
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
@@ -70,9 +64,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientAngleProperty, value); }
         }
 
-        public IList<GradientStop> BackgroundGradientStops
+        public GradientStopCollection BackgroundGradientStops
         {
-            get { return (IList<GradientStop>)GetValue(BackgroundGradientStopsProperty); }
+            get { return (GradientStopCollection)GetValue(BackgroundGradientStopsProperty); }
             set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
@@ -94,9 +88,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderGradientAngleProperty, value); }
         }
 
-        public IList<GradientStop> BorderGradientStops
+        public GradientStopCollection BorderGradientStops
         {
-            get { return (IList<GradientStop>)GetValue(BorderGradientStopsProperty); }
+            get { return (GradientStopCollection)GetValue(BorderGradientStopsProperty); }
             set { SetValue(BorderGradientStopsProperty, value); }
         }
 
