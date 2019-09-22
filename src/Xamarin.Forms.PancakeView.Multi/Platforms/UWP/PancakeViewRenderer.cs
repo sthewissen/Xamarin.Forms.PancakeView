@@ -149,7 +149,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     {
                         // A range of colors is given. Let's add them.
                         var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        var gc = new GradientStopCollection();
+                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
 
                         foreach (var item in orderedStops)
                             gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
@@ -160,7 +160,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     {
                         var gs1 = new Windows.UI.Xaml.Media.GradientStop { Offset = 0, Color = pancake.BorderGradientStartColor.ToWindowsColor() };
                         var gs2 = new Windows.UI.Xaml.Media.GradientStop { Offset = 1, Color = pancake.BorderGradientEndColor.ToWindowsColor() };
-                        var gc = new GradientStopCollection { gs1, gs2 };
+                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection { gs1, gs2 };
                         this.Control.BorderBrush = new LinearGradientBrush(gc, pancake.BorderGradientAngle);
                     }
                 }
@@ -187,7 +187,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     {
                         // A range of colors is given. Let's add them.
                         var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
-                        var gc = new GradientStopCollection();
+                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
 
                         foreach (var item in orderedStops)
                             gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
@@ -198,7 +198,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     {
                         var gs1 = new Windows.UI.Xaml.Media.GradientStop { Offset = 0, Color = pancake.BackgroundGradientStartColor.ToWindowsColor() };
                         var gs2 = new Windows.UI.Xaml.Media.GradientStop { Offset = 1, Color = pancake.BackgroundGradientEndColor.ToWindowsColor() };
-                        var gc = new GradientStopCollection { gs1, gs2 };
+                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection { gs1, gs2 };
                         this.Control.Background = new LinearGradientBrush(gc, pancake.BackgroundGradientAngle);
                     }
                 }

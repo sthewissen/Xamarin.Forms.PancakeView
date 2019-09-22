@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.31">
+﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
 
   <PropertyGroup>
     <TargetFrameworks></TargetFrameworks>
@@ -57,7 +57,7 @@
     <Compile Include="Platforms\Shared\**\*.cs" />
 
     <!--NuGet that bring in good stuff -->
-    <PackageReference Include="Xamarin.Forms" Version="3.5.0.129452" />
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
