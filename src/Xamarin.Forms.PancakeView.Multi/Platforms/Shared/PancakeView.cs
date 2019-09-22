@@ -3,7 +3,6 @@ using System.ComponentModel;
 
 namespace Xamarin.Forms.PancakeView
 {
-    [DesignTimeVisible(true)]
     public class PancakeView : ContentView
     {
         #region properties

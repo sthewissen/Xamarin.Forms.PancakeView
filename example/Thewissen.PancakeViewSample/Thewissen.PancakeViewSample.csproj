@@ -12,11 +12,13 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="FreshMvvm" Version="3.0.0" />
-    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.2.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />
     <Folder Include="PageModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="BorderDrawingStyle.cs">

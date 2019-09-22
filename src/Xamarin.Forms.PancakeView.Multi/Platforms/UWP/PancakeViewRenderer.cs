@@ -21,7 +21,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
         /// </summary>
-        public static new void Init()
+        public static void Init()
         {
 #pragma warning disable 0219
             var ignore1 = typeof(PancakeViewRenderer);

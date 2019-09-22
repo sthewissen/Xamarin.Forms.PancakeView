@@ -73,9 +73,6 @@
     <PackageReference Include="Xamarin.Android.Support.Media.Compat">
       <Version>28.0.0.1</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.PancakeView">
-      <Version>1.2.1</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -292,6 +289,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
+      <Project>{73bd51e9-02a0-4562-a0a7-bb83e54500cc}</Project>
+      <Name>Xamarin.Forms.PancakeView.Multi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
       <Project>{ABE29A80-FFA3-40E7-B8C4-87D5D6B1C8C1}</Project>
       <Name>Thewissen.PancakeViewSample</Name>

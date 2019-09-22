@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks></TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;uap10.0.16299</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
 
     <!--Assembly and Namespace info -->
     <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
@@ -72,7 +72,6 @@
   </ItemGroup>
   
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.5" />
     <Compile Include="Platforms\UWP\**\*.cs" />
     <!--
     If you need to add sdk references:

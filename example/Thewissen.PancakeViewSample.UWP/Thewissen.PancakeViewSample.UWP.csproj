@@ -153,6 +153,10 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
+      <Project>{73bd51e9-02a0-4562-a0a7-bb83e54500cc}</Project>
+      <Name>Xamarin.Forms.PancakeView.Multi</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
       <Project>{abe29a80-ffa3-40e7-b8c4-87d5d6b1c8c1}</Project>
       <Name>Thewissen.PancakeViewSample</Name>
