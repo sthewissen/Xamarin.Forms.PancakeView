@@ -26,7 +26,7 @@
     <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
-    <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, view</PackageTags>
+    <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
 
     <Title>PancakeView for Xamarin.Forms</Title>
     <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
