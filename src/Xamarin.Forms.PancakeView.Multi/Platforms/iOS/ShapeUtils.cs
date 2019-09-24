@@ -10,7 +10,7 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             var path = new UIBezierPath();
 
-            path.AddLineTo(new CGPoint(rect.Width - cornerRadius.TopRight, rect.Y));
+            path.MoveTo(new CGPoint(rect.Width - cornerRadius.TopRight, rect.Y));
             path.AddArc(new CGPoint((float)rect.X + rect.Width - cornerRadius.TopRight, (float)rect.Y + cornerRadius.TopRight), (nfloat)cornerRadius.TopRight, (float)(Math.PI * 1.5), (float)Math.PI * 2, true);
             path.AddLineTo(new CGPoint(rect.Width, rect.Height - cornerRadius.BottomRight));
             path.AddArc(new CGPoint((float)rect.X + rect.Width - cornerRadius.BottomRight, (float)rect.Y + rect.Height - cornerRadius.BottomRight), (nfloat)cornerRadius.BottomRight, 0, (float)(Math.PI * .5), true);
