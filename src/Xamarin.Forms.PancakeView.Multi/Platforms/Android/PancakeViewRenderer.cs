@@ -99,17 +99,14 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (hasShadowOrElevation)
             {
-                if (pancake.Sides == 4 || (pancake.Sides != 4 && pancake.CornerRadius.TopLeft == 0))
-                {
-                    // To have shadow show up, we need to clip. However, clipping means that individual corners are lost :(
-                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
-                    this.ClipToOutline = true;
-                }
-                else
-                {
-                    this.OutlineProvider = null;
-                    this.ClipToOutline = false;
-                }
+                // To have shadow show up, we need to clip.
+                this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
+                this.ClipToOutline = true;
+            }
+            else
+            {
+                this.OutlineProvider = null;
+                this.ClipToOutline = false;
             }
         }
 
@@ -171,7 +168,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             //Create path to clip the child
             if (control.Sides != 4)
             {
-                using (var path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                using (var path = ShapeUtils.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -179,10 +176,12 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
             else
             {
-                using (var path = new Path())
+                using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
+                    Context.ToPixels(control.CornerRadius.TopLeft),
+                    Context.ToPixels(control.CornerRadius.TopRight),
+                    Context.ToPixels(control.CornerRadius.BottomRight),
+                    Context.ToPixels(control.CornerRadius.BottomLeft)))
                 {
-                    path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
-
                     canvas.Save();
                     canvas.ClipPath(path);
                 }
@@ -202,7 +201,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             //Create path to clip the child         
             if (control.Sides != 4)
             {
-                using (var path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                using (var path = ShapeUtils.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -210,10 +209,12 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
             else
             {
-                using (var path = new Path())
+                using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
+                    Context.ToPixels(control.CornerRadius.TopLeft),
+                    Context.ToPixels(control.CornerRadius.TopRight),
+                    Context.ToPixels(control.CornerRadius.BottomRight),
+                    Context.ToPixels(control.CornerRadius.BottomLeft)))
                 {
-                    path.AddRoundRect(new RectF(0, 0, Width, Height), GetRadii(control), Path.Direction.Ccw);
-
                     canvas.Save();
                     canvas.ClipPath(path);
                 }
@@ -226,23 +227,6 @@ namespace Xamarin.Forms.PancakeView.Droid
             DrawBorder(canvas, control);
 
             return result;
-        }
-
-        private float[] GetRadii(PancakeView control)
-        {
-            float topLeft = Context.ToPixels(control.CornerRadius.TopLeft);
-            float topRight = Context.ToPixels(control.CornerRadius.TopRight);
-            float bottomRight = Context.ToPixels(control.CornerRadius.BottomRight);
-            float bottomLeft = Context.ToPixels(control.CornerRadius.BottomLeft);
-
-            var radii = new[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft };
-
-            if (control.HasShadow || control.Elevation > 0)
-            {
-                radii = new[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft };
-            }
-
-            return radii;
         }
 
         private void DrawBorder(ACanvas canvas, PancakeView control)
@@ -265,12 +249,15 @@ namespace Xamarin.Forms.PancakeView.Droid
                     Path path = null;
                     if (control.Sides != 4)
                     {
-                        path = PolygonUtils.GetPolygonCornerPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
+                        path = ShapeUtils.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
                     }
                     else
                     {
-                        path = new Path();
-                        path.AddRoundRect(rect, GetRadii(control), direction);
+                        path = ShapeUtils.CreateRoundedRectPath(Width, Height,
+                            Context.ToPixels(control.CornerRadius.TopLeft),
+                            Context.ToPixels(control.CornerRadius.TopRight),
+                            Context.ToPixels(control.CornerRadius.BottomRight),
+                            Context.ToPixels(control.CornerRadius.BottomLeft));
                     }
 
                     if (control.BorderIsDashed)

@@ -112,23 +112,29 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (_pancake.Sides != 4)
                 {
-                    path = PolygonUtils.GetPolygonCornerPath(width, height, _pancake.Sides, _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
+                    path = ShapeUtils.CreatePolygonPath(width, height, _pancake.Sides, _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
                 }
                 else
                 {
+                    float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                    float topRight = _convertToPixels(cornerRadius.TopRight);
+                    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
 
-                    using (var rect = new RectF(0, 0, width, height))
-                    {
-                        float topLeft = _convertToPixels(cornerRadius.TopLeft);
-                        float topRight = _convertToPixels(cornerRadius.TopRight);
-                        float bottomRight = _convertToPixels(cornerRadius.BottomRight);
-                        float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
+                    path = ShapeUtils.CreateRoundedRectPath(width, height, topLeft, topRight, bottomRight, bottomLeft);
 
-                        if (!_pancake.HasShadow || _pancake.Elevation > 0)
-                            path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
-                        else
-                            path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
-                    }
+                    //using (var rect = new RectF(0, 0, width, height))
+                    //{
+                    //    float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                    //    float topRight = _convertToPixels(cornerRadius.TopRight);
+                    //    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                    //    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
+
+                    //    if (!_pancake.HasShadow || _pancake.Elevation > 0)
+                    //        path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
+                    //    else
+                    //        path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
+                    //}
                 }
 
                 if ((_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color)) || (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Any()))

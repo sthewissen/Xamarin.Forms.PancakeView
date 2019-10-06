@@ -13,25 +13,32 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             _pancake = pancake;
             _convertToPixels = convertToPixels;
-
         }
 
         public override void GetOutline(global::Android.Views.View view, Outline outline)
         {
             if (_pancake.Sides != 4)
             {
-                var cornerRadius = (view.Width / _pancake.Width) * _pancake.CornerRadius.TopLeft;
-                var hexPath = PolygonUtils.GetPolygonCornerPath(view.Width, view.Height, _pancake.Sides, cornerRadius, _pancake.OffsetAngle);
+                var hexPath = ShapeUtils.CreatePolygonPath(view.Width, view.Height, _pancake.Sides, _pancake.HasShadow ? 0 : _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
+
                 if (hexPath.IsConvex)
                 {
                     outline.SetConvexPath(hexPath);
                 }
-
-                return;
             }
+            else
+            {
+                var path = ShapeUtils.CreateRoundedRectPath(view.Width, view.Height,
+                    _convertToPixels(_pancake.CornerRadius.TopLeft),
+                    _convertToPixels(_pancake.CornerRadius.TopRight),
+                    _convertToPixels(_pancake.CornerRadius.BottomRight),
+                    _convertToPixels(_pancake.CornerRadius.BottomLeft));
 
-            // TODO: Figure out how to clip individual rounded corners with different radii.
-            outline.SetRoundRect(new Rect(0, 0, view.Width, view.Height), _convertToPixels(_pancake.CornerRadius.TopLeft));
+                if (path.IsConvex)
+                {
+                    outline.SetConvexPath(path);
+                }
+            }
         }
     }
 }
