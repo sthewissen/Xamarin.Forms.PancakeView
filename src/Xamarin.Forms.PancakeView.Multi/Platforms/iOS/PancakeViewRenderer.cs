@@ -342,7 +342,7 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (hasShadowOrElevation)
             {
-                _actualView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
+                // _actualView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
                 _actualView.ClipsToBounds = true;
             }
             else
