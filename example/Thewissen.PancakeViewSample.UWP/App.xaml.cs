@@ -52,7 +52,10 @@ namespace Thewissen.PancakeViewSample.UWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                Xamarin.Forms.Forms.Init(e);
+                List assembliesToInclude = new List();
+                assembliesToInclude.Add(typeof(Xamarin.Forms.PancakeView.UWP.PancakeViewRenderer).GetTypeInfo().Assembly);
+
+                Xamarin.Forms.Forms.Init(e, assembliesToInclude);
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

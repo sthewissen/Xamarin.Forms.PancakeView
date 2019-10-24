@@ -35,6 +35,15 @@ Next up, just smack a PancakeView onto that page and you're all set, simple as b
 </yummy:PancakeView>
 ```
 
+## Additional setup for UWP
+PancakeView supports calling an `Init()` method to prevent the linker from stripping it out of your code that you can call in each platforms initializer. However, for UWP this might not be enough. When the .NET Native tool chain is used (e.g., to submit to the Microsoft Store), the renderer could be missing. To prevent this from happening, replace the `Init()` call in your `App.xaml.cs` file with the following:
+
+```
+List assembliesToInclude = new List();
+assembliesToInclude.Add(typeof(Xamarin.Forms.PancakeView.UWP.PancakeViewRenderer).GetTypeInfo().Assembly);
+Xamarin.Forms.Forms.Init(e, assembliesToInclude);
+```
+
 ## Platform support
 At the time of this writing PancakeView has full support for iOS and Android, but only partial support for UWP. The matrix below shows which features are and aren't supported on UWP. Feel like implementing one of them? I'm taking PRs! ☺️
 
