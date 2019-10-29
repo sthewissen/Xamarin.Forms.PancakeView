@@ -48,25 +48,29 @@ namespace Xamarin.Forms.PancakeView.iOS
                 _actualView = new UIView();
                 _wrapperView = new UIView();
 
-                foreach (var item in NativeView.Subviews)
-                {
-                    _actualView.AddSubview(item);
-                }
 
-                if (NativeView.GestureRecognizers != null)
-                {
-                    foreach (var gesture in NativeView.GestureRecognizers)
-                    {
-                        _actualView.AddGestureRecognizer(gesture);
-                    }
-                }
 
-                _wrapperView.AddSubview(_actualView);
+				foreach (var item in NativeView.Subviews) {
+					_actualView.AddSubview (item);
+				}
 
-                SetNativeControl(_wrapperView);
+				if (NativeView.GestureRecognizers != null) {
+					foreach (var gesture in NativeView.GestureRecognizers) {
+						_actualView.AddGestureRecognizer (gesture);
+					}
+				}
 
-                SetBackgroundColor(Element.BackgroundColor);
-                SetCornerRadius();
+				if (Element.Handle == IntPtr.Zero) {
+
+					Element.Handle = _actualView.Handle;
+
+					_wrapperView.AddSubview (_actualView);
+
+					SetNativeControl (_wrapperView);
+
+					SetBackgroundColor (Element.BackgroundColor);
+					SetCornerRadius ();
+				}
             }
         }
 
