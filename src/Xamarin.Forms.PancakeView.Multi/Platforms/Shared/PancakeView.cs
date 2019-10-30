@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Xamarin.Forms.PancakeView
@@ -141,6 +142,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(OffsetAngleProperty, value); }
         }
 
-        #endregion
-    }
+		//Helps keep track of Native Object assignment
+		public IntPtr Handle { get; set; }
+
+		#endregion
+	}
 }
