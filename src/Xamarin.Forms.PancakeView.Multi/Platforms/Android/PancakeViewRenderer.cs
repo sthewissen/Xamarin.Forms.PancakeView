@@ -177,10 +177,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                    Context.ToPixels(control.CornerRadius.TopLeft),
-                    Context.ToPixels(control.CornerRadius.TopRight),
-                    Context.ToPixels(control.CornerRadius.BottomRight),
-                    Context.ToPixels(control.CornerRadius.BottomLeft)))
+                            control.CornerRadius.TopLeft,
+                            control.CornerRadius.TopRight,
+                            control.CornerRadius.BottomRight,
+                            control.CornerRadius.BottomLeft))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -210,10 +210,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                    Context.ToPixels(control.CornerRadius.TopLeft),
-                    Context.ToPixels(control.CornerRadius.TopRight),
-                    Context.ToPixels(control.CornerRadius.BottomRight),
-                    Context.ToPixels(control.CornerRadius.BottomLeft)))
+                            control.CornerRadius.TopLeft,
+                            control.CornerRadius.TopRight,
+                            control.CornerRadius.BottomRight,
+                            control.CornerRadius.BottomLeft))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -254,10 +254,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                     else
                     {
                         path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                            Context.ToPixels(control.CornerRadius.TopLeft),
-                            Context.ToPixels(control.CornerRadius.TopRight),
-                            Context.ToPixels(control.CornerRadius.BottomRight),
-                            Context.ToPixels(control.CornerRadius.BottomLeft));
+                            control.CornerRadius.TopLeft,
+                            control.CornerRadius.TopRight,
+                            control.CornerRadius.BottomRight,
+                            control.CornerRadius.BottomLeft);
                     }
 
                     if (control.BorderIsDashed)

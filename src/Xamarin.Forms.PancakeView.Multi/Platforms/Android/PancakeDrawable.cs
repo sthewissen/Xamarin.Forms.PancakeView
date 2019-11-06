@@ -116,12 +116,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                 }
                 else
                 {
-                    float topLeft = _convertToPixels(cornerRadius.TopLeft);
-                    float topRight = _convertToPixels(cornerRadius.TopRight);
-                    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
-                    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
-
-                    path = ShapeUtils.CreateRoundedRectPath(width, height, topLeft, topRight, bottomRight, bottomLeft);
+                    path = ShapeUtils.CreateRoundedRectPath(width, height,
+                        cornerRadius.TopLeft,
+                        cornerRadius.TopRight,
+                        cornerRadius.BottomRight,
+                        cornerRadius.BottomLeft);
 
                     //using (var rect = new RectF(0, 0, width, height))
                     //{

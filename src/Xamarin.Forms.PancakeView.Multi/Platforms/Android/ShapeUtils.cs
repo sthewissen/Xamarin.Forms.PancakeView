@@ -5,7 +5,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 {
     public static class ShapeUtils
     {
-        public static Path CreateRoundedRectPath(float rectWidth, float rectHeight, float topLeft, float topRight, float bottomRight, float bottomLeft)
+        public static Path CreateRoundedRectPath(float rectWidth, float rectHeight, double topLeft, double topRight, double bottomRight, double bottomLeft)
         {
             var path = new Path();
             var radii = new[] { topLeft, topLeft,
@@ -13,7 +13,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                                 bottomRight, bottomRight,
                                 bottomLeft, bottomLeft };
 
-            path.AddRoundRect(new RectF(0, 0, rectWidth, rectHeight), radii, Path.Direction.Ccw);
+            path.AddRoundRect(new RectF(0, 0, rectWidth, rectHeight), Array.ConvertAll(radii, x => (float)x), Path.Direction.Ccw);
             path.Close();
 
             return path;
