@@ -116,24 +116,12 @@ namespace Xamarin.Forms.PancakeView.Droid
                 }
                 else
                 {
-                    path = ShapeUtils.CreateRoundedRectPath(width, height,
-                        cornerRadius.TopLeft,
-                        cornerRadius.TopRight,
-                        cornerRadius.BottomRight,
-                        cornerRadius.BottomLeft);
+                    float topLeft = _convertToPixels(cornerRadius.TopLeft);
+                    float topRight = _convertToPixels(cornerRadius.TopRight);
+                    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
+                    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
 
-                    //using (var rect = new RectF(0, 0, width, height))
-                    //{
-                    //    float topLeft = _convertToPixels(cornerRadius.TopLeft);
-                    //    float topRight = _convertToPixels(cornerRadius.TopRight);
-                    //    float bottomRight = _convertToPixels(cornerRadius.BottomRight);
-                    //    float bottomLeft = _convertToPixels(cornerRadius.BottomLeft);
-
-                    //    if (!_pancake.HasShadow || _pancake.Elevation > 0)
-                    //        path.AddRoundRect(rect, new float[] { topLeft, topLeft, topRight, topRight, bottomRight, bottomRight, bottomLeft, bottomLeft }, direction);
-                    //    else
-                    //        path.AddRoundRect(rect, new float[] { topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft, topLeft }, direction);
-                    //}
+                    path = ShapeUtils.CreateRoundedRectPath(width, height, topLeft, topRight, bottomRight, bottomLeft);
                 }
 
                 if ((_pancake.BackgroundGradientStartColor != default(Color) && _pancake.BackgroundGradientEndColor != default(Color)) || (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Any()))
