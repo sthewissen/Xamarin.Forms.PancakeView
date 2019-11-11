@@ -4,6 +4,7 @@ using System.Linq;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.OS;
 using Android.Support.V4.View;
 using Android.Views;
 using Xamarin.Forms;
@@ -76,37 +77,40 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         private void SetupShadow(PancakeView pancake)
         {
-            // clear previous shadow/elevation
-            this.Elevation = 0;
-            this.TranslationZ = 0;
-
-            bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
-
-            // If it has a shadow, give it a default Droid looking shadow.
-            if (pancake.HasShadow)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
-                this.Elevation = 10;
-                this.TranslationZ = 10;
-            }
-
-            // However if it has a specified elevation add the desired one
-            if (pancake.Elevation > 0)
-            {
+                // clear previous shadow/elevation
                 this.Elevation = 0;
                 this.TranslationZ = 0;
-                ViewCompat.SetElevation(this, Context.ToPixels(pancake.Elevation));
-            }
 
-            if (hasShadowOrElevation)
-            {
-                // To have shadow show up, we need to clip.
-                this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
-                this.ClipToOutline = true;
-            }
-            else
-            {
-                this.OutlineProvider = null;
-                this.ClipToOutline = false;
+                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+
+                // If it has a shadow, give it a default Droid looking shadow.
+                if (pancake.HasShadow)
+                {
+                    this.Elevation = 10;
+                    this.TranslationZ = 10;
+                }
+
+                // However if it has a specified elevation add the desired one
+                if (pancake.Elevation > 0)
+                {
+                    this.Elevation = 0;
+                    this.TranslationZ = 0;
+                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Elevation));
+                }
+
+                if (hasShadowOrElevation)
+                {
+                    // To have shadow show up, we need to clip.
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
+                    this.ClipToOutline = true;
+                }
+                else
+                {
+                    this.OutlineProvider = null;
+                    this.ClipToOutline = false;
+                }
             }
         }
 
@@ -177,10 +181,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                            control.CornerRadius.TopLeft,
-                            control.CornerRadius.TopRight,
-                            control.CornerRadius.BottomRight,
-                            control.CornerRadius.BottomLeft))
+                    Context.ToPixels(control.CornerRadius.TopLeft),
+                    Context.ToPixels(control.CornerRadius.TopRight),
+                    Context.ToPixels(control.CornerRadius.BottomRight),
+                    Context.ToPixels(control.CornerRadius.BottomLeft)))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -210,10 +214,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                            control.CornerRadius.TopLeft,
-                            control.CornerRadius.TopRight,
-                            control.CornerRadius.BottomRight,
-                            control.CornerRadius.BottomLeft))
+                        Context.ToPixels(control.CornerRadius.TopLeft),
+                        Context.ToPixels(control.CornerRadius.TopRight),
+                        Context.ToPixels(control.CornerRadius.BottomRight),
+                        Context.ToPixels(control.CornerRadius.BottomLeft)))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -235,7 +239,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             {
                 var borderThickness = Context.ToPixels(control.BorderThickness);
                 var halfBorderThickness = borderThickness / 2;
-                bool hasShadowOrElevation = control.HasShadow || control.Elevation > 0;
+                bool hasShadowOrElevation = control.HasShadow || (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop && control.Elevation > 0);
 
                 // TODO: This doesn't look entirely right yet when using it with rounded corners.
                 using (var paint = new Paint { AntiAlias = true })
@@ -254,10 +258,10 @@ namespace Xamarin.Forms.PancakeView.Droid
                     else
                     {
                         path = ShapeUtils.CreateRoundedRectPath(Width, Height,
-                            control.CornerRadius.TopLeft,
-                            control.CornerRadius.TopRight,
-                            control.CornerRadius.BottomRight,
-                            control.CornerRadius.BottomLeft);
+                            Context.ToPixels(control.CornerRadius.TopLeft),
+                            Context.ToPixels(control.CornerRadius.TopRight),
+                            Context.ToPixels(control.CornerRadius.BottomRight),
+                            Context.ToPixels(control.CornerRadius.BottomLeft));
                     }
 
                     if (control.BorderIsDashed)
