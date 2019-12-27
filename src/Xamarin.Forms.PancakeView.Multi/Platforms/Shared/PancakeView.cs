@@ -142,9 +142,6 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(OffsetAngleProperty, value); }
         }
 
-		//Helps keep track of Native Object assignment
-		public IntPtr Handle { get; set; }
-
-		#endregion
-	}
+        #endregion
+    }
 }
