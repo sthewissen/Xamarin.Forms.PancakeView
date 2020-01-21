@@ -246,7 +246,7 @@ namespace Thewissen.PancakeViewSample.PageModels
                 hasIrregularCornerRadius = value;
                 RaisePropertyChanged(nameof(HasIrregularCornerRadius));
 
-                if(hasIrregularCornerRadius)
+                if (hasIrregularCornerRadius)
                 {
                     CornerRadius = new CornerRadius(10, 30, 10, 50);
                 }
