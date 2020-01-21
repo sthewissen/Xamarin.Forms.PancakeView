@@ -68,9 +68,9 @@
                 <Label Text="Sample (CollectionView)" FontFamily="{StaticResource LatoRegular}" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
                 <BoxView HeightRequest="1" BackgroundColor="Silver" Margin="0,8" />
 
-                <CollectionView VerticalOptions="Start" HeightRequest="100">
+                <CollectionView HeightRequest="130" VerticalOptions="Start">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="4" />
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
@@ -81,8 +81,8 @@
                     </CollectionView.ItemsSource>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout>
-                                <custom:PancakeView HorizontalOptions="Center" VerticalOptions="Center"
+                            <StackLayout VerticalOptions="Center" HeightRequest="100" WidthRequest="100">
+                                <custom:PancakeView HorizontalOptions="Start" VerticalOptions="Start"
                                                 BorderColor="{Binding Path=BindingContext.RandomColor, Source={x:Reference debugPage}}"
                                                 BorderThickness="{Binding Path=BindingContext.BorderThickness, Source={x:Reference debugPage}}"
                                                 BackgroundColor="{Binding Path=BindingContext.BackgroundColor, Source={x:Reference debugPage}}"
@@ -94,7 +94,7 @@
                                                 BackgroundGradientAngle="{Binding Path=BindingContext.BackgroundGradientAngle, Source={x:Reference debugPage}}"
                                                 Sides="{Binding Path=BindingContext.Sides, Source={x:Reference debugPage}}"
                                                 OffsetAngle="{Binding Path=BindingContext.OffsetAngle, Source={x:Reference debugPage}}"
-                                                HeightRequest="100" WidthRequest="100" Margin="8">
+                                                HeightRequest="100" WidthRequest="100">
                                     <custom:PancakeView.Triggers>
                                         <DataTrigger TargetType="custom:PancakeView" Binding="{Binding Path=BindingContext.HasGradientBorder, Source={x:Reference debugPage}}" Value="true">
                                             <Setter Property="BorderGradientStartColor" Value="#FF33AA" />
@@ -111,7 +111,7 @@
                                             <Setter Property="BackgroundGradientStops" Value="{x:StaticResource Rainbow}" />
                                         </DataTrigger>
                                     </custom:PancakeView.Triggers>
-                                    <Grid HeightRequest="100">
+                                    <Grid>
                                         <Label Text="{Binding .}" FontFamily="{StaticResource LatoRegular}" FontSize="14" HorizontalOptions="Center" VerticalOptions="Center" />
                                         <Image Source="pancakes2.jpg" Aspect="AspectFill"  IsVisible="{Binding Path=BindingContext.TestClipping, Source={x:Reference debugPage}}" />
                                     </Grid>
