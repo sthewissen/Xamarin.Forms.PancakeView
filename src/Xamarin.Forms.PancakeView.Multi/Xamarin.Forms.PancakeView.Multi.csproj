@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks></TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299;NET461</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
 
     <!--Assembly and Namespace info -->
@@ -74,6 +74,23 @@
   
   <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <Compile Include="Platforms\UWP\**\*.cs" />
+    <!--
+    If you need to add sdk references:
+     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+    -->
+  </ItemGroup>
+  <ItemGroup Condition=" $(TargetFramework.StartsWith('NET461')) ">
+    <Compile Include="Platforms\WPF\**\*.cs" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.6.0.220655" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
+    
     <!--
     If you need to add sdk references:
      <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
