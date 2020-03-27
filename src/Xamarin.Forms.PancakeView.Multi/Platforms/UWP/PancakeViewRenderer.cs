@@ -109,6 +109,7 @@ namespace Xamarin.Forms.PancakeView.UWP
             else if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
             {
                 UpdateCornerRadius(pancake);
+                UpdateShadow(pancake);
             }
             else if (e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
                 e.PropertyName == PancakeView.ElevationProperty.PropertyName)
@@ -144,6 +145,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         {
             //For now gets the shadow only when the CornerRadius has the same value for all sides. 
             if (Control != null && pancake.HasShadow && pancake.Width > 0 && pancake.Height > 0 &&
+                pancake.CornerRadius.TopLeft == pancake.CornerRadius.BottomRight &&
                 pancake.CornerRadius.TopLeft == pancake.CornerRadius.BottomLeft &&
                 pancake.CornerRadius.BottomRight == pancake.CornerRadius.TopRight)
             {
@@ -164,6 +166,10 @@ namespace Xamarin.Forms.PancakeView.UWP
                 visual.Shadow = shadow;
 
                 ElementCompositionPreview.SetElementChildVisual(rectangle, visual);
+            }
+            else
+            {
+                ElementCompositionPreview.SetElementChildVisual(rectangle, null);
             }
         }
 
