@@ -43,28 +43,38 @@ List assembliesToInclude = new List();
 assembliesToInclude.Add(typeof(Xamarin.Forms.PancakeView.UWP.PancakeViewRenderer).GetTypeInfo().Assembly);
 Xamarin.Forms.Forms.Init(e, assembliesToInclude);
 ```
+## Additional setup for WPF
+You need to call `PancakeViewRenderer.Init()` in `MainWindow`
+
+```
+ InitializeComponent();
+ Forms.Init();
+ PancakeViewRenderer.Init();
+ LoadApplication(new PancakeViewSample.App());
+```
+
 
 ## Platform support
-At the time of this writing PancakeView has full support for iOS and Android, but only partial support for UWP. The matrix below shows which features are and aren't supported on UWP. Feel like implementing one of them? I'm taking PRs! ☺️
+At the time of this writing PancakeView has full support for iOS and Android, but only partial support for UWP and WPF. The matrix below shows which features are and aren't supported on UWP and WPF. Feel like implementing one of them? I'm taking PRs! ☺️
 
-| Property | iOS | Android | UWP |
+| Property | iOS | Android | UWP | WPF |
 | ------ | ------ | ------ | ------ |
-| `BackgroundGradientAngle` | ✅ | ✅ | ✅ |
-| `BackgroundGradientStartColor` | ✅ | ✅ | ✅ |
-| `BackgroundGradientEndColor` | ✅ | ✅ | ✅ |
-| `BackgroundGradientStops` | ✅ | ✅ | ✅ |
-| `BorderColor` | ✅ | ✅ | ✅ |
-| `BorderGradientAngle` | ✅ | ✅ | ✅ |
-| `BorderGradientStartColor` | ✅ | ✅ | ✅ |
-| `BorderGradientEndColor` | ✅ | ✅ | ✅ |
-| `BorderGradientStops` | ✅ | ✅ | ✅ |
-| `BorderIsDashed` | ✅ | ✅ | ❌ |
-| `BorderThickness` | ✅ | ✅ | ✅ |
-| `CornerRadius` | ✅ | ✅ | ✅ |
-| `HasShadow` | ✅ | ✅ | ❌ |
-| `Elevation` | ✅ | ✅ | ❌ |
-| `OffsetAngle` | ✅ | ✅ | ❌ |
-| `Sides` | ✅ | ✅ | ❌|
+| `BackgroundGradientAngle` | ✅ | ✅ | ✅ | ✅ |
+| `BackgroundGradientStartColor` | ✅ | ✅ | ✅ | ✅ |
+| `BackgroundGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
+| `BackgroundGradientStops` | ✅ | ✅ | ✅ | ✅ |
+| `BorderColor` | ✅ | ✅ | ✅ |✅ |
+| `BorderGradientAngle` | ✅ | ✅ | ✅ | ✅ |
+| `BorderGradientStartColor` | ✅ | ✅ | ✅ |✅ |
+| `BorderGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
+| `BorderGradientStops` | ✅ | ✅ | ✅ | ✅ |
+| `BorderIsDashed` | ✅ | ✅ | ❌ | ❌ |
+| `BorderThickness` | ✅ | ✅ | ✅ | ✅ |
+| `CornerRadius` | ✅ | ✅ | ✅ | ✅ |
+| `HasShadow` | ✅ | ✅ | ❌ | ❌ |
+| `Elevation` | ✅ | ✅ | ❌ | ❌ |
+| `OffsetAngle` | ✅ | ✅ | ❌ | ❌ |
+| `Sides` | ✅ | ✅ | ❌| ❌|
 
 ## Property reference
 
