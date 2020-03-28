@@ -23,6 +23,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         private Windows.UI.Xaml.Shapes.Rectangle rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
         private Windows.UI.Xaml.Controls.Grid container;
         private Border content;
+        private SpriteVisual visual;
 
 
         /// <summary>
@@ -154,8 +155,10 @@ namespace Xamarin.Forms.PancakeView.UWP
                 rectangle.RadiusY = pancake.CornerRadius.TopRight + 5;
 
                 var compositor = ElementCompositionPreview.GetElementVisual(rectangle).Compositor;
-                var visual = compositor.CreateSpriteVisual();
+                visual = compositor.CreateSpriteVisual();
                 visual.Size = new Vector2((float)pancake.Width, (float)pancake.Height);
+
+           
 
                 var shadow = compositor.CreateDropShadow();
                 shadow.BlurRadius = 30f;
@@ -164,6 +167,14 @@ namespace Xamarin.Forms.PancakeView.UWP
                 visual.Shadow = shadow;
 
                 ElementCompositionPreview.SetElementChildVisual(rectangle, visual);
+            }
+            else
+            {
+                if (visual != null)
+                {
+                    visual.Shadow = null;
+                    ElementCompositionPreview.SetElementChildVisual(rectangle, null);
+                }
             }
         }
 
