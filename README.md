@@ -62,7 +62,7 @@ At the time of this writing PancakeView has full support for iOS and Android, bu
 | `BorderThickness` | ✅ | ✅ | ✅ |
 | `CornerRadius` | ✅ | ✅ | ✅ |
 | `HasShadow` | ✅ | ✅ | ⚠️<sup>*</sup> |
-| `Elevation` | ✅ | ✅ | ❌ |
+| `Elevation` | ✅ | ✅ | ⚠️<sup>*</sup> |
 | `OffsetAngle` | ✅ | ✅ | ❌ |
 | `Sides` | ✅ | ✅ | ❌|
 
