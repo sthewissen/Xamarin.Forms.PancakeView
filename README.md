@@ -61,10 +61,12 @@ At the time of this writing PancakeView has full support for iOS and Android, bu
 | `BorderIsDashed` | ✅ | ✅ | ❌ |
 | `BorderThickness` | ✅ | ✅ | ✅ |
 | `CornerRadius` | ✅ | ✅ | ✅ |
-| `HasShadow` | ✅ | ✅ | ❌ |
+| `HasShadow` | ✅ | ✅ | ⚠️<sup>*</sup> |
 | `Elevation` | ✅ | ✅ | ❌ |
 | `OffsetAngle` | ✅ | ✅ | ❌ |
 | `Sides` | ✅ | ✅ | ❌|
+
+<sup>*</sup> Limited shadow support available.
 
 ## Property reference
 
