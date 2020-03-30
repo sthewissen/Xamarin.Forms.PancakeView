@@ -160,6 +160,8 @@ namespace Xamarin.Forms.PancakeView.UWP
                 visual = compositor.CreateSpriteVisual();
                 visual.Size = new Vector2((float)pancake.Width, (float)pancake.Height);
 
+           
+
                 var shadow = compositor.CreateDropShadow();
                 shadow.BlurRadius = 30f;
                 shadow.Mask = rectangle.GetAlphaMask();
@@ -170,11 +172,6 @@ namespace Xamarin.Forms.PancakeView.UWP
             }
             else
             {
-                if(rectangle!=null)
-                {
-                    rectangle.Fill = new SolidColorBrush(Windows.UI.Colors.Transparent);
-                }
-
                 if (visual != null)
                 {
                     visual.Shadow = null;
