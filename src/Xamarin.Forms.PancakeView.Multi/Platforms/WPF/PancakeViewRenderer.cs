@@ -75,7 +75,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
 
                 UpdateContent();
                 UpdateBackground();
-                UpdateBorder(pancake);
+                //UpdateBorder(pancake);
                 UpdateCornerRadius(pancake);
                 UpdateShadow(pancake);
             }
@@ -108,16 +108,16 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 UpdateBackground();
             }
-            else if (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
-            {
-                UpdateBorder(pancake);
-            }
+            //else if (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
+            //    e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
+            //{
+            //    UpdateBorder(pancake);
+            //}
         }
 
         private void UpdateShadow(PancakeView pancake)

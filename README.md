@@ -63,13 +63,13 @@ At the time of this writing PancakeView has full support for iOS and Android, bu
 | `BackgroundGradientStartColor` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientStops` | ✅ | ✅ | ✅ | ✅ |
-| `BorderColor` | ✅ | ✅ | ✅ |✅ |
-| `BorderGradientAngle` | ✅ | ✅ | ✅ | ✅ |
-| `BorderGradientStartColor` | ✅ | ✅ | ✅ |✅ |
-| `BorderGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
-| `BorderGradientStops` | ✅ | ✅ | ✅ | ✅ |
+| `BorderColor` | ✅ | ✅ | ✅ |❌ |
+| `BorderGradientAngle` | ✅ | ✅ | ✅ | ❌ |
+| `BorderGradientStartColor` | ✅ | ✅ | ✅ |❌ |
+| `BorderGradientEndColor` | ✅ | ✅ | ✅ | ❌ |
+| `BorderGradientStops` | ✅ | ✅ | ✅ | ❌ |
 | `BorderIsDashed` | ✅ | ✅ | ❌ | ❌ |
-| `BorderThickness` | ✅ | ✅ | ✅ | ✅ |
+| `BorderThickness` | ✅ | ✅ | ✅ | ❌ |
 | `CornerRadius` | ✅ | ✅ | ✅ | ✅ |
 | `HasShadow` | ✅ | ✅ | ❌ | ❌ |
 | `Elevation` | ✅ | ✅ | ❌ | ❌ |
