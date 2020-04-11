@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
@@ -8,8 +8,10 @@ using Foundation;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.iOS;
+using Xamarin.Forms.PancakeView.Platforms.Shared;
 using Xamarin.Forms.Platform.iOS;
 using Controls = Xamarin.Forms.PancakeView;
+using EnumsNET;
 
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.iOS
@@ -91,7 +93,8 @@ namespace Xamarin.Forms.PancakeView.iOS
                     (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName))
+                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderEdgesProperty.PropertyName))
             {
                 DrawBorder();
             }
@@ -103,7 +106,9 @@ namespace Xamarin.Forms.PancakeView.iOS
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.SidesProperty.PropertyName))
+                    (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.BorderEdgesProperty.PropertyName))
             {
                 SetNeedsDisplay();
             }
@@ -244,6 +249,91 @@ namespace Xamarin.Forms.PancakeView.iOS
 
         private void DrawBorder()
         {
+            // TODO: remove
+            DrawMultiPathBorder();
+            return;
+
+            //var pancake = Element as PancakeView;
+            //var layerName = "borderLayer";
+
+            //// remove previous background layer if any
+            //var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
+            //prevBorderLayer?.RemoveFromSuperLayer();
+
+            //if (pancake.BorderThickness > 0)
+            //{
+            //    var borderLayer = new CAShapeLayer
+            //    {
+            //        StrokeColor = pancake.BorderColor == Color.Default ? UIColor.Clear.CGColor : pancake.BorderColor.ToCGColor(),
+            //        FillColor = null,
+            //        LineWidth = pancake.BorderThickness,
+            //        Name = layerName
+            //    };
+
+            //    // Create arcs for the given corner radius.
+            //    bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+
+            //    borderLayer.Path = pancake.Sides != 4 ?
+            //        ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
+            //        ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius).CGPath; // insetBounds?
+
+            //    var layerPosition = new CGPoint(borderLayer.Path.BoundingBox.Width / 2, borderLayer.Path.BoundingBox.Height / 2);
+
+            //    borderLayer.Frame = borderLayer.Path.BoundingBox;
+            //    borderLayer.Position = layerPosition;
+
+            //    // Dash pattern for the border.
+            //    if (pancake.BorderIsDashed)
+            //    {
+            //        borderLayer.LineDashPattern = new NSNumber[] { new NSNumber(6), new NSNumber(3) };
+            //    }
+
+            //    if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
+            //    {
+            //        var gradientFrame = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
+            //        var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, gradientFrame);
+            //        gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - (pancake.BorderThickness), (gradientFrame.Height / 2) - (pancake.BorderThickness));
+
+            //        // Create a clone from the border layer and use that one as the mask.
+            //        // Why? Because the mask and the border somehow can't be the same, so
+            //        // don't want to do adjustments to borderLayer because it would influence the border.
+            //        var maskLayer = new CAShapeLayer()
+            //        {
+            //            Path = borderLayer.Path,
+            //            Position = new CGPoint(pancake.BorderThickness, pancake.BorderThickness),
+            //            FillColor = null,
+            //            LineWidth = pancake.BorderThickness,
+            //            StrokeColor = UIColor.Red.CGColor,
+            //            LineDashPattern = borderLayer.LineDashPattern
+            //        };
+
+            //        gradientLayer.Mask = maskLayer;
+            //        gradientLayer.Name = layerName;
+
+            //        if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
+            //        {
+            //            // A range of colors is given. Let's add them.
+            //            var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+            //            gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+            //            gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
+            //        }
+            //        else
+            //        {
+            //            // Only two colors provided, use that.
+            //            gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
+            //        }
+
+            //        AddLayer(gradientLayer, -1, _wrapperView);
+            //    }
+            //    else
+            //    {
+            //        AddLayer(borderLayer, -1, _wrapperView);
+            //    }
+            //}
+        }
+
+        private void DrawMultiPathBorder()
+        {
             var pancake = Element as PancakeView;
             var layerName = "borderLayer";
 
@@ -251,76 +341,39 @@ namespace Xamarin.Forms.PancakeView.iOS
             var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
 
-            if (pancake.BorderThickness > 0)
+            if (pancake.BorderEdges != Edge.None && pancake.BorderThickness != default)    
             {
-                var borderLayer = new CAShapeLayer
+                var thickness = pancake.BorderThickness;
+                var edges = pancake.BorderEdges;
+
+                if (edges.HasAnyFlags(Edge.Left))
                 {
-                    StrokeColor = pancake.BorderColor == Color.Default ? UIColor.Clear.CGColor : pancake.BorderColor.ToCGColor(),
-                    FillColor = null,
-                    LineWidth = pancake.BorderThickness,
-                    Name = layerName
-                };
-
-                // Create arcs for the given corner radius.
-                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
-
-                borderLayer.Path = pancake.Sides != 4 ?
-                    ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
-                    ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius).CGPath; // insetBounds?
-
-                var layerPosition = new CGPoint(borderLayer.Path.BoundingBox.Width / 2, borderLayer.Path.BoundingBox.Height / 2);
-
-                borderLayer.Frame = borderLayer.Path.BoundingBox;
-                borderLayer.Position = layerPosition;
-
-                // Dash pattern for the border.
-                if (pancake.BorderIsDashed)
-                {
-                    borderLayer.LineDashPattern = new NSNumber[] { new NSNumber(6), new NSNumber(3) };
+                    AddEdgeLayer(UIRectEdge.Left, thickness.Left);
                 }
-
-                if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
+                if (edges.HasAnyFlags(Edge.Top))
                 {
-                    var gradientFrame = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
-                    var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, gradientFrame);
-                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - (pancake.BorderThickness), (gradientFrame.Height / 2) - (pancake.BorderThickness));
-
-                    // Create a clone from the border layer and use that one as the mask.
-                    // Why? Because the mask and the border somehow can't be the same, so
-                    // don't want to do adjustments to borderLayer because it would influence the border.
-                    var maskLayer = new CAShapeLayer()
-                    {
-                        Path = borderLayer.Path,
-                        Position = new CGPoint(pancake.BorderThickness, pancake.BorderThickness),
-                        FillColor = null,
-                        LineWidth = pancake.BorderThickness,
-                        StrokeColor = UIColor.Red.CGColor,
-                        LineDashPattern = borderLayer.LineDashPattern
-                    };
-
-                    gradientLayer.Mask = maskLayer;
-                    gradientLayer.Name = layerName;
-
-                    if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
-                    {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                        gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
-                    }
-                    else
-                    {
-                        // Only two colors provided, use that.
-                        gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
-                    }
-
-                    AddLayer(gradientLayer, -1, _wrapperView);
+                    AddEdgeLayer(UIRectEdge.Top, thickness.Top);
                 }
-                else
+                if (edges.HasAnyFlags(Edge.Right))
                 {
-                    AddLayer(borderLayer, -1, _wrapperView);
+                    AddEdgeLayer(UIRectEdge.Right, thickness.Right);
+                }
+                if (edges.HasAnyFlags(Edge.Bottom))
+                {
+                    AddEdgeLayer(UIRectEdge.Bottom, thickness.Bottom);
                 }
             }
+        }
+
+        void AddEdgeLayer(UIRectEdge edge, double thickness)
+        {
+            var pancake = Element as PancakeView;
+
+            var strokeColor = pancake.BorderColor.ToCGColor();
+            var lineWidth = thickness;
+            var borderDrawingStyle = pancake.BorderDrawingStyle;
+
+            AddLayer(Bounds.ToEdgeLayer(edge, strokeColor, lineWidth, pancake.CornerRadius, borderDrawingStyle), -1, _wrapperView);
         }
 
         private void DrawShadow()

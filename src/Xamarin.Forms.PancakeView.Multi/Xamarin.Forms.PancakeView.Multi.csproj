@@ -59,6 +59,7 @@
 
     <!--NuGet that bring in good stuff -->
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
+    <PackageReference Include="Enums.NET" Version="3.0.3" />
   </ItemGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
@@ -82,5 +83,13 @@
     -->
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Platforms\Shared\SideOptions.cs">
+      <SubType></SubType>
+    </Compile>
+    <Compile Update="Platforms\Shared\BorderEdge.cs">
+      <SubType></SubType>
+    </Compile>
+  </ItemGroup>
    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

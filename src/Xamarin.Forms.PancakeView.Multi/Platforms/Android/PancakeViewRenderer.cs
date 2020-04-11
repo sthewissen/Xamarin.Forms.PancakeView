@@ -235,9 +235,9 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         private void DrawBorder(ACanvas canvas, PancakeView control)
         {
-            if (control.BorderThickness > 0)
+            if (control.BorderThickness != default)
             {
-                var borderThickness = Context.ToPixels(control.BorderThickness);
+                var borderThickness = Context.ToPixels(control.BorderThickness.Left);
                 var halfBorderThickness = borderThickness / 2;
                 bool hasShadowOrElevation = control.HasShadow || (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop && control.Elevation > 0);
 
@@ -268,7 +268,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                     {
                         // dashes merge when thickness is increased
                         // off-distance should be scaled according to thickness
-                        paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * control.BorderThickness }, 0));
+                        paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * (float)control.BorderThickness.Left }, 0));
                     }
 
                     if ((control.BorderGradientStartColor != default(Color) && control.BorderGradientEndColor != default(Color)) || (control.BorderGradientStops != null && control.BorderGradientStops.Any()))

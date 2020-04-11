@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using Xamarin.Forms.PancakeView.Platforms.Shared;
 
 namespace Xamarin.Forms.PancakeView
 {
@@ -13,7 +12,15 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(PancakeView), default(bool));
         public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(int), typeof(PancakeView), 0);
 
-        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
+
+        public static readonly BindableProperty BorderEdgesProperty = BindableProperty.Create(
+            propertyName: nameof(BorderEdges),
+            returnType: typeof(Edge),
+            declaringType: typeof(PancakeView),
+            defaultValue: Edge.All
+            );
+
+        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(Thickness), typeof(PancakeView), default(Thickness));
         public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed), typeof(bool), typeof(PancakeView), default(bool));
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(PancakeView), default(Color));
         public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle), typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
@@ -39,6 +46,12 @@ namespace Xamarin.Forms.PancakeView
         });
 
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
+
+        public Edge BorderEdges
+        {
+            get => (Edge)GetValue(BorderEdgesProperty);
+            set => SetValue(BorderEdgesProperty, value);
+        }
 
         public int Sides
         {
@@ -100,9 +113,9 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(CornerRadiusProperty, value); }
         }
 
-        public float BorderThickness
+        public Thickness BorderThickness
         {
-            get { return (float)GetValue(BorderThicknessProperty); }
+            get { return (Thickness)GetValue(BorderThicknessProperty); }
             set { SetValue(BorderThicknessProperty, value); }
         }
 
