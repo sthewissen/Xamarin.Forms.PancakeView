@@ -63,18 +63,20 @@ At the time of this writing PancakeView has full support for iOS and Android, bu
 | `BackgroundGradientStartColor` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientStops` | ✅ | ✅ | ✅ | ✅ |
-| `BorderColor` | ✅ | ✅ | ✅ |❌ |
+| `BorderColor` | ✅ | ✅ | ✅ | ❌ |
 | `BorderGradientAngle` | ✅ | ✅ | ✅ | ❌ |
-| `BorderGradientStartColor` | ✅ | ✅ | ✅ |❌ |
+| `BorderGradientStartColor` | ✅ | ✅ | ✅ | ❌ |
 | `BorderGradientEndColor` | ✅ | ✅ | ✅ | ❌ |
 | `BorderGradientStops` | ✅ | ✅ | ✅ | ❌ |
 | `BorderIsDashed` | ✅ | ✅ | ❌ | ❌ |
 | `BorderThickness` | ✅ | ✅ | ✅ | ❌ |
-| `CornerRadius` | ✅ | ✅ | ✅ | ✅ |
-| `HasShadow` | ✅ | ✅ | ❌ | ❌ |
-| `Elevation` | ✅ | ✅ | ❌ | ❌ |
+| `CornerRadius` | ✅ | ✅ | ✅ | ❌ |
+| `HasShadow` | ✅ | ✅ | ⚠️<sup>*</sup> | ❌ |
+| `Elevation` | ✅ | ✅ | ⚠️<sup>*</sup> | ❌ |
 | `OffsetAngle` | ✅ | ✅ | ❌ | ❌ |
-| `Sides` | ✅ | ✅ | ❌| ❌|
+| `Sides` | ✅ | ✅ | ❌| ❌ |
+
+<sup>*</sup> Limited shadow support available.
 
 ## Property reference
 
