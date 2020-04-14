@@ -1,5 +1,5 @@
 # set the version numbering, this results in 1.0.1 for the first build incrementing that way.
-name: 1.3$(rev:.r)
+name: 1.4$(rev:.r)
 
 trigger:
   branches:
