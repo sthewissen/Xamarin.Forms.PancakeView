@@ -58,7 +58,7 @@ You need to call `PancakeViewRenderer.Init()` in `MainWindow`
 At the time of this writing PancakeView has full support for iOS and Android, but only partial support for UWP and WPF. The matrix below shows which features are and aren't supported on UWP and WPF. Feel like implementing one of them? I'm taking PRs! ☺️
 
 | Property | iOS | Android | UWP | WPF |
-| ------ | ------ | ------ | ------ |
+| ------ | ------ | ------ | ------ | ------ |
 | `BackgroundGradientAngle` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientStartColor` | ✅ | ✅ | ✅ | ✅ |
 | `BackgroundGradientEndColor` | ✅ | ✅ | ✅ | ✅ |
