@@ -73,6 +73,18 @@ namespace Xamarin.Forms.PancakeView.Droid
             if (pancake.Sides < 3)
                 throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
 
+            // Needs to be an even number of parts.
+            if (pancake.BorderDashPattern.Split(",").Count() >= 2 && pancake.BorderDashPattern.Split(",").Count() % 2 != 0)
+                throw new ArgumentException("BorderDashPattern must contain an even number of entries (>=2).", nameof(Controls.PancakeView.BorderDashPattern));
+
+            // Needs to be all ints.
+            foreach (var item in pancake.BorderDashPattern.Split(","))
+            {
+                if (!int.TryParse(item.Trim(), out var result))
+                {
+                    throw new ArgumentException("Not all values in BorderDashPattern are valid integers.", nameof(Controls.PancakeView.BorderDashPattern));
+                }
+            }
         }
 
         private void SetupShadow(PancakeView pancake)
@@ -123,6 +135,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             if (e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName ||
+                e.PropertyName == PancakeView.BorderDashPatternProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
@@ -266,9 +279,19 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                     if (control.BorderIsDashed)
                     {
+                        var items = control.BorderDashPattern.Split(",").Select(x => Context.ToPixels(Convert.ToSingle(x.Trim()))).ToArray();
+
                         // dashes merge when thickness is increased
                         // off-distance should be scaled according to thickness
-                        paint.SetPathEffect(new DashPathEffect(new float[] { 10, 5 * control.BorderThickness }, 0));
+                        for (int i = 0; i < items.Count(); i++)
+                        {
+                            if (i % 2 != 0)
+                            {
+                                items[i] = items[i] * (control.BorderThickness * 0.5f);
+                            }
+                        }
+
+                        paint.SetPathEffect(new DashPathEffect(items, 0));
                     }
 
                     if ((control.BorderGradientStartColor != default(Color) && control.BorderGradientEndColor != default(Color)) || (control.BorderGradientStops != null && control.BorderGradientStops.Any()))
