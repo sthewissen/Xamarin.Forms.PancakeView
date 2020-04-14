@@ -49,7 +49,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
+        <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
         <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
         <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
         <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
@@ -88,11 +88,6 @@
         <AndroidResource Include="Resources\layout\Toolbar.axml" />
         <AndroidResource Include="Resources\values\styles.xml" />
         <AndroidResource Include="Resources\values\colors.xml" />
-        <AndroidResource Include="Resources\mipmap-hdpi\launcher_foreground.png" />
-        <AndroidResource Include="Resources\mipmap-mdpi\launcher_foreground.png" />
-        <AndroidResource Include="Resources\mipmap-xhdpi\launcher_foreground.png" />
-        <AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
-        <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
         <AndroidResource Include="Resources\drawable-xxxhdpi\pancake.png" />
         <AndroidResource Include="Resources\drawable-xxhdpi\pancake.png" />
         <AndroidResource Include="Resources\drawable-xhdpi\pancake.png" />

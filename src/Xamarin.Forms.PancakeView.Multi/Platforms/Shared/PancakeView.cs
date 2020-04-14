@@ -14,7 +14,10 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(int), typeof(PancakeView), 0);
 
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
+
         public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed), typeof(bool), typeof(PancakeView), default(bool));
+        public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern), typeof(string), typeof(PancakeView), defaultValue: "5,5");
+
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(PancakeView), default(Color));
         public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle), typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
 
@@ -110,6 +113,12 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (bool)GetValue(BorderIsDashedProperty); }
             set { SetValue(BorderIsDashedProperty, value); }
+        }
+
+        public string BorderDashPattern
+        {
+            get { return (string)GetValue(BorderDashPatternProperty); }
+            set { SetValue(BorderDashPatternProperty, value); }
         }
 
         public Color BorderColor

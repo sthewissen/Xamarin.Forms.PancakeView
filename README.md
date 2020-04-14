@@ -69,6 +69,7 @@ At the time of this writing PancakeView has full support for iOS and Android, bu
 | `BorderGradientEndColor` | ✅ | ✅ | ✅ | ❌ |
 | `BorderGradientStops` | ✅ | ✅ | ✅ | ❌ |
 | `BorderIsDashed` | ✅ | ✅ | ❌ | ❌ |
+| `BorderDashPattern` | ✅ | ✅ | ❌ | ❌ |
 | `BorderThickness` | ✅ | ✅ | ✅ | ❌ |
 | `CornerRadius` | ✅ | ✅ | ✅ | ❌ |
 | `HasShadow` | ✅ | ✅ | ⚠️<sup>*</sup> | ❌ |
