@@ -145,7 +145,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         private void UpdateShadow(PancakeView pancake)
         {
             //For now gets the shadow only when the CornerRadius has the same value for all sides. 
-            if (Control != null && pancake.HasShadow && pancake.Width > 0 && pancake.Height > 0 &&
+            if (Control != null && pancake.Shadow != null && pancake.Width > 0 && pancake.Height > 0 &&
                 pancake.CornerRadius.TopLeft == pancake.CornerRadius.BottomRight &&
                 pancake.CornerRadius.TopLeft == pancake.CornerRadius.BottomLeft &&
                 pancake.CornerRadius.BottomRight == pancake.CornerRadius.TopRight)
@@ -158,12 +158,14 @@ namespace Xamarin.Forms.PancakeView.UWP
 
                 var compositor = ElementCompositionPreview.GetElementVisual(rectangle).Compositor;
                 visual = compositor.CreateSpriteVisual();
-                visual.Size = new Vector2((float)pancake.Width, (float)pancake.Height);           
+                visual.Size = new Vector2((float)pancake.Width, (float)pancake.Height);
 
                 var shadow = compositor.CreateDropShadow();
-                shadow.BlurRadius = 30f;
+                shadow.BlurRadius = pancake.Shadow.BlurRadius;
                 shadow.Mask = rectangle.GetAlphaMask();
-                shadow.Opacity = 0.75f;
+                shadow.Opacity = pancake.Shadow.Opacity;
+                //shadow.Color = pancake.Shadow.Color;
+                //shadow.Offset = new Vector3(pancake.Shadow.Offset.X, pancake.Shadow.Offset.Y, 0);
                 visual.Shadow = shadow;
 
                 ElementCompositionPreview.SetElementChildVisual(rectangle, visual);

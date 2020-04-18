@@ -48,11 +48,14 @@ namespace Xamarin.Forms.PancakeView.iOS
                 _actualView = new UIView();
                 _wrapperView = new UIView();
 
+                // Add the subviews to the actual view.
                 foreach (var item in NativeView.Subviews)
                 {
                     _actualView.AddSubview(item);
                 }
 
+                // If this contains GestureRecognizers, hook those up to the _actualView.
+                // This is what the user sees and interacts with.
                 if (NativeView.GestureRecognizers != null)
                 {
                     foreach (var gesture in NativeView.GestureRecognizers)
@@ -63,8 +66,8 @@ namespace Xamarin.Forms.PancakeView.iOS
 
                 _wrapperView.AddSubview(_actualView);
 
+                // Override the native control.
                 SetNativeControl(_wrapperView);
-
                 SetBackgroundColor(Element.BackgroundColor);
                 SetCornerRadius();
             }
@@ -103,6 +106,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.SidesProperty.PropertyName))
             {
@@ -341,38 +345,66 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             var pancake = Element;
 
-            bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+            bool hasShadowOrElevation = pancake.Shadow != null || pancake.HasShadow || pancake.Elevation > 0;
             nfloat cornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
 
-            if (pancake.HasShadow)
+            if (pancake.Shadow != null)
             {
-                DrawDefaultShadow(_wrapperView.Layer, Bounds, cornerRadius);
+                DrawDefaultShadow(pancake.Shadow, _wrapperView.Layer, Bounds, cornerRadius);
             }
-
-            if (pancake.Elevation > 0)
+            else
             {
-                DrawElevation(_wrapperView.Layer, pancake.Elevation, Bounds, cornerRadius);
+                if (pancake.HasShadow)
+                {
+                    DrawDefaultShadow_Obsolete(_wrapperView.Layer, Bounds, cornerRadius);
+                }
+
+                if (pancake.Elevation > 0)
+                {
+                    DrawElevation_Obsolete(_wrapperView.Layer, pancake.Elevation, Bounds, cornerRadius);
+                }
             }
 
             if (hasShadowOrElevation)
             {
-                // _actualView.Layer.CornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
                 _actualView.ClipsToBounds = true;
             }
             else
             {
+                // Reset to zero.
                 _wrapperView.Layer.ShadowOpacity = 0;
             }
 
             // Set the rasterization for performance optimization.
             _wrapperView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
             _wrapperView.Layer.ShouldRasterize = true;
-
             _actualView.Layer.RasterizationScale = UIScreen.MainScreen.Scale;
             _actualView.Layer.ShouldRasterize = true;
         }
 
-        private void DrawDefaultShadow(CALayer layer, CGRect bounds, nfloat cornerRadius)
+        private void DrawDefaultShadow(DropShadow shadow, CALayer layer, CGRect bounds, nfloat cornerRadius)
+        {
+            var pancake = Element as PancakeView;
+
+            // Ideally we want to be able to have individual corner radii + shadows
+            // However, on iOS we can only do one radius + shadow.
+            layer.CornerRadius = cornerRadius;
+            layer.ShadowRadius = (float)shadow.BlurRadius;
+            layer.ShadowColor = shadow.Color.ToCGColor();
+            layer.ShadowOpacity = shadow.Opacity;
+            layer.ShadowOffset = new SizeF((float)shadow.Offset.X, (float)shadow.Offset.Y);
+
+            if (pancake.Sides != 4)
+            {
+                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
+            }
+            else
+            {
+                layer.ShadowPath = ShapeUtils.CreateRoundedRectPath(bounds, pancake.CornerRadius).CGPath;
+            }
+        }
+
+        private void DrawDefaultShadow_Obsolete(CALayer layer, CGRect bounds, nfloat cornerRadius)
         {
             var pancake = Element as PancakeView;
 
@@ -394,7 +426,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             }
         }
 
-        private void DrawElevation(CALayer layer, int elevation, CGRect bounds, nfloat cornerRadius)
+        private void DrawElevation_Obsolete(CALayer layer, int elevation, CGRect bounds, nfloat cornerRadius)
         {
             // Source: https://medium.com/material-design-for-ios/part-1-elevation-e48ff795c693
             var pancake = Element as PancakeView;

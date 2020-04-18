@@ -1,28 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
-    <PackageReference Include="FreshMvvm" Version="3.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\" />
-    <Folder Include="PageModels\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="BorderDrawingStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <DebugType>pdbonly</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+        <PackageReference Include="FreshMvvm" Version="3.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Pages\" />
+        <Folder Include="PageModels\" />
+        <Folder Include="Resources\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\Poppins-Bold.ttf" />
+        <EmbeddedResource Include="Resources\Assistant-Regular.ttf" />
+        <EmbeddedResource Include="Resources\fa-brands-400.ttf" />
+    </ItemGroup>
 </Project>

@@ -3,6 +3,9 @@ using Thewissen.PancakeViewSample.PageModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+[assembly: ExportFont("Poppins-Bold.ttf")]
+[assembly: ExportFont("Assistant-Regular.ttf")]
+[assembly: ExportFont("fa-brands-400.ttf")]
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Thewissen.PancakeViewSample
 {

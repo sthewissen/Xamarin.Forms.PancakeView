@@ -3,16 +3,7 @@
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
     <Application.Resources>
         <ResourceDictionary>
-            <OnPlatform x:TypeArguments="x:String" x:Key="LatoBold">
-                <On Platform="iOS" Value="Lato-Bold"/>
-                <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
-                <On Platform="UWP" Value="/Assets/Lato-Bold.ttf#Bold"/>
-            </OnPlatform>
-            <OnPlatform x:TypeArguments="x:String" x:Key="LatoRegular">
-                <On Platform="iOS" Value="Lato-Regular"/>
-                <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
-                <On Platform="UWP" Value="/Assets/Lato-Regular.ttf#Regular"/>
-            </OnPlatform>
+
             <yummy:GradientStopCollection x:Key="Rainbow">
                 <yummy:GradientStop Color="#f3855b" Offset="0" />
                 <yummy:GradientStop Color="#fbcf93" Offset="0.2" />
@@ -21,14 +12,32 @@
                 <yummy:GradientStop Color="#33c6ee" Offset="0.8" />
                 <yummy:GradientStop Color="#c652ba" Offset="1" />
             </yummy:GradientStopCollection>
+
             <Style TargetType="Label">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+                <Setter Property="TextColor" Value="#717171" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="Assistant-Regular" />
             </Style>
+
+            <Style x:Key="small" TargetType="Label">
+                <Setter Property="TextColor" Value="#717171" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontFamily" Value="Assistant-Regular" />
+            </Style>
+
+            <Style x:Key="heading" TargetType="Label">
+                <Setter Property="TextColor" Value="#484848" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontFamily" Value="Poppins-Bold" />
+            </Style>
+
             <Style TargetType="Slider">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="WidthRequest" Value="100" />
                 <Setter Property="MaximumTrackColor" Value="Gray" />
+                <Setter Property="ThumbImageSource" Value="monkey.png" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

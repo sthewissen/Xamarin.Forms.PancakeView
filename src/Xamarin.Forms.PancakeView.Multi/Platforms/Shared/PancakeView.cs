@@ -8,40 +8,70 @@ namespace Xamarin.Forms.PancakeView
     {
         #region properties
 
-        public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides), typeof(int), typeof(PancakeView), defaultValue: 4);
-        public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
-        public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow), typeof(bool), typeof(PancakeView), default(bool));
-        public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation), typeof(int), typeof(PancakeView), 0);
+        public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides),
+            typeof(int), typeof(PancakeView), defaultValue: 4);
 
-        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
+        public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius),
+            typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
 
-        public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed), typeof(bool), typeof(PancakeView), default(bool));
-        public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern), typeof(string), typeof(PancakeView), defaultValue: "5,5");
+        public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow),
+            typeof(bool), typeof(PancakeView), default(bool));
 
-        public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(PancakeView), default(Color));
-        public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle), typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
+        public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
+            typeof(int), typeof(PancakeView), 0);
 
-        public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-        public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-        public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
+        public static readonly BindableProperty ShadowProperty = BindableProperty.Create(nameof(Shadow),
+            typeof(DropShadow), typeof(PancakeView), defaultValue: default(DropShadow));
 
-        public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops), typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
-        defaultValueCreator: bindable =>
-        {
-            return new GradientStopCollection();
-        });
+        public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness),
+            typeof(float), typeof(PancakeView), default(float));
 
-        public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-        public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor), typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-        public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
+        public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed),
+            typeof(bool), typeof(PancakeView), default(bool));
 
-        public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops), typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
-        defaultValueCreator: bindable =>
-        {
-            return new GradientStopCollection();
-        });
+        public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern),
+            typeof(string), typeof(PancakeView), defaultValue: "5,5");
 
-        public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
+        public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor),
+            typeof(Color), typeof(PancakeView), default(Color));
+
+        public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle),
+            typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
+
+        public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle),
+            typeof(int), typeof(PancakeView), defaultValue: default(int));
+
+        public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops),
+            typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
+            defaultValueCreator: bindable =>
+            {
+                return new GradientStopCollection();
+            });
+
+        public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle),
+            typeof(int), typeof(PancakeView), defaultValue: default(int));
+
+        public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops),
+            typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
+            defaultValueCreator: bindable =>
+            {
+                return new GradientStopCollection();
+            });
+
+        public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle),
+            typeof(double), typeof(PancakeView), default(double));
 
         public int Sides
         {
@@ -49,12 +79,14 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(SidesProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the BackgroundGradientStops property. Please use that instead.")]
         public Color BackgroundGradientStartColor
         {
             get { return (Color)GetValue(BackgroundGradientStartColorProperty); }
             set { SetValue(BackgroundGradientStartColorProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the BackgroundGradientStops property. Please use that instead.")]
         public Color BackgroundGradientEndColor
         {
             get { return (Color)GetValue(BackgroundGradientEndColorProperty); }
@@ -73,12 +105,14 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the BorderGradientStops property. Please use that instead.")]
         public Color BorderGradientStartColor
         {
             get { return (Color)GetValue(BorderGradientStartColorProperty); }
             set { SetValue(BorderGradientStartColorProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the BorderGradientStops property. Please use that instead.")]
         public Color BorderGradientEndColor
         {
             get { return (Color)GetValue(BorderGradientEndColorProperty); }
@@ -127,16 +161,24 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderColorProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the Shadow property. Please use that instead.")]
         public bool HasShadow
         {
             get { return (bool)GetValue(HasShadowProperty); }
             set { SetValue(HasShadowProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the Shadow property. Please use that instead.")]
         public int Elevation
         {
             get { return (int)GetValue(ElevationProperty); }
             set { SetValue(ElevationProperty, value); }
+        }
+
+        public DropShadow Shadow
+        {
+            get { return (DropShadow)GetValue(ShadowProperty); }
+            set { SetValue(ShadowProperty, value); }
         }
 
         public BorderDrawingStyle BorderDrawingStyle

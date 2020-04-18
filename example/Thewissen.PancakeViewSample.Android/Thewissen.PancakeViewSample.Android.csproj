@@ -279,6 +279,30 @@
             <Generator>
             </Generator>
         </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xxxhdpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xxhdpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xhdpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-hdpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-mdpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-ldpi\xamalogo.png">
+          <SubType></SubType>
+          <Generator></Generator>
+        </AndroidResource>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Resources\drawable\" />
