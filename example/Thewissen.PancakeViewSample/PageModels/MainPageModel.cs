@@ -10,6 +10,9 @@ namespace Thewissen.PancakeViewSample.PageModels
 {
     public class MainPageModel : FreshMvvm.FreshBasePageModel
     {
+        private static readonly Random _randomGen = new Random();
+        public Color RandomColor => GetRandomColor();
+
         #region border dash
 
         int currentBorderDashIndex = 0;
@@ -21,7 +24,6 @@ namespace Thewissen.PancakeViewSample.PageModels
             new DashPattern(10,5,15,5,20,5),
             new DashPattern(5,2)
         };
-        private int shadowColorInt;
 
         public DashPattern BorderDashPattern { get; set; }
 
@@ -29,20 +31,16 @@ namespace Thewissen.PancakeViewSample.PageModels
 
         #region shadow
 
-        [AlsoNotifyFor(nameof(ShadowOffset))]
-        public float ShadowOffsetX { get; set; } = 10;
+        public Point ShadowOffset { get; set; } = new Point(20, 20);
 
-        [AlsoNotifyFor(nameof(ShadowOffset))]
-        public float ShadowOffsetY { get; set; } = 10;
-
-        public Point ShadowOffset => new Point(ShadowOffsetX, ShadowOffsetY);
-
-        public int ShadowColorInt { get; set; }
+        public Color ShadowColor { get; set; } = Color.Black;
 
         #endregion
 
         public ICommand OpenDebugModeCommand { get; set; }
         public ICommand CycleBorderDashPatternCommand { get; set; }
+        public ICommand GenerateRandomShadowColorCommand { get; set; }
+        public ICommand GenerateRandomShadowOffsetCommand { get; set; }
 
         public MainPageModel()
         {
@@ -50,7 +48,19 @@ namespace Thewissen.PancakeViewSample.PageModels
 
             // Set up the border dash sample.
             CycleBorderDashPatternCommand = new Command(CycleBorderDash);
+            GenerateRandomShadowColorCommand = new Command(GenerateRandomShadowColor);
+            GenerateRandomShadowOffsetCommand = new Command(GenerateRandomShadowOffset);
             BorderDashPattern = DashPatterns.FirstOrDefault();
+        }
+
+        void GenerateRandomShadowColor(object obj)
+        {
+            ShadowColor = GetRandomColor();
+        }
+
+        void GenerateRandomShadowOffset(object obj)
+        {
+            ShadowOffset = new Point(_randomGen.Next(-40, 40), _randomGen.Next(-40, 40));
         }
 
         void CycleBorderDash()
@@ -61,6 +71,12 @@ namespace Thewissen.PancakeViewSample.PageModels
                 currentBorderDashIndex += 1;
 
             BorderDashPattern = DashPatterns[currentBorderDashIndex];
+        }
+
+        public static Color GetRandomColor()
+        {
+            var color = Color.FromRgb((byte)_randomGen.Next(0, 255), (byte)_randomGen.Next(0, 255), (byte)_randomGen.Next(0, 255));
+            return color;
         }
     }
 }

@@ -4,17 +4,22 @@ using Xamarin.Forms;
 
 namespace Thewissen.PancakeViewSample.Converters
 {
-    public class IntToColorConverter : IValueConverter
+    public class ColorToHexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int colorInt)
+            if (value is Color color)
             {
-                var color = Color.FromUint((uint)colorInt);
-                return new Color(color.R, color.G, color.B, 1);
+                var red = (int)(color.R * 255);
+                var green = (int)(color.G * 255);
+                var blue = (int)(color.B * 255);
+                var alpha = (int)(color.A * 255);
+                var hex = $"#{red:X2}{green:X2}{blue:X2}";
+
+                return hex;
             }
 
-            return Color.Default;
+            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

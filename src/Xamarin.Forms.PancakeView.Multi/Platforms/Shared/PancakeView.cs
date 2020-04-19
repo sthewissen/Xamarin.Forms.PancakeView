@@ -6,24 +6,6 @@ namespace Xamarin.Forms.PancakeView
 {
     public class PancakeView : ContentView
     {
-        // Propagates changes from our custom BindableObject implementations
-        // up to the actual PancakeView. That way it knows it should redraw.
-        private PropertyPropagator propertyChangedPropagator;
-        private PropertyPropagator PropertyChangedPropagator
-        {
-            get
-            {
-                if (propertyChangedPropagator == null)
-                {
-                    propertyChangedPropagator = new PropertyPropagator(this, OnPropertyChanged,
-                        nameof(Shadow.Color), nameof(Shadow.BlurRadius), nameof(Shadow.Offset), nameof(Shadow.Opacity)
-                    );
-                }
-
-                return propertyChangedPropagator;
-            }
-        }
-
         public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides),
             typeof(int), typeof(PancakeView), defaultValue: 4);
 
@@ -35,9 +17,6 @@ namespace Xamarin.Forms.PancakeView
 
         public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
             typeof(int), typeof(PancakeView), 0);
-
-        public static readonly BindableProperty ShadowProperty = BindableProperty.Create(nameof(Shadow),
-            typeof(DropShadow), typeof(PancakeView), defaultValue: default(DropShadow));
 
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness),
             typeof(float), typeof(PancakeView), default(float));
@@ -92,20 +71,46 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle),
             typeof(double), typeof(PancakeView), default(double));
 
+        public static readonly BindableProperty ShadowProperty = BindableProperty.Create(nameof(Shadow),
+            typeof(DropShadow), typeof(PancakeView), defaultValue: default(DropShadow),
+            propertyChanging: (bindable, oldvalue, newvalue) =>
+            {
+                // We do this to propagate property changed one level up from DropShadow to PancakeView.
+                if (oldvalue != null)
+                {
+                    var shadow = ((DropShadow)oldvalue);
+                    var pancake = ((PancakeView)bindable);
+
+                    shadow.PropertyChanged -= pancake.OnShadowChanged;
+                    shadow.PropertyChanging -= pancake.OnShadowChanging;
+                }
+            }, propertyChanged: (bindable, oldvalue, newvalue) =>
+            {
+                // We do this to propagate property changed one level up from DropShadow to PancakeView.
+                var pancake = ((PancakeView)bindable);
+
+                if (newvalue != null)
+                {
+                    var shadow = (DropShadow)newvalue;
+                    shadow.PropertyChanging += pancake.OnShadowChanging;
+                    shadow.PropertyChanged += pancake.OnShadowChanged;
+                }
+            });
+
         public int Sides
         {
             get { return (int)GetValue(SidesProperty); }
             set { SetValue(SidesProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the BackgroundGradientStops property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
         public Color BackgroundGradientStartColor
         {
             get { return (Color)GetValue(BackgroundGradientStartColorProperty); }
             set { SetValue(BackgroundGradientStartColorProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the BackgroundGradientStops property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
         public Color BackgroundGradientEndColor
         {
             get { return (Color)GetValue(BackgroundGradientEndColorProperty); }
@@ -124,14 +129,14 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BackgroundGradientStopsProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the BorderGradientStops property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
         public Color BorderGradientStartColor
         {
             get { return (Color)GetValue(BorderGradientStartColorProperty); }
             set { SetValue(BorderGradientStartColorProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the BorderGradientStops property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
         public Color BorderGradientEndColor
         {
             get { return (Color)GetValue(BorderGradientEndColorProperty); }
@@ -162,7 +167,7 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderThicknessProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the BorderDashPattern property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use BorderDashPattern instead.")]
         public bool BorderIsDashed
         {
             get { return (bool)GetValue(BorderIsDashedProperty); }
@@ -181,14 +186,14 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderColorProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the Shadow property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
         public bool HasShadow
         {
             get { return (bool)GetValue(HasShadowProperty); }
             set { SetValue(HasShadowProperty, value); }
         }
 
-        [Obsolete("This property has been replaced by the Shadow property. Please use that instead.")]
+        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
         public int Elevation
         {
             get { return (int)GetValue(ElevationProperty); }
@@ -197,8 +202,8 @@ namespace Xamarin.Forms.PancakeView
 
         public DropShadow Shadow
         {
-            get { return PropertyChangedPropagator.GetValue<DropShadow>(ShadowProperty); }
-            set { PropertyChangedPropagator.SetValue(ShadowProperty, ref value); }
+            get { return (DropShadow)GetValue(ShadowProperty); }
+            set { SetValue(ShadowProperty, value); }
         }
 
         public BorderDrawingStyle BorderDrawingStyle
@@ -211,6 +216,16 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (double)GetValue(OffsetAngleProperty); }
             set { SetValue(OffsetAngleProperty, value); }
+        }
+
+        void OnShadowChanging(object sender, PropertyChangingEventArgs e)
+        {
+            OnPropertyChanging(nameof(Shadow));
+        }
+
+        void OnShadowChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(Shadow));
         }
     }
 }

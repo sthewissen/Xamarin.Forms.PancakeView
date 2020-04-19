@@ -18,13 +18,8 @@ namespace Xamarin.Forms.PancakeView.iOS
     {
         private UIView _actualView;
         private UIView _wrapperView;
-
         private UIColor _colorToRender;
         private CGSize _previousSize;
-        private nfloat _topLeft;
-        private nfloat _topRight;
-        private nfloat _bottomLeft;
-        private nfloat _bottomRight;
 
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
@@ -160,13 +155,6 @@ namespace Xamarin.Forms.PancakeView.iOS
             if (Element == null)
                 return;
 
-            var elementCornerRadius = (Element as PancakeView).CornerRadius;
-
-            _topLeft = (float)elementCornerRadius.TopLeft;
-            _topRight = (float)elementCornerRadius.TopRight;
-            _bottomLeft = (float)elementCornerRadius.BottomLeft;
-            _bottomRight = (float)elementCornerRadius.BottomRight;
-
             SetNeedsDisplay();
         }
 
@@ -272,7 +260,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 };
 
                 // Create arcs for the given corner radius.
-                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+                //bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
 
                 borderLayer.Path = pancake.Sides != 4 ?
                     ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
@@ -382,7 +370,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             // Ideally we want to be able to have individual corner radii + shadows
             // However, on iOS we can only do one radius + shadow.
             layer.CornerRadius = cornerRadius;
-            layer.ShadowRadius = (float)shadow.BlurRadius;
+            layer.ShadowRadius = shadow.BlurRadius;
             layer.ShadowColor = shadow.Color.ToCGColor();
             layer.ShadowOpacity = shadow.Opacity;
             layer.ShadowOffset = new SizeF((float)shadow.Offset.X, (float)shadow.Offset.Y);

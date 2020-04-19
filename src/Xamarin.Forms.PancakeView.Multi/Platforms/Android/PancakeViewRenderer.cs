@@ -150,6 +150,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
             else if (e.PropertyName == PancakeView.SidesProperty.PropertyName ||
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.ShadowProperty.PropertyName ||
                 e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
                 e.PropertyName == PancakeView.ElevationProperty.PropertyName)
             {

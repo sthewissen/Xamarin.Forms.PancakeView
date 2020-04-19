@@ -129,31 +129,32 @@
             <Grid ColumnSpacing="8">
                 <Label Style="{StaticResource small}" Text="BlurRadius" VerticalOptions="Center" />
                 <Slider Grid.Column="1" Maximum="40" Minimum="0" Value="{Binding BlurRadius, Source={x:Reference shadow}}" />
-            </Grid>
-            <Grid ColumnSpacing="8">
-                <Label Style="{StaticResource small}" Text="Color" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="16777216" Minimum="0" Value="{Binding ShadowColorInt}" />
-            </Grid>
-            <Grid ColumnSpacing="8">
-                <Label Style="{StaticResource small}" Text="OffsetX" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="30" Minimum="0" Value="{Binding ShadowOffsetX}" />
-            </Grid>
-            <Grid ColumnSpacing="8">
-                <Label Style="{StaticResource small}" Text="OffsetY" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="30" Minimum="0" Value="{Binding ShadowOffsetY}" />
-            </Grid>
-            <Grid ColumnSpacing="8">
-                <Label Style="{StaticResource small}" Text="Opacity" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
+
+                <Label Opacity="{OnPlatform Android=0.3}" Grid.Row="1"
+                       Style="{StaticResource small}" Text="Opacity" VerticalOptions="Center" />
+
+                <Slider Opacity="{OnPlatform Android=0.3}" Grid.Row="1" Grid.Column="1"
+                        Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
+
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
+
+                <Button Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding ShadowColor}"
+                        HorizontalOptions="Center" Text="{Binding ShadowColor, Converter={StaticResource ColorToHexConverter}}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomShadowColorCommand}" />
+
+                <Label Opacity="{OnPlatform Android=0.3}" Grid.Row="3" Style="{StaticResource small}"
+                       Text="Offset" VerticalOptions="Center" />
+
+                <Button Opacity="{OnPlatform Android=0.3}" IsEnabled="{OnPlatform Android=false}"
+                        Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" Text="{Binding ShadowOffset}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomShadowOffsetCommand}" />
             </Grid>
 
             <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#96e7a7" Padding="20,0"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="20">
 
                 <yummy:PancakeView.Shadow>
-                    <yummy:DropShadow x:Name="shadow"
-                                      Color="{Binding ShadowColorInt, Converter={StaticResource IntToColorConverter}}"
-                                      Offset="{Binding ShadowOffset}" />
+                    <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}" Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
                 <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android."
