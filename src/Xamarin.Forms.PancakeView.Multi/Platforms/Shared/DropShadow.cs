@@ -39,24 +39,6 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(OffsetProperty, value);
         }
 
-        public static readonly BindableProperty ElevationProperty = BindableProperty.Create(
-            nameof(Elevation), typeof(float), typeof(DropShadow), 10f);
-
-        public float Elevation
-        {
-            get => (float)GetValue(ElevationProperty);
-            set => SetValue(ElevationProperty, value);
-        }
-
-        public static readonly BindableProperty TranslationZProperty = BindableProperty.Create(
-            nameof(TranslationZ), typeof(float), typeof(DropShadow), 10f);
-
-        public float TranslationZ
-        {
-            get => (float)GetValue(TranslationZProperty);
-            set => SetValue(TranslationZProperty, value);
-        }
-
         //public override bool Equals(object obj)
         //{
         //    if (!(obj is DropShadow dest))

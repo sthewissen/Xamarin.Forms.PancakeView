@@ -15,7 +15,7 @@
         <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
         <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
         <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-        <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
         <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
         <NuGetPackageImportStamp>
         </NuGetPackageImportStamp>
@@ -280,28 +280,40 @@
             </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-xxxhdpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-xxhdpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-xhdpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-hdpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-mdpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
         <AndroidResource Include="Resources\drawable-ldpi\xamalogo.png">
-          <SubType></SubType>
-          <Generator></Generator>
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
         </AndroidResource>
     </ItemGroup>
     <ItemGroup>

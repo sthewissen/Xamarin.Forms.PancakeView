@@ -4,7 +4,6 @@
              ios:Page.UseSafeArea="true" xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.Pages.MainPage"
              xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
-
     <ScrollView>
         <StackLayout Spacing="0" Padding="40">
 
@@ -155,7 +154,8 @@
                     <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}" Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
-                <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
+                <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android."
+                       HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
             </yummy:PancakeView>
 
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
@@ -182,7 +182,7 @@
             <Label Text="NOT JUST SQUARES AND CIRCLES" Style="{StaticResource heading}"
                    HorizontalOptions="Center" HorizontalTextAlignment="Center" />
 
-            <Label Text="More than circles and rectangles. Create polygonal shapes too."  Margin="0,8,0,16"
+            <Label Text="More than circles and rectangles. Create polygonal shapes too. These work like masks."  Margin="0,8,0,16"
                    HorizontalOptions="Center" HorizontalTextAlignment="Center" />
 
             <Grid ColumnSpacing="8">
@@ -195,7 +195,7 @@
                 <Slider Grid.Column="1" Maximum="360" Minimum="0" Value="{Binding OffsetAngle, Source={x:Reference polygon}}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="polygon" Margin="0,32,0,0" Padding="25" BackgroundColor="#3498db" Sides="6" BorderIsDashed="true"
+            <yummy:PancakeView x:Name="polygon" Margin="0,32,0,0" Padding="25" BackgroundColor="#3498db" Sides="6" 
                                CornerRadius="10" HeightRequest="100" WidthRequest="100" HorizontalOptions="Center">
                 <Image Source="xamalogo" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFill" />
             </yummy:PancakeView>

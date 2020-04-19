@@ -1,103 +1,90 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
-
-  <PropertyGroup>
-    <TargetFrameworks></TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299;NET461</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
-
-    <!--Assembly and Namespace info -->
-    <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
-    <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
-
-    <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
-    <AssemblyFileVersion>1.2.0</AssemblyFileVersion>
-    <Version>1.2.0</Version>
-    <PackOnBuild>true</PackOnBuild>
-    <NeutralLanguage>en</NeutralLanguage>
-    <LangVersion>default</LangVersion>
-    <DefineConstants>$(DefineConstants);</DefineConstants>
-
-    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-
-    <LangVersion>latest</LangVersion>
-    
-    <PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki/Xamarin.Forms.PancakeView-Release-Notes</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
-    <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
-
-    <Title>PancakeView for Xamarin.Forms</Title>
-    <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
-    <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
-
-    <Owners>Steven Thewissen</Owners>
-    <Authors>Steven Thewissen</Authors>
-    <Copyright>Copyright 2019 Steven Thewissen</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-
-  </PropertyGroup>
-
-  <!-- Define what happens on build and release -->
-   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DebugType>pdbonly</DebugType>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="Platforms\Shared\**\*.cs" />
-
-    <!--NuGet that bring in good stuff -->
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-  </ItemGroup>
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <Compile Include="Platforms\iOS\**\*.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <Compile Include="Platforms\Android\**\*.cs" />
-  </ItemGroup>
-  
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-    <Compile Include="Platforms\UWP\**\*.cs" />
-    <!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="MSBuild.Sdk.Extras/2.0.41">
+    <PropertyGroup>
+        <TargetFrameworks>
+        </TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299;NET461</TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
+        <!--Assembly and Namespace info -->
+        <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
+        <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
+        <Product>$(AssemblyName) ($(TargetFramework))</Product>
+        <AssemblyVersion>1.2.0</AssemblyVersion>
+        <AssemblyFileVersion>1.2.0</AssemblyFileVersion>
+        <Version>1.2.0</Version>
+        <PackOnBuild>true</PackOnBuild>
+        <NeutralLanguage>en</NeutralLanguage>
+        <LangVersion>default</LangVersion>
+        <DefineConstants>$(DefineConstants);</DefineConstants>
+        <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <LangVersion>latest</LangVersion>
+        <PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki/Xamarin.Forms.PancakeView-Release-Notes</PackageReleaseNotes>
+        <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
+        <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
+        <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
+        <Title>PancakeView for Xamarin.Forms</Title>
+        <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
+        <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
+        <Owners>Steven Thewissen</Owners>
+        <Authors>Steven Thewissen</Authors>
+        <Copyright>Copyright 2019 Steven Thewissen</Copyright>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+    <!-- Define what happens on build and release -->
+    <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+        <DebugType>full</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <DebugType>pdbonly</DebugType>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Platforms\Shared\**\*.cs" />
+        <!--NuGet that bring in good stuff -->
+        <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
+        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+        <Compile Include="Platforms\iOS\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+        <Compile Include="Platforms\Android\**\*.cs" />
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+        <Compile Include="Platforms\UWP\**\*.cs" />
+        <!--
     If you need to add sdk references:
      <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
     -->
-  </ItemGroup>
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('NET461')) ">
-    <Compile Include="Platforms\WPF\**\*.cs" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.6.0.220655" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="System.Xaml" />
-    
-    <!--
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('NET461')) ">
+        <Compile Include="Platforms\WPF\**\*.cs" />
+        <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="3.6.0.220655" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="WindowsBase" />
+        <Reference Include="System.Xaml" />
+        <!--
     If you need to add sdk references:
      <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
     </SDKReference>
     -->
-  </ItemGroup>
-
-   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Platforms\Shared\MarkupExtensions\" />
+    </ItemGroup>
+    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

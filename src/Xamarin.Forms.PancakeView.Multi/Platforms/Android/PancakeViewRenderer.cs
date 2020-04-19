@@ -3,10 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using Android.Content;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Support.V4.View;
-using Android.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.Droid;
 using Xamarin.Forms.Platform.Android;
@@ -91,12 +89,12 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (pancake.Shadow != null)
                 {
-                    // Color only exists on Pie and beyond.
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
-                    {
-                        this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
-                        this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
-                    }
+                    //// Color only exists on Pie and beyond.
+                    //if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
+                    //{
+                    //    this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
+                    //    this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
+                    //}
 
                     ViewCompat.SetElevation(this, Context.ToPixels(pancake.Shadow.BlurRadius));
                 }
