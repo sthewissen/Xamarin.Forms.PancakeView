@@ -87,21 +87,35 @@ namespace Xamarin.Forms.PancakeView.Droid
                 this.Elevation = 0;
                 this.TranslationZ = 0;
 
-                bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
+                bool hasShadowOrElevation = pancake.Shadow != null || pancake.HasShadow || pancake.Elevation > 0;
 
-                // If it has a shadow, give it a default Droid looking shadow.
-                if (pancake.HasShadow)
+                if (pancake.Shadow != null)
                 {
-                    this.Elevation = 10;
-                    this.TranslationZ = 10;
+                    // Color only exists on Pie and beyond.
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
+                    {
+                        this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
+                        this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
+                    }
+
+                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Shadow.BlurRadius));
                 }
-
-                // However if it has a specified elevation add the desired one
-                if (pancake.Elevation > 0)
+                else
                 {
-                    this.Elevation = 0;
-                    this.TranslationZ = 0;
-                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Elevation));
+                    // If it has a shadow, give it a default Droid looking shadow.
+                    if (pancake.HasShadow)
+                    {
+                        this.Elevation = 10;
+                        this.TranslationZ = 10;
+                    }
+
+                    // However if it has a specified elevation add the desired one
+                    if (pancake.Elevation > 0)
+                    {
+                        this.Elevation = 0;
+                        this.TranslationZ = 0;
+                        ViewCompat.SetElevation(this, Context.ToPixels(pancake.Elevation));
+                    }
                 }
 
                 if (hasShadowOrElevation)

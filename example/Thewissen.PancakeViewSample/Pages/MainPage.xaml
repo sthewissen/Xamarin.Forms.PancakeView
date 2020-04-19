@@ -145,18 +145,17 @@
             </Grid>
             <Grid ColumnSpacing="8">
                 <Label Style="{StaticResource small}" Text="Opacity" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="1" Minimum="0" Value="{Binding ShadowOpacity}" />
+                <Slider Grid.Column="1" Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
             </Grid>
 
             <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#b6e78b" Padding="20,0"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="20">
 
                 <yummy:PancakeView.Shadow>
-                    <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}"
-                                      Opacity="{Binding ShadowOpacity}" Offset="{Binding ShadowOffset}" />
+                    <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}" Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
-                <Label Text="Only the Elevation and TranslationZ properties are available for Android. Color is only supported on Android API29+." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
+                <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
             </yummy:PancakeView>
 
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
