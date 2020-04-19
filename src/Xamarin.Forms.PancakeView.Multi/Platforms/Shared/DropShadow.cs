@@ -38,18 +38,5 @@ namespace Xamarin.Forms.PancakeView
             get => (Point)GetValue(OffsetProperty);
             set => SetValue(OffsetProperty, value);
         }
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (!(obj is DropShadow dest))
-        //        return false;
-
-        //    return Color == dest.Color;
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return -1234567890 + Color.GetHashCode();
-        //}
     }
 }

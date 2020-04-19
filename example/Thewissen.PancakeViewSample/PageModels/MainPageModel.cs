@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using PropertyChanged;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView;
 
@@ -20,6 +21,7 @@ namespace Thewissen.PancakeViewSample.PageModels
             new DashPattern(10,5,15,5,20,5),
             new DashPattern(5,2)
         };
+        private int shadowColorInt;
 
         public DashPattern BorderDashPattern { get; set; }
 
@@ -27,50 +29,15 @@ namespace Thewissen.PancakeViewSample.PageModels
 
         #region shadow
 
-        int shadowColorInt = 0;
-        float shadowOffsetX = 1f;
-        float shadowOffsetY = 1f;
+        [AlsoNotifyFor(nameof(ShadowOffset))]
+        public float ShadowOffsetX { get; set; } = 10;
 
-        public float ShadowOffsetX
-        {
-            get => shadowOffsetX; set
-            {
-                shadowOffsetX = value;
-                RaisePropertyChanged(nameof(ShadowOffsetX));
-                RaisePropertyChanged(nameof(ShadowOffset));
-            }
-        }
-
-        public float ShadowOffsetY
-        {
-            get => shadowOffsetY; set
-            {
-                shadowOffsetY = value;
-                RaisePropertyChanged(nameof(ShadowOffsetY));
-                RaisePropertyChanged(nameof(ShadowOffset));
-            }
-        }
+        [AlsoNotifyFor(nameof(ShadowOffset))]
+        public float ShadowOffsetY { get; set; } = 10;
 
         public Point ShadowOffset => new Point(ShadowOffsetX, ShadowOffsetY);
 
-        public int ShadowColorInt
-        {
-            get => shadowColorInt; set
-            {
-                shadowColorInt = value;
-                RaisePropertyChanged(nameof(ShadowColorInt));
-                RaisePropertyChanged(nameof(ShadowColor));
-            }
-        }
-
-        public Color ShadowColor
-        {
-            get
-            {
-                var color = Color.FromUint((uint)ShadowColorInt);
-                return new Color(color.R, color.G, color.B, 1);
-            }
-        }
+        public int ShadowColorInt { get; set; }
 
         #endregion
 

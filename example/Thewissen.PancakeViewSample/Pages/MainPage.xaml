@@ -147,11 +147,13 @@
                 <Slider Grid.Column="1" Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
             </Grid>
 
-            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#b6e78b" Padding="20,0"
+            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#96e7a7" Padding="20,0"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="20">
 
                 <yummy:PancakeView.Shadow>
-                    <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}" Offset="{Binding ShadowOffset}" />
+                    <yummy:DropShadow x:Name="shadow"
+                                      Color="{Binding ShadowColorInt, Converter={StaticResource IntToColorConverter}}"
+                                      Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
                 <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android."

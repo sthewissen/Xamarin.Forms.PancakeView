@@ -12,14 +12,15 @@
         <PackageReference Include="FreshMvvm" Version="3.0.0" />
         <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
         <PackageReference Include="Fody" Version="6.1.1">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Pages\" />
         <Folder Include="PageModels\" />
         <Folder Include="Resources\" />
+        <Folder Include="Converters\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
@@ -27,6 +28,7 @@
     <ItemGroup>
         <EmbeddedResource Include="Resources\Poppins-Bold.ttf" />
         <EmbeddedResource Include="Resources\Assistant-Regular.ttf" />
+        <EmbeddedResource Include="Resources\Assistant-Bold.ttf" />
         <EmbeddedResource Include="Resources\fa-brands-400.ttf" />
     </ItemGroup>
 </Project>

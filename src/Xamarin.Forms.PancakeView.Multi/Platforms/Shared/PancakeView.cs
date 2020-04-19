@@ -6,7 +6,23 @@ namespace Xamarin.Forms.PancakeView
 {
     public class PancakeView : ContentView
     {
-        #region properties
+        // Propagates changes from our custom BindableObject implementations
+        // up to the actual PancakeView. That way it knows it should redraw.
+        private PropertyPropagator propertyChangedPropagator;
+        private PropertyPropagator PropertyChangedPropagator
+        {
+            get
+            {
+                if (propertyChangedPropagator == null)
+                {
+                    propertyChangedPropagator = new PropertyPropagator(this, OnPropertyChanged,
+                        nameof(Shadow.Color), nameof(Shadow.BlurRadius), nameof(Shadow.Offset), nameof(Shadow.Opacity)
+                    );
+                }
+
+                return propertyChangedPropagator;
+            }
+        }
 
         public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides),
             typeof(int), typeof(PancakeView), defaultValue: 4);
@@ -181,8 +197,8 @@ namespace Xamarin.Forms.PancakeView
 
         public DropShadow Shadow
         {
-            get { return (DropShadow)GetValue(ShadowProperty); }
-            set { SetValue(ShadowProperty, value); }
+            get { return PropertyChangedPropagator.GetValue<DropShadow>(ShadowProperty); }
+            set { PropertyChangedPropagator.SetValue(ShadowProperty, ref value); }
         }
 
         public BorderDrawingStyle BorderDrawingStyle
@@ -196,7 +212,5 @@ namespace Xamarin.Forms.PancakeView
             get { return (double)GetValue(OffsetAngleProperty); }
             set { SetValue(OffsetAngleProperty, value); }
         }
-
-        #endregion
     }
 }

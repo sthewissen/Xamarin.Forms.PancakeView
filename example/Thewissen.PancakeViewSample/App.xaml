@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.App"
-             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thewissen.PancakeViewSample.App"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:converters="clr-namespace:Thewissen.PancakeViewSample.Converters">
     <Application.Resources>
         <ResourceDictionary>
+
+            <converters:IntToColorConverter x:Key="IntToColorConverter" />
 
             <yummy:GradientStopCollection x:Key="Rainbow">
                 <yummy:GradientStop Color="#f3855b" Offset="0" />
@@ -16,14 +21,13 @@
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="#717171" />
                 <Setter Property="FontSize" Value="16" />
-                <Setter Property="FontFamily" Value="Assistant-Regular" />
+                <Setter Property="FontFamily" Value="Assistant" />
             </Style>
 
             <Style x:Key="small" TargetType="Label">
                 <Setter Property="TextColor" Value="#717171" />
                 <Setter Property="FontSize" Value="14" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontFamily" Value="Assistant-Regular" />
+                <Setter Property="FontFamily" Value="AssistantBold" />
             </Style>
 
             <Style x:Key="heading" TargetType="Label">
