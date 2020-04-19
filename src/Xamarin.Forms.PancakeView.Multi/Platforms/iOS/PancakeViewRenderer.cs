@@ -127,17 +127,10 @@ namespace Xamarin.Forms.PancakeView.iOS
             if (pancake.Sides < 3)
                 throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
 
-            // Needs to be an even number of parts
-            if (pancake.BorderDashPattern.Split(",").Count() >= 2 && pancake.BorderDashPattern.Split(",").Count() % 2 != 0)
+            // Needs to be an even number of parts, but if its null or 0 elements, we simply don't dash.
+            if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length != 0 &&
+                (pancake.BorderDashPattern.Pattern?.Length >= 2 && pancake.BorderDashPattern.Pattern.Length % 2 != 0))
                 throw new ArgumentException("BorderDashPattern must contain an even number of entries (>=2).", nameof(Controls.PancakeView.BorderDashPattern));
-
-            foreach (var item in pancake.BorderDashPattern.Split(","))
-            {
-                if (!int.TryParse(item.Trim(), out var result))
-                {
-                    throw new ArgumentException("Not all values in BorderDashPattern are valid integers.", nameof(Controls.PancakeView.BorderDashPattern));
-                }
-            }
         }
 
         public override void LayoutSubviews()
@@ -291,10 +284,10 @@ namespace Xamarin.Forms.PancakeView.iOS
                 borderLayer.Position = layerPosition;
 
                 // Dash pattern for the border.
-                if (pancake.BorderIsDashed)
+                if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length > 0)
                 {
-                    var items = pancake.BorderDashPattern.Split(",").Select(x => new NSNumber(Convert.ToInt32(x.Trim()))).ToArray();
-                    borderLayer.LineDashPattern = items; //new NSNumber[] { new NSNumber(pancake.DashSize), new NSNumber(pancake.DashSpacing) };
+                    var items = pancake.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
+                    borderLayer.LineDashPattern = items;
                 }
 
                 if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))

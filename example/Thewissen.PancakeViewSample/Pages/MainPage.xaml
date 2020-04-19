@@ -66,9 +66,34 @@
             <Label Text="Borders follow along with your rounded corners. We also support fancy dashed borders."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView BackgroundColor="#bfcdde" HorizontalOptions="FillAndExpand" BorderIsDashed="true" BorderDashPattern="10,8,5,5" HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
                 <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
+            </yummy:PancakeView>-->
+
+            <Label Text="DASHED BORDERS" Style="{StaticResource heading}"
+                   HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <Label Text="Who doesn't need a bit of dashed borders in their life?"
+                   Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <Grid ColumnSpacing="8" VerticalOptions="Start">
+                <Label Style="{StaticResource small}" Text="BorderDashPattern" VerticalOptions="Center" />
+                <Label Grid.Column="1" HorizontalTextAlignment="End" VerticalOptions="Center" Text="{Binding BorderDashPattern, Source={x:Reference borderDash}}" />
+            </Grid>
+
+            <yummy:PancakeView x:Name="borderDash" Margin="0,32,0,0" BorderDrawingStyle="Outside" BackgroundColor="#78ABE7"
+                               HorizontalOptions="FillAndExpand" Padding="20,0"
+                               HeightRequest="150" CornerRadius="40,10,40,10"
+                               BorderThickness="4" BorderColor="#456287" BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}">
+
+                <yummy:PancakeView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CycleBorderDashPatternCommand}" />
+                </yummy:PancakeView.GestureRecognizers>
+
+                <Label Text="This box has a nice dashed border. Tap me to cycle through various types of samples for you to gaze at." HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#ffffff" />
+
             </yummy:PancakeView>
 
-            <Label Margin="0,32,0,0" Text="OUTSIDE BORDERS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <!--<Label Margin="0,32,0,0" Text="OUTSIDE BORDERS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Borders follow along with your rounded corners. We also support fancy dashed borders."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView BorderDrawingStyle="Outside" BackgroundColor="#78ABE7" HorizontalOptions="FillAndExpand" BorderIsDashed="false"
                                HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
@@ -91,6 +116,8 @@
                 <Label Text="This box has a gradient border." HorizontalOptions="Center" VerticalOptions="Center" />
             </yummy:PancakeView>
             -->
+
+            <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 
             <!--SHADOWS-->
 
@@ -126,11 +153,10 @@
 
                 <yummy:PancakeView.Shadow>
                     <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}"
-                                      Opacity="{Binding ShadowOpacity}" Offset="{Binding ShadowOffset}"
-                                      Elevation="10" TranslationZ="10" />
+                                      Opacity="{Binding ShadowOpacity}" Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
-                <Label Text="Only the Elevation and TranslationZ properties are available for Android. These don't do anything on other platforms. Color is only supported on Android API29+." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
+                <Label Text="Only the Elevation and TranslationZ properties are available for Android. Color is only supported on Android API29+." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
             </yummy:PancakeView>
 
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>

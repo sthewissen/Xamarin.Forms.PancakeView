@@ -73,18 +73,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             if (pancake.Sides < 3)
                 throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
 
-            // Needs to be an even number of parts.
-            if (pancake.BorderDashPattern.Split(",").Count() >= 2 && pancake.BorderDashPattern.Split(",").Count() % 2 != 0)
+            // Needs to be an even number of parts, but if its null or 0 elements, we simply don't dash.
+            if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length != 0 &&
+                (pancake.BorderDashPattern.Pattern?.Length >= 2 && pancake.BorderDashPattern.Pattern.Length % 2 != 0))
                 throw new ArgumentException("BorderDashPattern must contain an even number of entries (>=2).", nameof(Controls.PancakeView.BorderDashPattern));
-
-            // Needs to be all ints.
-            foreach (var item in pancake.BorderDashPattern.Split(","))
-            {
-                if (!int.TryParse(item.Trim(), out var result))
-                {
-                    throw new ArgumentException("Not all values in BorderDashPattern are valid integers.", nameof(Controls.PancakeView.BorderDashPattern));
-                }
-            }
         }
 
         private void SetupShadow(PancakeView pancake)
@@ -277,9 +269,9 @@ namespace Xamarin.Forms.PancakeView.Droid
                             Context.ToPixels(control.CornerRadius.BottomLeft));
                     }
 
-                    if (control.BorderIsDashed)
+                    if (control.BorderDashPattern.Pattern != null && control.BorderDashPattern.Pattern.Length > 0)
                     {
-                        var items = control.BorderDashPattern.Split(",").Select(x => Context.ToPixels(Convert.ToSingle(x.Trim()))).ToArray();
+                        var items = control.BorderDashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToArray();
 
                         // dashes merge when thickness is increased
                         // off-distance should be scaled according to thickness

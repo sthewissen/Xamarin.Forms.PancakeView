@@ -30,7 +30,10 @@ namespace Xamarin.Forms.PancakeView
             typeof(bool), typeof(PancakeView), default(bool));
 
         public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern),
-            typeof(string), typeof(PancakeView), defaultValue: "5,5");
+            typeof(DashPattern), typeof(PancakeView), defaultValue: default(DashPattern), defaultValueCreator: bindable =>
+            {
+                return new DashPattern();
+            });
 
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor),
             typeof(Color), typeof(PancakeView), default(Color));
@@ -143,15 +146,16 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderThicknessProperty, value); }
         }
 
+        [Obsolete("This property has been replaced by the BorderDashPattern property. Please use that instead.")]
         public bool BorderIsDashed
         {
             get { return (bool)GetValue(BorderIsDashedProperty); }
             set { SetValue(BorderIsDashedProperty, value); }
         }
 
-        public string BorderDashPattern
+        public DashPattern BorderDashPattern
         {
-            get { return (string)GetValue(BorderDashPatternProperty); }
+            get { return (DashPattern)GetValue(BorderDashPatternProperty); }
             set { SetValue(BorderDashPatternProperty, value); }
         }
 
