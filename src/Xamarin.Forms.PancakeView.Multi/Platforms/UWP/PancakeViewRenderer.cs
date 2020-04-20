@@ -25,7 +25,6 @@ namespace Xamarin.Forms.PancakeView.UWP
         private Border content;
         private SpriteVisual visual;
 
-
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
         /// </summary>
@@ -113,7 +112,10 @@ namespace Xamarin.Forms.PancakeView.UWP
                 UpdateShadow(pancake);
             }
             else if (e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
-                e.PropertyName == PancakeView.ElevationProperty.PropertyName)
+                e.PropertyName == PancakeView.ElevationProperty.PropertyName ||
+                e.PropertyName == PancakeView.WidthProperty.PropertyName ||
+                e.PropertyName == PancakeView.HeightProperty.PropertyName ||
+                e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
                 UpdateShadow(pancake);
             }
@@ -133,12 +135,6 @@ namespace Xamarin.Forms.PancakeView.UWP
                 e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
             {
                 UpdateBorder(pancake);
-            }
-
-            else if (e.PropertyName == PancakeView.WidthProperty.PropertyName ||
-                    e.PropertyName == PancakeView.HeightProperty.PropertyName)
-            {
-                UpdateShadow(pancake);
             }
         }
 
@@ -164,8 +160,8 @@ namespace Xamarin.Forms.PancakeView.UWP
                 shadow.BlurRadius = pancake.Shadow.BlurRadius;
                 shadow.Mask = rectangle.GetAlphaMask();
                 shadow.Opacity = pancake.Shadow.Opacity;
-                //shadow.Color = pancake.Shadow.Color;
-                //shadow.Offset = new Vector3(pancake.Shadow.Offset.X, pancake.Shadow.Offset.Y, 0);
+                shadow.Color = pancake.Shadow.Color.ToWindowsColor();
+                shadow.Offset = new Vector3((float)pancake.Shadow.Offset.X, (float)pancake.Shadow.Offset.Y, 0);
                 visual.Shadow = shadow;
 
                 ElementCompositionPreview.SetElementChildVisual(rectangle, visual);
