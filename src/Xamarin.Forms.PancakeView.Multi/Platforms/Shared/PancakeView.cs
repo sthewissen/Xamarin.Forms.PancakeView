@@ -78,23 +78,14 @@ namespace Xamarin.Forms.PancakeView
                 // We do this to propagate property changed one level up from DropShadow to PancakeView.
                 if (oldvalue != null)
                 {
-                    var shadow = ((DropShadow)oldvalue);
                     var pancake = ((PancakeView)bindable);
-
-                    shadow.PropertyChanged -= pancake.OnShadowChanged;
-                    shadow.PropertyChanging -= pancake.OnShadowChanging;
+                    pancake.RemovePropertyPropagation();
                 }
             }, propertyChanged: (bindable, oldvalue, newvalue) =>
             {
                 // We do this to propagate property changed one level up from DropShadow to PancakeView.
                 var pancake = ((PancakeView)bindable);
-
-                if (newvalue != null)
-                {
-                    var shadow = (DropShadow)newvalue;
-                    shadow.PropertyChanging += pancake.OnShadowChanging;
-                    shadow.PropertyChanged += pancake.OnShadowChanged;
-                }
+                pancake.AddPropertyPropagation();
             });
 
         public int Sides
@@ -216,6 +207,24 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (double)GetValue(OffsetAngleProperty); }
             set { SetValue(OffsetAngleProperty, value); }
+        }
+
+        void AddPropertyPropagation()
+        {
+            if (Shadow != null)
+            {
+                Shadow.PropertyChanging += OnShadowChanging;
+                Shadow.PropertyChanged += OnShadowChanged;
+            }
+        }
+
+        void RemovePropertyPropagation()
+        {
+            if (Shadow != null)
+            {
+                Shadow.PropertyChanged -= OnShadowChanged;
+                Shadow.PropertyChanging -= OnShadowChanging;
+            }
         }
 
         void OnShadowChanging(object sender, PropertyChangingEventArgs e)
