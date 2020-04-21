@@ -92,7 +92,7 @@
                 <Slider Grid.Column="1" Maximum="360" Minimum="0"
                         Value="{Binding BackgroundGradientAngle, Source={x:Reference multiGradient}}" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient" />
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BackgroundGradientStops" />
                 <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
                         HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomGradientCommand}" />
@@ -162,7 +162,9 @@
                         CommandParameter="{x:Static helpers:SampleColorType.BorderColor}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="border" Margin="0,32,0,0" BackgroundColor="#bfcdde" HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="{Binding BorderColor}">
+            <yummy:PancakeView x:Name="border" Margin="0,32,0,0" BackgroundColor="#bfcdde"
+                               HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10"
+                               BorderThickness="4" BorderColor="{Binding BorderColor}">
                 <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
             </yummy:PancakeView>
 
@@ -192,13 +194,13 @@
 
             </yummy:PancakeView>
 
-
             <!--<Label Margin="0,32,0,0" Text="OUTSIDE BORDERS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Borders follow along with your rounded corners. We also support fancy dashed borders."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView BorderDrawingStyle="Outside" BackgroundColor="#78ABE7" HorizontalOptions="FillAndExpand" BorderIsDashed="false"
                                HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
                 <Label Text="This box has a nice outside border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#ffffff" />
             </yummy:PancakeView>-->
+
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 
             <Label Text="BORDER GRADIENTS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
@@ -218,7 +220,7 @@
                 <Slider Grid.Column="1" Maximum="360" Minimum="0"
                         Value="{Binding BorderGradientAngle, Source={x:Reference borderGradient}}" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient" />
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderGradientStops" />
                 <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
                         HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomBorderGradientCommand}" />
