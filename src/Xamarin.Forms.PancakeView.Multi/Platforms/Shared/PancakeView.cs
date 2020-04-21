@@ -75,17 +75,20 @@ namespace Xamarin.Forms.PancakeView
             typeof(DropShadow), typeof(PancakeView), defaultValue: default(DropShadow),
             propertyChanging: (bindable, oldvalue, newvalue) =>
             {
-                // We do this to propagate property changed one level up from DropShadow to PancakeView.
                 if (oldvalue != null)
                 {
+                    // We do this to propagate property changed one level up from DropShadow to PancakeView.
                     var pancake = ((PancakeView)bindable);
                     pancake.RemovePropertyPropagation();
                 }
             }, propertyChanged: (bindable, oldvalue, newvalue) =>
             {
-                // We do this to propagate property changed one level up from DropShadow to PancakeView.
-                var pancake = ((PancakeView)bindable);
-                pancake.AddPropertyPropagation();
+                if (newvalue != null)
+                {
+                    // We do this to propagate property changed one level up from DropShadow to PancakeView.
+                    var pancake = ((PancakeView)bindable);
+                    pancake.AddPropertyPropagation();
+                }
             });
 
         public int Sides
@@ -224,6 +227,18 @@ namespace Xamarin.Forms.PancakeView
             {
                 Shadow.PropertyChanged -= OnShadowChanged;
                 Shadow.PropertyChanging -= OnShadowChanging;
+            }
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+
+            var shadow = (DropShadow)GetValue(ShadowProperty);
+
+            if (shadow != null)
+            {
+                SetInheritedBindingContext(shadow, BindingContext);
             }
         }
 

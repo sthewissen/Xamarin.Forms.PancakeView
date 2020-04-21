@@ -89,14 +89,16 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (pancake.Shadow != null)
                 {
-                    //// Color only exists on Pie and beyond.
-                    //if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
-                    //{
-                    //    this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
-                    //    this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
-                    //}
+                    this.SetElevation(Context.ToPixels(pancake.Shadow.BlurRadius));
 
-                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Shadow.BlurRadius));
+#if MONOANDROID90
+                    // Color only exists on Pie and beyond.
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
+                    {
+                        this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
+                        this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
+                    }
+#endif
                 }
                 else
                 {

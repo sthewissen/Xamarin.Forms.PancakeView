@@ -31,7 +31,7 @@ namespace Xamarin.Forms.PancakeView
         }
 
         public static readonly BindableProperty OffsetProperty = BindableProperty.Create(
-            nameof(Offset), typeof(Point), typeof(DropShadow), new Point(1, 1));
+            nameof(Offset), typeof(Point), typeof(DropShadow), default(Point));
 
         public Point Offset
         {
