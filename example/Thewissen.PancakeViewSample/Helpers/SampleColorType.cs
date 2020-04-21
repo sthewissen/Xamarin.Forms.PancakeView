@@ -6,6 +6,7 @@ namespace Thewissen.PancakeViewSample.Helpers
     {
         BackgroundGradientColor1,
         BackgroundGradientColor2,
-        ShadowColor
+        ShadowColor,
+        BorderColor
     }
 }

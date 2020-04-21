@@ -29,7 +29,9 @@ namespace Thewissen.PancakeViewSample.PageModels
         public Color ShadowColor { get; set; } = Color.Black;
         public Color BackgroundGradientColor1 { get; set; } = Color.DeepPink;
         public Color BackgroundGradientColor2 { get; set; } = Color.Orange;
+        public Color BorderColor { get; set; } = Color.BlueViolet;
         public GradientStopCollection BackgroundGradientStops { get; set; } = new GradientStopCollection();
+        public GradientStopCollection BorderGradientStops { get; set; } = new GradientStopCollection();
 
         [AlsoNotifyFor(nameof(CornerRadius))]
         public double CornerRadiusTopLeft { get; set; } = 40;
@@ -50,6 +52,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         public ICommand GenerateRandomColorCommand { get; set; }
         public ICommand GenerateRandomShadowOffsetCommand { get; set; }
         public ICommand GenerateRandomGradientCommand { get; set; }
+        public ICommand GenerateRandomBorderGradientCommand { get; set; }
 
         public MainPageModel()
         {
@@ -59,9 +62,11 @@ namespace Thewissen.PancakeViewSample.PageModels
             GenerateRandomShadowOffsetCommand = new Command(GenerateRandomShadowOffset);
             GenerateRandomColorCommand = new Command<SampleColorType>(GenerateRandomColor);
             GenerateRandomGradientCommand = new Command(() => BackgroundGradientStops = GetRandomGradient());
+            GenerateRandomBorderGradientCommand = new Command(() => BorderGradientStops = GetRandomGradient());
 
             BorderDashPattern = DashPatterns.FirstOrDefault();
             BackgroundGradientStops = GetRandomGradient();
+            BorderGradientStops = GetRandomGradient();
         }
 
         void GenerateRandomColor(SampleColorType type)
@@ -78,6 +83,9 @@ namespace Thewissen.PancakeViewSample.PageModels
                     break;
                 case SampleColorType.ShadowColor:
                     ShadowColor = color;
+                    break;
+                case SampleColorType.BorderColor:
+                    BorderColor = color;
                     break;
                 default:
                     break;

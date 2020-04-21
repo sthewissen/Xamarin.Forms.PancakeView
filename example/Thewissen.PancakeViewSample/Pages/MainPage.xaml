@@ -132,23 +132,41 @@
 
             <yummy:PancakeView x:Name="cornerRadius" BackgroundColor="Purple" Margin="0,32,0,0"
                                CornerRadius="{Binding CornerRadius}" HorizontalOptions="FillAndExpand" HeightRequest="150">
-                <Label Text="Wash the brush, just beat the devil out of it." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" />
+                <Grid>
+                    <Image Source="pancakes4.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                    <Label BackgroundColor="#CC000000" Padding="5" Text="Wash the brush, just beat the devil out of it." HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" />
+                </Grid>
+
             </yummy:PancakeView>
 
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 
-            <!--
-            <Label Margin="0,32,0,0" Text="ROUNDED CORNERS /W IMAGES" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <Label Text="Round each corner individually or simply round them all the same. Content is clipped."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <yummy:PancakeView BackgroundColor="Orange" BorderIsDashed="true" CornerRadius="60,0,0,60" HorizontalOptions="FillAndExpand" HeightRequest="150">
-                <Image Source="pancakes4.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+            <Label Text="BORDERS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <Label Text="Borders follow along with your rounded corners."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <Grid ColumnSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource small}" Text="BorderThickness" VerticalOptions="Center" />
+                <Slider Grid.Column="1" Maximum="20" Minimum="0" Value="{Binding BorderThickness, Source={x:Reference border}}" />
+
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderColor" />
+
+                <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" BackgroundColor="{Binding BorderColor}"
+                        Text="{Binding BorderColor, Converter={StaticResource ColorToHexConverter}}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomColorCommand}"
+                        CommandParameter="{x:Static helpers:SampleColorType.BorderColor}" />
+            </Grid>
+
+            <yummy:PancakeView x:Name="border" Margin="0,32,0,0" BackgroundColor="#bfcdde" HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="{Binding BorderColor}">
+                <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
             </yummy:PancakeView>
 
-            <Label Margin="0,32,0,0" Text="BORDERS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <Label Text="Borders follow along with your rounded corners. We also support fancy dashed borders."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <yummy:PancakeView BackgroundColor="#bfcdde" HorizontalOptions="FillAndExpand" BorderIsDashed="true" BorderDashPattern="10,8,5,5" HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
-                <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
-            </yummy:PancakeView>-->
+            <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 
             <Label Text="DASHED BORDERS" Style="{StaticResource heading}"
                    HorizontalOptions="Center" HorizontalTextAlignment="Center" />
@@ -180,24 +198,37 @@
             <yummy:PancakeView BorderDrawingStyle="Outside" BackgroundColor="#78ABE7" HorizontalOptions="FillAndExpand" BorderIsDashed="false"
                                HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
                 <Label Text="This box has a nice outside border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#ffffff" />
-            </yummy:PancakeView>
+            </yummy:PancakeView>-->
+            <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 
-            <Label Margin="0,32,0,0" Text="BORDER GRADIENTS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <Label Text="Gradients in a border. Life just got a bit sweeter."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
-            <yummy:PancakeView BackgroundColor="#e2e885" HorizontalOptions="FillAndExpand" BorderIsDashed="true" HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="4" BorderColor="#456287">
-                <yummy:PancakeView.BorderGradientStops>
-                    <yummy:GradientStopCollection>
-                        <yummy:GradientStop Color="#f3855b" Offset="0" />
-                        <yummy:GradientStop Color="#fbcf93" Offset="0.2" />
-                        <yummy:GradientStop Color="#fbe960" Offset="0.4" />
-                        <yummy:GradientStop Color="#a0e67a" Offset="0.6" />
-                        <yummy:GradientStop Color="#33c6ee" Offset="0.8" />
-                        <yummy:GradientStop Color="#c652ba" Offset="1" />
-                    </yummy:GradientStopCollection>
-                </yummy:PancakeView.BorderGradientStops>
+            <Label Text="BORDER GRADIENTS" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+            <Label Text="Gradients in a border. Life just got a bit sweeter."  Margin="0,8,0,16"
+                   HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+
+            <Grid ColumnSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label Style="{StaticResource small}" Text="BorderGradientAngle" VerticalOptions="Center" />
+                <Slider Grid.Column="1" Maximum="360" Minimum="0"
+                        Value="{Binding BorderGradientAngle, Source={x:Reference borderGradient}}" />
+
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient" />
+                <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
+                        HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
+                        Command="{Binding GenerateRandomBorderGradientCommand}" />
+            </Grid>
+
+            <yummy:PancakeView x:Name="borderGradient" BackgroundColor="#e2e885" HorizontalOptions="FillAndExpand" Margin="0,32,0,0"
+                               HeightRequest="150" CornerRadius="40,10,40,10" BorderThickness="10"
+                               BorderGradientStops="{Binding BorderGradientStops}">
                 <Label Text="This box has a gradient border." HorizontalOptions="Center" VerticalOptions="Center" />
             </yummy:PancakeView>
-            -->
 
             <BoxView HeightRequest="1" BackgroundColor="#c1c1c1" Margin="0,32"/>
 

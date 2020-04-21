@@ -65,6 +65,25 @@ namespace Xamarin.Forms.PancakeView
             defaultValueCreator: bindable =>
             {
                 return new GradientStopCollection();
+            },
+            propertyChanging: (bindable, oldvalue, newvalue) =>
+            {
+                if (oldvalue != null)
+                {
+                    // We do this to propagate property changed one level up from GradientStops to PancakeView.
+                    var pancake = ((PancakeView)bindable);
+                    pancake.RemoveBorderGradientStopsPropertyPropagation();
+                    pancake.SetupBorderGradientStopPropagation((IList<GradientStop>)oldvalue, (IList<GradientStop>)newvalue);
+                }
+            }, propertyChanged: (bindable, oldvalue, newvalue) =>
+            {
+                if (newvalue != null)
+                {
+                    // We do this to propagate property changed one level up from GradientStops to PancakeView.
+                    var pancake = ((PancakeView)bindable);
+                    pancake.AddBorderGradientStopsPropertyPropagation();
+                    pancake.SetupBorderGradientStopPropagation((IList<GradientStop>)oldvalue, (IList<GradientStop>)newvalue);
+                }
             });
 
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle),
@@ -90,45 +109,10 @@ namespace Xamarin.Forms.PancakeView
                 }
             });
 
-        public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor),
-            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-
-        public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor),
-            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-
-        public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor),
-            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-
-        public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor),
-            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
-
-        public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed),
-            typeof(bool), typeof(PancakeView), default(bool));
-
-        public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow),
-            typeof(bool), typeof(PancakeView), default(bool));
-
-        public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
-            typeof(int), typeof(PancakeView), 0);
-
         public int Sides
         {
             get { return (int)GetValue(SidesProperty); }
             set { SetValue(SidesProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
-        public Color BackgroundGradientStartColor
-        {
-            get { return (Color)GetValue(BackgroundGradientStartColorProperty); }
-            set { SetValue(BackgroundGradientStartColorProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
-        public Color BackgroundGradientEndColor
-        {
-            get { return (Color)GetValue(BackgroundGradientEndColorProperty); }
-            set { SetValue(BackgroundGradientEndColorProperty, value); }
         }
 
         public int BackgroundGradientAngle
@@ -141,20 +125,6 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (GradientStopCollection)GetValue(BackgroundGradientStopsProperty); }
             set { SetValue(BackgroundGradientStopsProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
-        public Color BorderGradientStartColor
-        {
-            get { return (Color)GetValue(BorderGradientStartColorProperty); }
-            set { SetValue(BorderGradientStartColorProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
-        public Color BorderGradientEndColor
-        {
-            get { return (Color)GetValue(BorderGradientEndColorProperty); }
-            set { SetValue(BorderGradientEndColorProperty, value); }
         }
 
         public int BorderGradientAngle
@@ -181,13 +151,6 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderThicknessProperty, value); }
         }
 
-        [Obsolete("This property has been obsoleted. Please use BorderDashPattern instead.")]
-        public bool BorderIsDashed
-        {
-            get { return (bool)GetValue(BorderIsDashedProperty); }
-            set { SetValue(BorderIsDashedProperty, value); }
-        }
-
         public DashPattern BorderDashPattern
         {
             get { return (DashPattern)GetValue(BorderDashPatternProperty); }
@@ -198,20 +161,6 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (Color)GetValue(BorderColorProperty); }
             set { SetValue(BorderColorProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
-        public bool HasShadow
-        {
-            get { return (bool)GetValue(HasShadowProperty); }
-            set { SetValue(HasShadowProperty, value); }
-        }
-
-        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
-        public int Elevation
-        {
-            get { return (int)GetValue(ElevationProperty); }
-            set { SetValue(ElevationProperty, value); }
         }
 
         public DropShadow Shadow
@@ -230,6 +179,53 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (double)GetValue(OffsetAngleProperty); }
             set { SetValue(OffsetAngleProperty, value); }
+        }
+
+        void AddBorderGradientStopsPropertyPropagation()
+        {
+            if (BorderGradientStops != null)
+            {
+                BorderGradientStops.CollectionChanged += BorderGradientStops_CollectionChanged;
+            }
+        }
+
+        void RemoveBorderGradientStopsPropertyPropagation()
+        {
+            if (BorderGradientStops != null)
+            {
+                BorderGradientStops.CollectionChanged -= BorderGradientStops_CollectionChanged;
+            }
+        }
+
+        void SetupBorderGradientStopPropagation(IList<GradientStop> oldItems, IList<GradientStop> newItems)
+        {
+            if (oldItems != null)
+            {
+                foreach (object item in oldItems)
+                {
+                    var bo = item as GradientStop;
+
+                    if (bo != null)
+                    {
+                        bo.PropertyChanging -= OnBorderGradientStopChanging;
+                        bo.PropertyChanged -= OnBorderGradientStopChanged;
+                    }
+                }
+            }
+
+            if (newItems != null)
+            {
+                foreach (object item in newItems)
+                {
+                    var bo = item as GradientStop;
+
+                    if (bo != null)
+                    {
+                        bo.PropertyChanging += OnBorderGradientStopChanging;
+                        bo.PropertyChanged += OnBorderGradientStopChanged;
+                    }
+                }
+            }
         }
 
         void AddBackgroundGradientStopsPropertyPropagation()
@@ -277,6 +273,21 @@ namespace Xamarin.Forms.PancakeView
                     }
                 }
             }
+        }
+
+        void BorderGradientStops_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(BorderGradientStops));
+        }
+
+        void OnBorderGradientStopChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(BorderGradientStops));
+        }
+
+        void OnBorderGradientStopChanging(object sender, PropertyChangingEventArgs e)
+        {
+            OnPropertyChanging(nameof(BorderGradientStops));
         }
 
         void BackgroundGradientStops_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -349,5 +360,79 @@ namespace Xamarin.Forms.PancakeView
                     SetInheritedBindingContext(item, BindingContext);
             }
         }
+
+        #region SOON TO BE DEPRECATED
+
+        public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BorderGradientEndColorProperty = BindableProperty.Create(nameof(BorderGradientEndColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BackgroundGradientStartColorProperty = BindableProperty.Create(nameof(BackgroundGradientStartColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BackgroundGradientEndColorProperty = BindableProperty.Create(nameof(BackgroundGradientEndColor),
+            typeof(Color), typeof(PancakeView), defaultValue: default(Color));
+
+        public static readonly BindableProperty BorderIsDashedProperty = BindableProperty.Create(nameof(BorderIsDashed),
+            typeof(bool), typeof(PancakeView), default(bool));
+
+        public static readonly BindableProperty HasShadowProperty = BindableProperty.Create(nameof(HasShadow),
+            typeof(bool), typeof(PancakeView), default(bool));
+
+        public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
+            typeof(int), typeof(PancakeView), 0);
+
+        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
+        public Color BackgroundGradientStartColor
+        {
+            get { return (Color)GetValue(BackgroundGradientStartColorProperty); }
+            set { SetValue(BackgroundGradientStartColorProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStops instead.")]
+        public Color BackgroundGradientEndColor
+        {
+            get { return (Color)GetValue(BackgroundGradientEndColorProperty); }
+            set { SetValue(BackgroundGradientEndColorProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
+        public Color BorderGradientStartColor
+        {
+            get { return (Color)GetValue(BorderGradientStartColorProperty); }
+            set { SetValue(BorderGradientStartColorProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use BorderGradientStops instead.")]
+        public Color BorderGradientEndColor
+        {
+            get { return (Color)GetValue(BorderGradientEndColorProperty); }
+            set { SetValue(BorderGradientEndColorProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use BorderDashPattern instead.")]
+        public bool BorderIsDashed
+        {
+            get { return (bool)GetValue(BorderIsDashedProperty); }
+            set { SetValue(BorderIsDashedProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
+        public bool HasShadow
+        {
+            get { return (bool)GetValue(HasShadowProperty); }
+            set { SetValue(HasShadowProperty, value); }
+        }
+
+        [Obsolete("This property has been obsoleted. Please use Shadow instead.")]
+        public int Elevation
+        {
+            get { return (int)GetValue(ElevationProperty); }
+            set { SetValue(ElevationProperty, value); }
+        }
+
+        #endregion
     }
 }
