@@ -143,9 +143,9 @@
                 <Slider IsVisible="{OnPlatform Android=false}" Grid.Row="1" Grid.Column="1"
                         Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
 
-                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
+                <Label IsVisible="{OnPlatform Android=false}" Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
 
-                <Button Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding ShadowColor}"
+                <Button IsVisible="{OnPlatform Android=false}" Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding ShadowColor}"
                         HorizontalOptions="Center" Text="{Binding ShadowColor, Converter={StaticResource ColorToHexConverter}}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomShadowColorCommand}" />
 
@@ -166,7 +166,7 @@
                                       Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
-                <Label Text="Color is only supported on Android API 28+. Offset and Opacity is not supported on Android."
+                <Label Text="Color, Offset and Opacity are currently not supported on Android."
                        HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
 
             </yummy:PancakeView>
