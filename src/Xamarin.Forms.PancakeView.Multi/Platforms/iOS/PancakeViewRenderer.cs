@@ -203,7 +203,8 @@ namespace Xamarin.Forms.PancakeView.iOS
             _actualView.Layer.Mask = maskLayer;
             _actualView.Layer.MasksToBounds = true;
 
-            if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) || (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
+            if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) ||
+                (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
             {
                 // Create a gradient layer that draws our background.
                 var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle, Bounds);

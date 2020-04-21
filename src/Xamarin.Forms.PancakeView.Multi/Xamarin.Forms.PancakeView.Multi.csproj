@@ -85,6 +85,8 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Platforms\Shared\MarkupExtensions\" />
+        <Folder Include="Platforms\Shared\TypeConverters\" />
+    </ItemGroup>
     </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

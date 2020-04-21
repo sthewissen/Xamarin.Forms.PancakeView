@@ -1,24 +1,23 @@
 ﻿namespace Xamarin.Forms.PancakeView
 {
-    public class GradientStop
+    public class GradientStop : BindableObject
     {
-        private float offset;
+        public static readonly BindableProperty OffsetProperty = BindableProperty.Create(
+          nameof(Offset), typeof(float), typeof(GradientStop), 0f);
 
         public float Offset
         {
-            get => offset;
-            set
-            {
-                // Value needs to be 0-1.
-                if (value > 1)
-                    value = 1;
-                else if (value < 0)
-                    value = 0;
-
-                offset = value;
-            }
+            get => (float)GetValue(OffsetProperty);
+            set => SetValue(OffsetProperty, value);
         }
 
-        public Color Color { get; set; }
+        public static readonly BindableProperty ColorProperty = BindableProperty.Create(
+            nameof(Color), typeof(Color), typeof(GradientStop), default(Color));
+
+        public Color Color
+        {
+            get => (Color)GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
+        }
     }
 }
