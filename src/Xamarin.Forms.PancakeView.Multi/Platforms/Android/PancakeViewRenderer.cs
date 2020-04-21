@@ -89,7 +89,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (pancake.Shadow != null)
                 {
-                    this.SetElevation(Context.ToPixels(pancake.Shadow.BlurRadius));
+                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Shadow.BlurRadius));
 
 #if MONOANDROID90
                     // Color only exists on Pie and beyond.
