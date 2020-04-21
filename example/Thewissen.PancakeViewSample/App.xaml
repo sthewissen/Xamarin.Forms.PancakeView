@@ -1,18 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Thewissen.PancakeViewSample.App"
-             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Thewissen.PancakeViewSample.App"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:converters="clr-namespace:Thewissen.PancakeViewSample.Converters">
     <Application.Resources>
         <ResourceDictionary>
-            <OnPlatform x:TypeArguments="x:String" x:Key="LatoBold">
-                <On Platform="iOS" Value="Lato-Bold"/>
-                <On Platform="Android" Value="Lato-Bold.ttf#Bold"/>
-                <On Platform="UWP" Value="/Assets/Lato-Bold.ttf#Bold"/>
-            </OnPlatform>
-            <OnPlatform x:TypeArguments="x:String" x:Key="LatoRegular">
-                <On Platform="iOS" Value="Lato-Regular"/>
-                <On Platform="Android" Value="Lato-Regular.ttf#Regular"/>
-                <On Platform="UWP" Value="/Assets/Lato-Regular.ttf#Regular"/>
-            </OnPlatform>
+
+            <converters:ColorToHexConverter x:Key="ColorToHexConverter" />
+
             <yummy:GradientStopCollection x:Key="Rainbow">
                 <yummy:GradientStop Color="#f3855b" Offset="0" />
                 <yummy:GradientStop Color="#fbcf93" Offset="0.2" />
@@ -21,14 +17,42 @@
                 <yummy:GradientStop Color="#33c6ee" Offset="0.8" />
                 <yummy:GradientStop Color="#c652ba" Offset="1" />
             </yummy:GradientStopCollection>
+
             <Style TargetType="Label">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="FontFamily" Value="{StaticResource LatoRegular}" />
+                <Setter Property="TextColor" Value="#717171" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="Assistant" />
             </Style>
+
+            <Style x:Key="small" TargetType="Label">
+                <Setter Property="TextColor" Value="#717171" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="AssistantBold" />
+            </Style>
+
+            <Style x:Key="heading" TargetType="Label">
+                <Setter Property="TextColor" Value="#484848" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontFamily" Value="Poppins-Bold" />
+            </Style>
+
+            <Style x:Key="small_button" TargetType="Button">
+                <Setter Property="Padding" Value="10,0" />
+                <Setter Property="HeightRequest" Value="32" />
+                <Setter Property="BackgroundColor" Value="Tomato" />
+                <Setter Property="TextColor" Value="#FFFFFF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontFamily" Value="AssistantBold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+
             <Style TargetType="Slider">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="WidthRequest" Value="100" />
+                <Setter Property="MinimumTrackColor" Value="DodgerBlue" />
                 <Setter Property="MaximumTrackColor" Value="Gray" />
+                <Setter Property="ThumbImageSource" Value="monkey.png" />
+                <Setter Property="VerticalOptions" Value="Center" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

@@ -279,13 +279,49 @@
             <Generator>
             </Generator>
         </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xxxhdpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xxhdpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-xhdpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-hdpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-mdpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable-ldpi\xamalogo.png">
+            <SubType>
+            </SubType>
+            <Generator>
+            </Generator>
+        </AndroidResource>
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Resources\drawable\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
-            <Project>{73bd51e9-02a0-4562-a0a7-bb83e54500cc}</Project>
+            <Project>{73BD51E9-02A0-4562-A0A7-BB83E54500CC}</Project>
             <Name>Xamarin.Forms.PancakeView.Multi</Name>
         </ProjectReference>
         <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">
