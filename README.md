@@ -13,45 +13,7 @@ In a lot of Xamarin.Forms UI work I do I have the need for a layout/view that I 
 
 ## How to use it?
 
-The project is up on NuGet at the following URL:
-
-https://www.nuget.org/packages/Xamarin.Forms.PancakeView
-
-You could also simply clone the repository and include the projects in the ```src``` folder in your Xamarin.Forms and Platform projects. It uses multi-targeting to resolve to the correct platform.
-
-The first thing we need to do is tell our XAML page where it can find the PancakeView, which is done by adding the following attribute to our ContentPage:
-
-```
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
-   ...
-</ContentPage>
-```
-
-Next up, just smack a PancakeView onto that page and you're all set, simple as baking real pancakes!
-
-```
-<yummy:PancakeView BackgroundColor="#bc91d7" CornerRadius="60,0,0,60" IsClippedToBounds="true" HorizontalOptions="FillAndExpand" HeightRequest="150">
-   <Image Source="unicorn.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
-</yummy:PancakeView>
-```
-
-## Additional setup for UWP
-PancakeView supports calling an `Init()` method to prevent the linker from stripping it out of your code that you can call in each platforms initializer. However, for UWP this might not be enough. When the .NET Native tool chain is used (e.g., to submit to the Microsoft Store), the renderer could be missing. To prevent this from happening, replace the `Init()` call in your `App.xaml.cs` file with the following:
-
-```
-List assembliesToInclude = new List();
-assembliesToInclude.Add(typeof(Xamarin.Forms.PancakeView.UWP.PancakeViewRenderer).GetTypeInfo().Assembly);
-Xamarin.Forms.Forms.Init(e, assembliesToInclude);
-```
-## Additional setup for WPF
-You need to call `PancakeViewRenderer.Init()` in `MainWindow`
-
-```
- InitializeComponent();
- Forms.Init();
- PancakeViewRenderer.Init();
- LoadApplication(new PancakeViewSample.App());
-```
+We have [a great wiki article](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki/Setup) explaining exactly that!
 
 
 ## Platform support
