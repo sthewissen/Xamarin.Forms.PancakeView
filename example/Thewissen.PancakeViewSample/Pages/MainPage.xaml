@@ -292,8 +292,8 @@
             <Label Text="VIGNETTES" Style="{StaticResource heading}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <Label Text="Because transparent is a color too."  Margin="0,8,0,16" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
             <yummy:PancakeView HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="20">
-                <Grid>
-                    <Image Source="pancakes2.jpg" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                <Grid BackgroundColor="Orange">
+                    <Image Source="pancakes2.jpg" HeightRequest="150" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
                     <yummy:PancakeView Opacity="0.7">
                         <yummy:PancakeView.BackgroundGradientStops>
                             <yummy:GradientStopCollection>

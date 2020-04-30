@@ -106,25 +106,12 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\pancake.png" />
-    <BundleResource Include="Resources\pancake%402x.png" />
-    <BundleResource Include="Resources\pancake%403x.png" />
     <BundleResource Include="Resources\monkey.png" />
-    <BundleResource Include="Resources\monkey%402x.png" />
-    <BundleResource Include="Resources\monkey%403x.png" />
     <BundleResource Include="Resources\pancakes1.jpg" />
-    <BundleResource Include="Resources\pancakes1%402x.jpg" />
-    <BundleResource Include="Resources\pancakes1%403x.jpg" />
     <BundleResource Include="Resources\pancakes2.jpg" />
-    <BundleResource Include="Resources\pancakes2%402x.jpg" />
-    <BundleResource Include="Resources\pancakes2%403x.jpg" />
     <BundleResource Include="Resources\pancakes3.jpg" />
-    <BundleResource Include="Resources\pancakes3%402x.jpg" />
-    <BundleResource Include="Resources\pancakes3%403x.jpg" />
     <BundleResource Include="Resources\pancakes4.jpg" />
-    <BundleResource Include="Resources\pancakes4%402x.jpg" />
-    <BundleResource Include="Resources\pancakes4%403x.jpg" />
     <BundleResource Include="Resources\xamalogo.png" />
-    <BundleResource Include="Resources\xamalogo%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <Import Project="..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.targets" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.targets')" />
