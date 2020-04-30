@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using PropertyChanged;
@@ -9,8 +10,10 @@ using Xamarin.Forms.PancakeView;
 
 namespace Thewissen.PancakeViewSample.PageModels
 {
-    public class MainPageModel : FreshMvvm.FreshBasePageModel
+    public class MainPageModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private static readonly Random _randomGen = new Random();
         public Color RandomColor => GetRandomColor();
 
@@ -47,7 +50,6 @@ namespace Thewissen.PancakeViewSample.PageModels
 
         public CornerRadius CornerRadius => new CornerRadius(CornerRadiusTopLeft, CornerRadiusTopRight, CornerRadiusBottomLeft, CornerRadiusBottomRight);
 
-        public ICommand OpenDebugModeCommand { get; set; }
         public ICommand CycleBorderDashPatternCommand { get; set; }
         public ICommand GenerateRandomColorCommand { get; set; }
         public ICommand GenerateRandomShadowOffsetCommand { get; set; }
@@ -56,8 +58,6 @@ namespace Thewissen.PancakeViewSample.PageModels
 
         public MainPageModel()
         {
-            OpenDebugModeCommand = new Command(async (x) => await CoreMethods.PushPageModel<DebugPageModel>(true, true));
-
             CycleBorderDashPatternCommand = new Command(CycleBorderDash);
             GenerateRandomShadowOffsetCommand = new Command(GenerateRandomShadowOffset);
             GenerateRandomColorCommand = new Command<SampleColorType>(GenerateRandomColor);

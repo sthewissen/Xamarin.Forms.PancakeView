@@ -34,11 +34,10 @@
 	<string>PancakeViewSample</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
-
-  <key>UIAppFonts</key>
-  <array>
-    <string>Lato-Bold.ttf</string>
-      <string>Lato-Regular.ttf</string>
-</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Lato-Bold.ttf</string>
+		<string>Lato-Regular.ttf</string>
+	</array>
 </dict>
 </plist>

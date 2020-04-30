@@ -1,5 +1,6 @@
 ﻿using System;
 using Thewissen.PancakeViewSample.PageModels;
+using Thewissen.PancakeViewSample.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,8 +17,7 @@ namespace Thewissen.PancakeViewSample
         {
             InitializeComponent();
 
-            var page = FreshMvvm.FreshPageModelResolver.ResolvePageModel<MainPageModel>();
-            MainPage = new FreshMvvm.FreshNavigationContainer(page);
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()

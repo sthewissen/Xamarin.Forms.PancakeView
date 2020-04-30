@@ -221,7 +221,7 @@
                         Value="{Binding BorderGradientAngle, Source={x:Reference borderGradient}}" />
 
                 <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderGradientStops" />
-                <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
+                <Button Grid.Row="1" Grid.Column="1"
                         HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomBorderGradientCommand}" />
             </Grid>
