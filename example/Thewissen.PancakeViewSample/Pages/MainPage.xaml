@@ -184,7 +184,7 @@
             <yummy:PancakeView x:Name="borderDash" Margin="0,32,0,0" BorderDrawingStyle="Outside" BackgroundColor="#78ABE7"
                                HorizontalOptions="FillAndExpand" Padding="20,0"
                                HeightRequest="150" CornerRadius="40,10,40,10"
-                               BorderThickness="4" BorderColor="#456287" BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}">
+                               BorderThickness="8" BorderColor="#456287" BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}">
 
                 <yummy:PancakeView.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding CycleBorderDashPatternCommand}" />

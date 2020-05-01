@@ -21,7 +21,7 @@ namespace Thewissen.PancakeViewSample.macOS
 
             var rect = new CoreGraphics.CGRect(200, 200, 800, 600);
             _window = new NSWindow(rect, style, NSBackingStore.Buffered, false);
-            _window.Title = "PancakeViewSample";
+            _window.Title = "PancakeView for macOS";
         }
 
         public override void DidFinishLaunching(NSNotification notification)

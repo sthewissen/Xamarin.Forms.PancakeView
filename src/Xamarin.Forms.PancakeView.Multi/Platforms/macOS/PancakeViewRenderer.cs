@@ -21,6 +21,8 @@ namespace Xamarin.Forms.PancakeView.MacOS
         private NSColor _colorToRender;
         private CGSize _previousSize;
 
+        public override bool WantsDefaultClipping => false;
+
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
         /// </summary>
@@ -40,7 +42,7 @@ namespace Xamarin.Forms.PancakeView.MacOS
             {
                 Validate(Element as PancakeView);
 
-                _actualView = new NSView();
+                _actualView = new NoClippingView();
                 _wrapperView = new NoClippingView();
 
                 // Add the subviews to the actual view.
@@ -67,14 +69,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
                 SetBackgroundColor(Element.BackgroundColor);
                 SetCornerRadius();
             }
-        }
-
-        public override bool WantsDefaultClipping => false;
-        public override void AwakeFromNib()
-        {
-            base.AwakeFromNib();
-            WantsLayer = true;
-            Layer = new NoClippingLayer();
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -256,7 +250,7 @@ namespace Xamarin.Forms.PancakeView.MacOS
             var layerName = "borderLayer";
 
             // remove previous background layer if any
-            var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
+            var prevBorderLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
 
             if (pancake.BorderThickness > 0)
@@ -280,6 +274,7 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
                 borderLayer.Frame = borderLayer.Path.BoundingBox;
                 borderLayer.Position = layerPosition;
+                borderLayer.MasksToBounds = false;
 
                 // Dash pattern for the border.
                 if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length > 0)
@@ -323,11 +318,11 @@ namespace Xamarin.Forms.PancakeView.MacOS
                         gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
                     }
 
-                    AddLayer(gradientLayer, -1, _wrapperView);
+                    AddLayer(gradientLayer, -1, _actualView);
                 }
                 else
                 {
-                    AddLayer(borderLayer, -1, _wrapperView);
+                    AddLayer(borderLayer, -1, _actualView);
                 }
             }
         }
@@ -339,8 +334,10 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
             if (pancake.Shadow != null)
             {
+                // HACK: Somehow this is needed for _wrapperView.Layer's shadow related properties to work.
+                _wrapperView.Shadow = new NSShadow();
+
                 DrawDefaultShadow(pancake.Shadow, _wrapperView.Layer, Bounds, cornerRadius);
-                //_actualView.ClipsToBounds = true;
             }
             else
             {
@@ -415,7 +412,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
             public NoClippingView()
             {
-                TranslatesAutoresizingMaskIntoConstraints = false;
                 WantsLayer = true;
                 Layer = new NoClippingLayer();
             }

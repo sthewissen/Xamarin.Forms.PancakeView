@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>Thewissen.PancakeViewSample.macOS</string>
+	<string>PancakeView for macOS</string>
 	<key>CFBundleIdentifier</key>
 	<string>io.thewissen.Thewissen-PancakeViewSample-macOS</string>
 	<key>CFBundleShortVersionString</key>
