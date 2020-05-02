@@ -336,7 +336,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
             {
                 // HACK: Somehow this is needed for _wrapperView.Layer's shadow related properties to work.
                 _wrapperView.Shadow = new NSShadow();
-
                 DrawDefaultShadow(pancake.Shadow, _wrapperView.Layer, Bounds, cornerRadius);
             }
             else
