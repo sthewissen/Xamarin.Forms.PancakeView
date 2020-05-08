@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{DB2232
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thewissen.PancakeViewSample.Android", "..\example\Thewissen.PancakeViewSample.Android\Thewissen.PancakeViewSample.Android.csproj", "{03BBFF5A-C44F-4BD6-A3DA-82E075C1FAEA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Thewissen.PancakeViewSample", "..\example\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj", "{ABE29A80-FFA3-40E7-B8C4-87D5D6B1C8C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thewissen.PancakeViewSample", "..\example\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj", "{ABE29A80-FFA3-40E7-B8C4-87D5D6B1C8C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.PancakeView.Multi", "Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj", "{73BD51E9-02A0-4562-A0A7-BB83E54500CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Forms.PancakeView.Multi", "Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj", "{73BD51E9-02A0-4562-A0A7-BB83E54500CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thewissen.PancakeViewSample.iOS", "..\example\Thewissen.PancakeViewSample.iOS\Thewissen.PancakeViewSample.iOS.csproj", "{E5784030-B7B9-4567-BC71-9086B9FA3FDE}"
 EndProject

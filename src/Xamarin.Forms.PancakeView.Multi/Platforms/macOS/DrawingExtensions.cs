@@ -4,7 +4,7 @@ using CoreGraphics;
 
 namespace Xamarin.Forms.PancakeView.MacOS
 {
-    public static class Extensions
+    public static class DrawingExtensions
     {
         public static void AddQuadCurveToPoint(this NSBezierPath bezierPath, CGPoint endPoint, CGPoint controlPoint)
         {

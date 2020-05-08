@@ -189,11 +189,11 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
             if (pancake.Sides != 4)
             {
-                cornerPath = ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
+                cornerPath = Bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
             }
             else
             {
-                cornerPath = ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius);
+                cornerPath = Bounds.CreateRoundedRectPath(pancake.CornerRadius);
             }
 
             // The layer used to mask other layers we draw on the background.
@@ -264,11 +264,9 @@ namespace Xamarin.Forms.PancakeView.MacOS
                 };
 
                 // Create arcs for the given corner radius.
-                //bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
-
                 borderLayer.Path = pancake.Sides != 4 ?
-                    ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).ToCGPath() :
-                    ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius).ToCGPath(); // insetBounds?
+                    Bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).ToCGPath() :
+                    Bounds.CreateRoundedRectPath(pancake.CornerRadius).ToCGPath();
 
                 var layerPosition = new CGPoint(borderLayer.Path.BoundingBox.Width / 2, borderLayer.Path.BoundingBox.Height / 2);
 
@@ -365,11 +363,11 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
             if (pancake.Sides != 4)
             {
-                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).ToCGPath();
+                layer.ShadowPath = bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).ToCGPath();
             }
             else
             {
-                layer.ShadowPath = ShapeUtils.CreateRoundedRectPath(bounds, pancake.CornerRadius).ToCGPath();
+                layer.ShadowPath = bounds.CreateRoundedRectPath(pancake.CornerRadius).ToCGPath();
             }
         }
 
