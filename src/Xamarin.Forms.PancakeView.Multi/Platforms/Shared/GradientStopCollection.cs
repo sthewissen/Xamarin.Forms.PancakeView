@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Xamarin.Forms.PancakeView
 {
@@ -12,9 +13,32 @@ namespace Xamarin.Forms.PancakeView
 
         protected override void ClearItems()
         {
+            foreach (var item in this)
+                if (item is INotifyPropertyChanged i)
+                    i.PropertyChanged -= GradientStop_PropertyChanged;
+
             var removed = new List<GradientStop>(this);
+
             base.ClearItems();
             base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
+        }
+
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                    item.PropertyChanged -= GradientStop_PropertyChanged;
+
+            if (e.NewItems != null)
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                    item.PropertyChanged += GradientStop_PropertyChanged;
+
+            base.OnCollectionChanged(e);
+        }
+
+        void GradientStop_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, null));
         }
     }
 }

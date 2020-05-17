@@ -82,28 +82,16 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 SetCornerRadius();
             }
-            else if ((e.PropertyName == PancakeView.BorderColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderDashPatternProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName))
+            else if (e.PropertyName == PancakeView.BorderProperty.PropertyName)
             {
                 DrawBorder();
             }
             else if ((e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.SidesProperty.PropertyName))
+                    (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName))
             {
                 SetNeedsDisplay();
             }
@@ -113,19 +101,14 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             // Angle needs to be between 0-360.
             if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
-                throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
+                throw new ArgumentException("Please provide a valid background gradient angle.", nameof(PancakeView.BackgroundGradientAngle));
 
             if (pancake.OffsetAngle < 0 || pancake.OffsetAngle > 360)
-                throw new ArgumentException("Please provide a valid offset angle.", nameof(Controls.PancakeView.OffsetAngle));
+                throw new ArgumentException("Please provide a valid offset angle.", nameof(PancakeView.OffsetAngle));
 
             // min value for sides is 3
             if (pancake.Sides < 3)
-                throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
-
-            // Needs to be an even number of parts, but if its null or 0 elements, we simply don't dash.
-            if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length != 0 &&
-                (pancake.BorderDashPattern.Pattern?.Length >= 2 && pancake.BorderDashPattern.Pattern.Length % 2 != 0))
-                throw new ArgumentException("BorderDashPattern must contain an even number of entries (>=2).", nameof(Controls.PancakeView.BorderDashPattern));
+                throw new ArgumentException("Please provide a valid value for sides.", nameof(PancakeView.Sides));
         }
 
         public override void LayoutSubviews()
@@ -186,11 +169,11 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (pancake.Sides != 4)
             {
-                cornerPath = ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
+                cornerPath = Bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
             }
             else
             {
-                cornerPath = ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius);
+                cornerPath = Bounds.CreateRoundedRectPath(pancake.CornerRadius);
             }
 
             // The layer used to mask other layers we draw on the background.
@@ -203,25 +186,16 @@ namespace Xamarin.Forms.PancakeView.iOS
             _actualView.Layer.Mask = maskLayer;
             _actualView.Layer.MasksToBounds = true;
 
-            if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) ||
-                (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
+            if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
             {
                 // Create a gradient layer that draws our background.
                 var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle, Bounds);
                 gradientLayer.Name = layerName;
 
-                if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Count > 0)
-                {
-                    // A range of colors is given. Let's add them.
-                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
-                    gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
-                }
-                else
-                {
-                    // Only two colors provided, use that.
-                    gradientLayer.Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() };
-                }
+                // A range of colors is given. Let's add them.
+                var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
+                gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
 
                 AddLayer(gradientLayer, 0, _actualView);
             }
@@ -250,22 +224,19 @@ namespace Xamarin.Forms.PancakeView.iOS
             var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
 
-            if (pancake.BorderThickness > 0)
+            if (pancake.Border != null && !pancake.Border.BorderThickness.IsEmpty)
             {
                 var borderLayer = new CAShapeLayer
                 {
-                    StrokeColor = pancake.BorderColor == Color.Default ? UIColor.Clear.CGColor : pancake.BorderColor.ToCGColor(),
+                    StrokeColor = pancake.Border.BorderColor == Color.Default ? UIColor.Clear.CGColor : pancake.Border.BorderColor.ToCGColor(),
                     FillColor = null,
-                    LineWidth = pancake.BorderThickness,
+                    LineWidth = (nfloat)pancake.Border.BorderThickness.Left,
                     Name = layerName
                 };
 
-                // Create arcs for the given corner radius.
-                //bool hasShadowOrElevation = pancake.HasShadow || pancake.Elevation > 0;
-
                 borderLayer.Path = pancake.Sides != 4 ?
-                    ShapeUtils.CreatePolygonPath(Bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
-                    ShapeUtils.CreateRoundedRectPath(Bounds, pancake.CornerRadius).CGPath; // insetBounds?
+                    Bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath :
+                    Bounds.CreateRoundedRectPath(pancake.CornerRadius).CGPath;
 
                 var layerPosition = new CGPoint(borderLayer.Path.BoundingBox.Width / 2, borderLayer.Path.BoundingBox.Height / 2);
 
@@ -273,17 +244,17 @@ namespace Xamarin.Forms.PancakeView.iOS
                 borderLayer.Position = layerPosition;
 
                 // Dash pattern for the border.
-                if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length > 0)
+                if (pancake.Border.BorderDashPattern.Pattern != null && pancake.Border.BorderDashPattern.Pattern.Length > 0)
                 {
-                    var items = pancake.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
+                    var items = pancake.Border.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
                     borderLayer.LineDashPattern = items;
                 }
 
-                if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
+                if (pancake.Border.BorderGradientStops != null && pancake.Border.BorderGradientStops.Any())
                 {
-                    var gradientFrame = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
-                    var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, gradientFrame);
-                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - (pancake.BorderThickness), (gradientFrame.Height / 2) - (pancake.BorderThickness));
+                    var gradientFrame = Bounds.Inset(-(nfloat)pancake.Border.BorderThickness.Left, -(nfloat)pancake.Border.BorderThickness.Left);
+                    var gradientLayer = CreateGradientLayer(pancake.Border.BorderGradientAngle, gradientFrame);
+                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)pancake.Border.BorderThickness.Left), (gradientFrame.Height / 2) - ((nfloat)pancake.Border.BorderThickness.Left));
 
                     // Create a clone from the border layer and use that one as the mask.
                     // Why? Because the mask and the border somehow can't be the same, so
@@ -291,9 +262,9 @@ namespace Xamarin.Forms.PancakeView.iOS
                     var maskLayer = new CAShapeLayer()
                     {
                         Path = borderLayer.Path,
-                        Position = new CGPoint(pancake.BorderThickness, pancake.BorderThickness),
+                        Position = new CGPoint(pancake.Border.BorderThickness.Left, pancake.Border.BorderThickness.Left),
                         FillColor = null,
-                        LineWidth = pancake.BorderThickness,
+                        LineWidth = (nfloat)pancake.Border.BorderThickness.Left,
                         StrokeColor = UIColor.Red.CGColor,
                         LineDashPattern = borderLayer.LineDashPattern
                     };
@@ -301,18 +272,10 @@ namespace Xamarin.Forms.PancakeView.iOS
                     gradientLayer.Mask = maskLayer;
                     gradientLayer.Name = layerName;
 
-                    if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
-                    {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                        gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
-                    }
-                    else
-                    {
-                        // Only two colors provided, use that.
-                        gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
-                    }
+                    // A range of colors is given. Let's add them.
+                    var orderedStops = pancake.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                    gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
 
                     AddLayer(gradientLayer, -1, _wrapperView);
                 }
@@ -327,28 +290,10 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             var pancake = Element;
 
-            bool hasShadowOrElevation = pancake.Shadow != null || pancake.HasShadow || pancake.Elevation > 0;
-            nfloat cornerRadius = (nfloat)pancake.CornerRadius.TopLeft;
-
             if (pancake.Shadow != null)
             {
-                DrawDefaultShadow(pancake.Shadow, _wrapperView.Layer, Bounds, cornerRadius);
-            }
-            else
-            {
-                if (pancake.HasShadow)
-                {
-                    DrawDefaultShadow_Obsolete(_wrapperView.Layer, Bounds, cornerRadius);
-                }
-
-                if (pancake.Elevation > 0)
-                {
-                    DrawElevation_Obsolete(_wrapperView.Layer, pancake.Elevation, Bounds, cornerRadius);
-                }
-            }
-
-            if (hasShadowOrElevation)
-            {
+                // Draw a shadow on the wrapper layer and clip the original view to match.
+                DrawDefaultShadow(pancake.Shadow, _wrapperView.Layer, Bounds);
                 _actualView.ClipsToBounds = true;
             }
             else
@@ -364,13 +309,10 @@ namespace Xamarin.Forms.PancakeView.iOS
             _actualView.Layer.ShouldRasterize = true;
         }
 
-        private void DrawDefaultShadow(DropShadow shadow, CALayer layer, CGRect bounds, nfloat cornerRadius)
+        private void DrawDefaultShadow(DropShadow shadow, CALayer layer, CGRect bounds)
         {
             var pancake = Element as PancakeView;
 
-            // Ideally we want to be able to have individual corner radii + shadows
-            // However, on iOS we can only do one radius + shadow.
-            layer.CornerRadius = cornerRadius;
             layer.ShadowRadius = shadow.BlurRadius;
             layer.ShadowColor = shadow.Color.ToCGColor();
             layer.ShadowOpacity = shadow.Opacity;
@@ -378,57 +320,12 @@ namespace Xamarin.Forms.PancakeView.iOS
 
             if (pancake.Sides != 4)
             {
-                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
+                layer.ShadowPath = bounds.CreatePolygonPath(pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
             }
             else
             {
-                layer.ShadowPath = ShapeUtils.CreateRoundedRectPath(bounds, pancake.CornerRadius).CGPath;
+                layer.ShadowPath = bounds.CreateRoundedRectPath(pancake.CornerRadius).CGPath;
             }
-        }
-
-        private void DrawDefaultShadow_Obsolete(CALayer layer, CGRect bounds, nfloat cornerRadius)
-        {
-            var pancake = Element as PancakeView;
-
-            // Ideally we want to be able to have individual corner radii + shadows
-            // However, on iOS we can only do one radius + shadow.
-            layer.CornerRadius = cornerRadius;
-            layer.ShadowRadius = 10;
-            layer.ShadowColor = UIColor.Black.CGColor;
-            layer.ShadowOpacity = 0.4f;
-            layer.ShadowOffset = new SizeF();
-
-            if (pancake.Sides != 4)
-            {
-                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
-            }
-            else
-            {
-                layer.ShadowPath = ShapeUtils.CreateRoundedRectPath(bounds, pancake.CornerRadius).CGPath;
-            }
-        }
-
-        private void DrawElevation_Obsolete(CALayer layer, int elevation, CGRect bounds, nfloat cornerRadius)
-        {
-            // Source: https://medium.com/material-design-for-ios/part-1-elevation-e48ff795c693
-            var pancake = Element as PancakeView;
-
-            layer.CornerRadius = cornerRadius;
-            layer.ShadowRadius = elevation;
-            layer.ShadowColor = UIColor.Black.CGColor;
-            layer.ShadowOpacity = 0.24f;
-            layer.ShadowOffset = new CGSize(0, elevation);
-
-            if (pancake.Sides != 4)
-            {
-                layer.ShadowPath = ShapeUtils.CreatePolygonPath(bounds, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle).CGPath;
-            }
-            else
-            {
-                layer.ShadowPath = ShapeUtils.CreateRoundedRectPath(bounds, pancake.CornerRadius).CGPath;
-            }
-
-            layer.MasksToBounds = false;
         }
 
         private CAGradientLayer CreateGradientLayer(int angle, CGRect rect)

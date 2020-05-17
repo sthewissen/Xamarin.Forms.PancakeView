@@ -1,4 +1,7 @@
-﻿namespace Xamarin.Forms.PancakeView
+﻿using System;
+using System.Runtime.CompilerServices;
+
+namespace Xamarin.Forms.PancakeView
 {
     public class GradientStop : BindableObject
     {

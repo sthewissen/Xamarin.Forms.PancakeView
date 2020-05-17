@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
 namespace Xamarin.Forms.PancakeView
 {
-    public class DropShadow : BindableObject
+    public class DropShadow : BindableObject, IPropagateChanges
     {
+        public Action PropagatePropertyChanged { get; set; }
+
         public static readonly BindableProperty BlurRadiusProperty = BindableProperty.Create(
             nameof(BlurRadius), typeof(float), typeof(DropShadow), 10.0f);
 
@@ -37,6 +41,19 @@ namespace Xamarin.Forms.PancakeView
         {
             get => (Point)GetValue(OffsetProperty);
             set => SetValue(OffsetProperty, value);
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            if (propertyName == DropShadow.BlurRadiusProperty.PropertyName ||
+                propertyName == DropShadow.ColorProperty.PropertyName ||
+                propertyName == DropShadow.OffsetProperty.PropertyName ||
+                propertyName == DropShadow.OpacityProperty.PropertyName)
+            {
+                PropagatePropertyChanged?.Invoke();
+            }
         }
     }
 }
