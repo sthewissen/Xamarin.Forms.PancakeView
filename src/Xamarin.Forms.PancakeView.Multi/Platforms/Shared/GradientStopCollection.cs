@@ -15,10 +15,9 @@ namespace Xamarin.Forms.PancakeView
         {
             foreach (var item in this)
                 if (item is INotifyPropertyChanged i)
-                    i.PropertyChanged -= GradientStop_PropertyChanged;
+                    i.PropertyChanged -= CollectionItem_PropertyChanged;
 
             var removed = new List<GradientStop>(this);
-
             base.ClearItems();
             base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
         }
@@ -27,16 +26,16 @@ namespace Xamarin.Forms.PancakeView
         {
             if (e.OldItems != null)
                 foreach (INotifyPropertyChanged item in e.OldItems)
-                    item.PropertyChanged -= GradientStop_PropertyChanged;
+                    item.PropertyChanged -= CollectionItem_PropertyChanged;
 
             if (e.NewItems != null)
                 foreach (INotifyPropertyChanged item in e.NewItems)
-                    item.PropertyChanged += GradientStop_PropertyChanged;
+                    item.PropertyChanged += CollectionItem_PropertyChanged;
 
             base.OnCollectionChanged(e);
         }
 
-        void GradientStop_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void CollectionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, null));
         }

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Xamarin.Forms.PancakeView
 {
-    public class Border : BindableObject, IPropagateChanges
+    public class Border : BindableObject
     {
-        public Action PropagatePropertyChanged { get; set; }
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            for (int i = 0; i < BorderGradientStops.Count; i++)
+                SetInheritedBindingContext(BorderGradientStops[i], BindingContext);
+        }
 
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness),
             typeof(Thickness), typeof(PancakeView), default(Thickness));
@@ -16,27 +23,13 @@ namespace Xamarin.Forms.PancakeView
 
         public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern),
             typeof(DashPattern), typeof(PancakeView), defaultValue: default(DashPattern),
-            defaultValueCreator: bindable => { return new DashPattern(); },
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                var dash = (DashPattern)newValue;
-
-                // Needs to be an even number of parts, but if its null or 0 elements, we simply don't dash.
-                if (dash.Pattern.Length != 0 && (dash.Pattern?.Length >= 2 && dash.Pattern.Length % 2 != 0))
-                    throw new ArgumentException($"{nameof(BorderDashPattern)} must contain an even number of entries (>=2).", nameof(BorderDashPattern));
-            });
+            defaultValueCreator: bindable => { return new DashPattern(); });
 
         public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle),
             typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
 
         public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle),
-            typeof(int), typeof(PancakeView), defaultValue: default(int),
-            propertyChanged: (bindable, oldValue, newValue) =>
-            {
-                // Angle needs to be between 0-360.
-                if ((int)newValue < 0 || (int)newValue > 360)
-                    throw new ArgumentException($"Please provide a valid {nameof(BorderGradientAngle)}.", nameof(BorderGradientAngle));
-            });
+            typeof(int), typeof(PancakeView), defaultValue: default(int));
 
         public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops),
             typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
@@ -48,14 +41,14 @@ namespace Xamarin.Forms.PancakeView
             {
                 if (oldvalue != null)
                 {
-                    (bindable as Border).AddRemovePropagation(false);
+                    (bindable as Border).SetupInternalCollectionPropertyPropagation(true);
                 }
             },
             propertyChanged: (bindable, oldvalue, newvalue) =>
             {
                 if (newvalue != null)
                 {
-                    (bindable as Border).AddRemovePropagation(true);
+                    (bindable as Border).SetupInternalCollectionPropertyPropagation();
                 }
             });
 
@@ -74,7 +67,13 @@ namespace Xamarin.Forms.PancakeView
         public DashPattern BorderDashPattern
         {
             get { return (DashPattern)GetValue(BorderDashPatternProperty); }
-            set { SetValue(BorderDashPatternProperty, value); }
+            set
+            {
+                if (value.Pattern.Length != 0 && (value.Pattern?.Length >= 2 && value.Pattern.Length % 2 != 0))
+                    throw new ArgumentException($"{nameof(BorderDashPattern)} must contain an even number of entries (>=2).", nameof(BorderDashPattern));
+
+                SetValue(BorderDashPatternProperty, value);
+            }
         }
 
         public BorderDrawingStyle BorderDrawingStyle
@@ -86,7 +85,11 @@ namespace Xamarin.Forms.PancakeView
         public int BorderGradientAngle
         {
             get { return (int)GetValue(BorderGradientAngleProperty); }
-            set { SetValue(BorderGradientAngleProperty, value); }
+            set
+            {
+                if (value < 0 || value > 360)
+                    throw new ArgumentException($"Please provide a valid {nameof(BorderGradientAngle)}.", nameof(BorderGradientAngle)); SetValue(BorderGradientAngleProperty, value);
+            }
         }
 
         public GradientStopCollection BorderGradientStops
@@ -94,6 +97,20 @@ namespace Xamarin.Forms.PancakeView
             get { return (GradientStopCollection)GetValue(BorderGradientStopsProperty); }
             set { SetValue(BorderGradientStopsProperty, value); }
         }
+
+        void SetupInternalCollectionPropertyPropagation(bool teardown = false)
+        {
+            if (teardown && BorderGradientStops != null)
+            {
+                BorderGradientStops.CollectionChanged -= InternalCollectionChanged;
+            }
+            else if (BorderGradientStops != null)
+            {
+                BorderGradientStops.CollectionChanged += InternalCollectionChanged;
+            }
+        }
+
+        void InternalCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => OnPropertyChanged(PancakeView.BorderProperty.PropertyName);
 
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -104,23 +121,10 @@ namespace Xamarin.Forms.PancakeView
                 propertyName == BorderDrawingStyleProperty.PropertyName ||
                 propertyName == BorderGradientAngleProperty.PropertyName ||
                 propertyName == BorderThicknessProperty.PropertyName ||
-                propertyName == BorderGradientStopsProperty.PropertyName)
+                propertyName == nameof(BorderGradientStops))
             {
-                PropagatePropertyChanged?.Invoke();
+                OnPropertyChanged(PancakeView.BorderProperty.PropertyName);
             }
-        }
-
-        private void AddRemovePropagation(bool add)
-        {
-            if (add)
-                BorderGradientStops.CollectionChanged += BorderGradientStops_CollectionChanged;
-            else
-                BorderGradientStops.CollectionChanged -= BorderGradientStops_CollectionChanged;
-        }
-
-        private void BorderGradientStops_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            PropagatePropertyChanged?.Invoke();
         }
     }
 }

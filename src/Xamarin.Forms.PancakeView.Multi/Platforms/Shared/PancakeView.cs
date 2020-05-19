@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 
@@ -7,8 +8,6 @@ namespace Xamarin.Forms.PancakeView
 {
     public class PancakeView : ContentView
     {
-        public void PropagatePropertyChanged(string propertyName) => OnPropertyChanged(propertyName);
-
         public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides), typeof(int), typeof(PancakeView), defaultValue: 4);
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
@@ -26,14 +25,14 @@ namespace Xamarin.Forms.PancakeView
             {
                 if (oldvalue != null)
                 {
-                    (bindable as PancakeView).AddRemovePropagation(false);
+                    (bindable as PancakeView).SetupInternalCollectionPropertyPropagation(true);
                 }
             },
             propertyChanged: (bindable, oldvalue, newvalue) =>
             {
                 if (newvalue != null)
                 {
-                    (bindable as PancakeView).AddRemovePropagation(true);
+                    (bindable as PancakeView).SetupInternalCollectionPropertyPropagation();
                 }
             });
 
@@ -41,19 +40,16 @@ namespace Xamarin.Forms.PancakeView
             typeof(DropShadow), typeof(PancakeView), defaultValue: default(DropShadow),
             propertyChanging: (bindable, oldvalue, newvalue) =>
             {
-                if (oldvalue != null)
+                if (bindable != null && oldvalue != null)
                 {
-                    (oldvalue as IPropagateChanges).PropagatePropertyChanged = null;
+                    (bindable as PancakeView).SetupInternalPropertyPropagation(oldvalue as DropShadow, true);
                 }
             },
             propertyChanged: (bindable, oldvalue, newvalue) =>
             {
-                if (newvalue != null)
+                if (bindable != null && newvalue != null)
                 {
-                    (newvalue as IPropagateChanges).PropagatePropertyChanged = new Action(() =>
-                    {
-                        (bindable as PancakeView).PropagatePropertyChanged(ShadowProperty.PropertyName);
-                    });
+                    (bindable as PancakeView).SetupInternalPropertyPropagation(newvalue as DropShadow);
                 }
             });
 
@@ -61,19 +57,16 @@ namespace Xamarin.Forms.PancakeView
             typeof(Border), typeof(PancakeView), defaultValue: default(Border),
             propertyChanging: (bindable, oldvalue, newvalue) =>
             {
-                if (oldvalue != null)
+                if (bindable != null && oldvalue != null)
                 {
-                    (oldvalue as IPropagateChanges).PropagatePropertyChanged = null;
+                    (bindable as PancakeView).SetupInternalPropertyPropagation(oldvalue as Border, true);
                 }
             },
             propertyChanged: (bindable, oldvalue, newvalue) =>
             {
-                if (newvalue != null)
+                if (bindable != null && newvalue != null)
                 {
-                    (newvalue as IPropagateChanges).PropagatePropertyChanged = new Action(() =>
-                    {
-                        (bindable as PancakeView).PropagatePropertyChanged(BorderProperty.PropertyName);
-                    });
+                    (bindable as PancakeView).SetupInternalPropertyPropagation(newvalue as Border);
                 }
             });
 
@@ -119,17 +112,35 @@ namespace Xamarin.Forms.PancakeView
             set { SetValue(BorderProperty, value); }
         }
 
-        private void AddRemovePropagation(bool add)
+        void SetupInternalCollectionPropertyPropagation(bool teardown = false)
         {
-            if (add)
-                BackgroundGradientStops.CollectionChanged += PropagateBackgroundGradientStops;
-            else
-                BackgroundGradientStops.CollectionChanged -= PropagateBackgroundGradientStops;
+            if (teardown && BackgroundGradientStops != null)
+            {
+                BackgroundGradientStops.CollectionChanged -= InternalCollectionChanged;
+            }
+            else if (BackgroundGradientStops != null)
+            {
+                BackgroundGradientStops.CollectionChanged += InternalCollectionChanged;
+            }
         }
 
-        void PropagateBackgroundGradientStops(object sender, EventArgs e)
+        void InternalCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => OnPropertyChanged(BackgroundGradientStopsProperty.PropertyName);
+
+        void SetupInternalPropertyPropagation(BindableObject bindableObject, bool teardown = false)
         {
-            PropagatePropertyChanged(BackgroundGradientStopsProperty.PropertyName);
+            if (teardown)
+            {
+                bindableObject.PropertyChanged -= InternalPropertyChanged;
+            }
+            else
+            {
+                bindableObject.PropertyChanged += InternalPropertyChanged;
+            }
+        }
+
+        void InternalPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(e.PropertyName);
         }
 
         protected override void OnBindingContextChanged()
@@ -184,23 +195,6 @@ namespace Xamarin.Forms.PancakeView
             defaultValueCreator: bindable =>
             {
                 return new GradientStopCollection();
-            },
-            propertyChanging: (bindable, oldvalue, newvalue) =>
-            {
-                if (oldvalue != null)
-                {
-                    (oldvalue as IPropagateChanges).PropagatePropertyChanged = null;
-                }
-            },
-            propertyChanged: (bindable, oldvalue, newvalue) =>
-            {
-                if (newvalue != null)
-                {
-                    (newvalue as IPropagateChanges).PropagatePropertyChanged = new Action(() =>
-                    {
-                        (bindable as PancakeView).PropagatePropertyChanged(BorderGradientStopsProperty.PropertyName);
-                    });
-                }
             });
 
         public static readonly BindableProperty BorderGradientStartColorProperty = BindableProperty.Create(nameof(BorderGradientStartColor),
