@@ -73,19 +73,39 @@ namespace Xamarin.Forms.PancakeView
         public int Sides
         {
             get { return (int)GetValue(SidesProperty); }
-            set { SetValue(SidesProperty, value); }
+            set
+            {
+                // min value for sides is 3
+                if (value < 3)
+                    throw new ArgumentException($"Please provide a valid value for {nameof(Sides)}.", nameof(Sides));
+
+                SetValue(SidesProperty, value);
+            }
         }
 
         public double OffsetAngle
         {
             get { return (double)GetValue(OffsetAngleProperty); }
-            set { SetValue(OffsetAngleProperty, value); }
+            set
+            {
+                if (value < 0 || value > 360)
+                    throw new ArgumentException($"Please provide a valid {nameof(OffsetAngle)}.", nameof(OffsetAngle));
+
+                SetValue(OffsetAngleProperty, value);
+            }
         }
 
         public int BackgroundGradientAngle
         {
             get { return (int)GetValue(BackgroundGradientAngleProperty); }
-            set { SetValue(BackgroundGradientAngleProperty, value); }
+            set
+            {
+                // Angle needs to be between 0-360.
+                if (value < 0 || value > 360)
+                    throw new ArgumentException($"Please provide a valid {nameof(BackgroundGradientAngle)}.", nameof(BackgroundGradientAngle));
+
+                SetValue(BackgroundGradientAngleProperty, value);
+            }
         }
 
         public GradientStopCollection BackgroundGradientStops

@@ -86,7 +86,9 @@ namespace Xamarin.Forms.PancakeView
             set
             {
                 if (value < 0 || value > 360)
-                    throw new ArgumentException($"Please provide a valid {nameof(BorderGradientAngle)}.", nameof(BorderGradientAngle)); SetValue(BorderGradientAngleProperty, value);
+                    throw new ArgumentException($"Please provide a valid {nameof(BorderGradientAngle)}.", nameof(BorderGradientAngle));
+
+                SetValue(BorderGradientAngleProperty, value);
             }
         }
 

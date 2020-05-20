@@ -40,8 +40,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
             if (e.NewElement != null)
             {
-                Validate(Element as PancakeView);
-
                 _actualView = new NoClippingView();
                 _wrapperView = new NoClippingView();
 
@@ -75,8 +73,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
         {
             base.OnElementPropertyChanged(sender, e);
 
-            Validate(Element as PancakeView);
-
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
                 SetBackgroundColor(Element.BackgroundColor);
@@ -98,20 +94,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
             {
                 NeedsDisplay = true;
             }
-        }
-
-        private void Validate(PancakeView pancake)
-        {
-            // Angle needs to be between 0-360.
-            if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
-                throw new ArgumentException("Please provide a valid background gradient angle.", nameof(Controls.PancakeView.BackgroundGradientAngle));
-
-            if (pancake.OffsetAngle < 0 || pancake.OffsetAngle > 360)
-                throw new ArgumentException("Please provide a valid offset angle.", nameof(Controls.PancakeView.OffsetAngle));
-
-            // min value for sides is 3
-            if (pancake.Sides < 3)
-                throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
         }
 
         public override void Layout()

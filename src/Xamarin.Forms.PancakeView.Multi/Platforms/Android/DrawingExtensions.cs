@@ -3,7 +3,7 @@ using Android.Graphics;
 
 namespace Xamarin.Forms.PancakeView.Droid
 {
-    public static class ShapeUtils
+    public static class DrawingExtensions
     {
         public static Path CreateRoundedRectPath(float rectWidth, float rectHeight, float topLeft, float topRight, float bottomRight, float bottomLeft)
         {
@@ -45,24 +45,13 @@ namespace Xamarin.Forms.PancakeView.Droid
                 var start = new Point(corner.X + cornerRadius * Math.Cos(angle - theta), corner.Y + cornerRadius * Math.Sin(angle - theta));
                 var end = new Point(corner.X + cornerRadius * Math.Cos(angle + theta), corner.Y + cornerRadius * Math.Sin(angle + theta));
 
-                path.LineTo(start.X, start.Y);
-                path.QuadTo(tip.X, tip.Y, end.X, end.Y);
+                path.LineTo((float)start.X, (float)start.Y);
+                path.QuadTo((float)tip.X, (float)tip.Y, (float)end.X, (float)end.Y);
             }
 
             path.Close();
 
             return path;
-        }
-
-        public class Point
-        {
-            public float X { get; set; }
-            public float Y { get; set; }
-            public Point(double X, double Y)
-            {
-                this.X = (float)X;
-                this.Y = (float)Y;
-            }
         }
     }
 }
