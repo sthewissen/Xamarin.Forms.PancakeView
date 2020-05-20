@@ -85,28 +85,16 @@ namespace Xamarin.Forms.PancakeView.MacOS
             {
                 SetCornerRadius();
             }
-            else if ((e.PropertyName == PancakeView.BorderColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderDrawingStyleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderDashPatternProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName))
+            else if (e.PropertyName == PancakeView.BorderProperty.PropertyName)
             {
                 DrawBorder();
             }
-            else if ((e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
+            else if ((e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
                     (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.HasShadowProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ElevationProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.SidesProperty.PropertyName))
+                    (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
+                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName))
             {
                 NeedsDisplay = true;
             }
@@ -124,11 +112,6 @@ namespace Xamarin.Forms.PancakeView.MacOS
             // min value for sides is 3
             if (pancake.Sides < 3)
                 throw new ArgumentException("Please provide a valid value for sides.", nameof(Controls.PancakeView.Sides));
-
-            // Needs to be an even number of parts, but if its null or 0 elements, we simply don't dash.
-            if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length != 0 &&
-                (pancake.BorderDashPattern.Pattern?.Length >= 2 && pancake.BorderDashPattern.Pattern.Length % 2 != 0))
-                throw new ArgumentException("BorderDashPattern must contain an even number of entries (>=2).", nameof(Controls.PancakeView.BorderDashPattern));
         }
 
         public override void Layout()
@@ -206,25 +189,16 @@ namespace Xamarin.Forms.PancakeView.MacOS
             _actualView.Layer.Mask = maskLayer;
             _actualView.Layer.MasksToBounds = true;
 
-            if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) ||
-                (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
+            if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
             {
                 // Create a gradient layer that draws our background.
                 var gradientLayer = CreateGradientLayer(pancake.BackgroundGradientAngle, Bounds);
                 gradientLayer.Name = layerName;
 
-                if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Count > 0)
-                {
-                    // A range of colors is given. Let's add them.
-                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
-                    gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
-                }
-                else
-                {
-                    // Only two colors provided, use that.
-                    gradientLayer.Colors = new CGColor[] { pancake.BackgroundGradientStartColor.ToCGColor(), pancake.BackgroundGradientEndColor.ToCGColor() };
-                }
+                // A range of colors is given. Let's add them.
+                var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
+                gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
 
                 AddLayer(gradientLayer, 0, _actualView);
             }
@@ -253,13 +227,13 @@ namespace Xamarin.Forms.PancakeView.MacOS
             var prevBorderLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
 
-            if (pancake.BorderThickness > 0)
+            if (pancake.Border != null && !pancake.Border.BorderThickness.IsEmpty)
             {
                 var borderLayer = new CAShapeLayer
                 {
-                    StrokeColor = pancake.BorderColor == Color.Default ? NSColor.Clear.CGColor : pancake.BorderColor.ToCGColor(),
+                    StrokeColor = pancake.Border.BorderColor == Color.Default ? NSColor.Clear.CGColor : pancake.Border.BorderColor.ToCGColor(),
                     FillColor = null,
-                    LineWidth = pancake.BorderThickness,
+                    LineWidth = (nfloat)pancake.Border.BorderThickness.Left,
                     Name = layerName
                 };
 
@@ -275,17 +249,17 @@ namespace Xamarin.Forms.PancakeView.MacOS
                 borderLayer.MasksToBounds = false;
 
                 // Dash pattern for the border.
-                if (pancake.BorderDashPattern.Pattern != null && pancake.BorderDashPattern.Pattern.Length > 0)
+                if (pancake.Border.BorderDashPattern.Pattern != null && pancake.Border.BorderDashPattern.Pattern.Length > 0)
                 {
-                    var items = pancake.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
+                    var items = pancake.Border.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
                     borderLayer.LineDashPattern = items;
                 }
 
-                if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
+                if (pancake.Border.BorderGradientStops != null && pancake.Border.BorderGradientStops.Any())
                 {
-                    var gradientFrame = Bounds.Inset(-pancake.BorderThickness, -pancake.BorderThickness);
-                    var gradientLayer = CreateGradientLayer(pancake.BorderGradientAngle, gradientFrame);
-                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - (pancake.BorderThickness), (gradientFrame.Height / 2) - (pancake.BorderThickness));
+                    var gradientFrame = Bounds.Inset(-(nfloat)pancake.Border.BorderThickness.Left, -(nfloat)pancake.Border.BorderThickness.Left);
+                    var gradientLayer = CreateGradientLayer(pancake.Border.BorderGradientAngle, gradientFrame);
+                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)pancake.Border.BorderThickness.Left), (gradientFrame.Height / 2) - ((nfloat)pancake.Border.BorderThickness.Left));
 
                     // Create a clone from the border layer and use that one as the mask.
                     // Why? Because the mask and the border somehow can't be the same, so
@@ -293,9 +267,9 @@ namespace Xamarin.Forms.PancakeView.MacOS
                     var maskLayer = new CAShapeLayer()
                     {
                         Path = borderLayer.Path,
-                        Position = new CGPoint(pancake.BorderThickness, pancake.BorderThickness),
+                        Position = new CGPoint(pancake.Border.BorderThickness.Left, pancake.Border.BorderThickness.Left),
                         FillColor = null,
-                        LineWidth = pancake.BorderThickness,
+                        LineWidth = (nfloat)pancake.Border.BorderThickness.Left,
                         StrokeColor = NSColor.Red.CGColor,
                         LineDashPattern = borderLayer.LineDashPattern
                     };
@@ -303,18 +277,10 @@ namespace Xamarin.Forms.PancakeView.MacOS
                     gradientLayer.Mask = maskLayer;
                     gradientLayer.Name = layerName;
 
-                    if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
-                    {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
-                        gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
-                    }
-                    else
-                    {
-                        // Only two colors provided, use that.
-                        gradientLayer.Colors = new CGColor[] { pancake.BorderGradientStartColor.ToCGColor(), pancake.BorderGradientEndColor.ToCGColor() };
-                    }
+                    // A range of colors is given. Let's add them.
+                    var orderedStops = pancake.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                    gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
+                    gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
 
                     AddLayer(gradientLayer, -1, _actualView);
                 }

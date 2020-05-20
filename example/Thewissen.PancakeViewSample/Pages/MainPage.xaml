@@ -151,11 +151,6 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!--THICKNESS DOESNT WORK WITH A SLIDER
-                <Label Style="{StaticResource small}" Text="BorderThickness" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="100" Minimum="0" Value="{Binding BorderThickness, Source={x:Reference border}}" />-->
-
-
                 <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderColor" />
 
                 <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" BackgroundColor="{Binding BorderColor}"
@@ -167,7 +162,7 @@
             <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#bfcdde"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10">
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="border" BorderThickness="10" BorderColor="{Binding BorderColor}" />
+                    <yummy:Border x:Name="border" BorderThickness="10,10,10,10" BorderColor="{Binding BorderColor}" />
                 </yummy:PancakeView.Border>
                 <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
             </yummy:PancakeView>
@@ -185,7 +180,7 @@
                 <Label Grid.Column="1" HorizontalTextAlignment="End" VerticalOptions="Center" Text="{Binding BorderDashPattern, Source={x:Reference borderDash}}" />
             </Grid>
 
-            <yummy:PancakeView Margin="0,32,0,0" BorderDrawingStyle="Outside" BackgroundColor="#78ABE7"
+            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#78ABE7"
                                HorizontalOptions="FillAndExpand" Padding="20,0"
                                HeightRequest="150" CornerRadius="40,10,40,10">
 
@@ -194,7 +189,8 @@
                 </yummy:PancakeView.GestureRecognizers>
 
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="borderDash" BorderThickness="8" BorderColor="#456287" BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}" />
+                    <yummy:Border x:Name="borderDash" BorderThickness="8" BorderColor="#456287"
+                                  BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}" />
                 </yummy:PancakeView.Border>
 
                 <Label Text="This box has a nice dashed border. Tap me to cycle through various types of samples for you to gaze at." HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#ffffff" />

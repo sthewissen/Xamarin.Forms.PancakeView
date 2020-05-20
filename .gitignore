@@ -329,3 +329,4 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 **/.DS_Store
+example/Thewissen.PancakeViewSample.Android/Resources/Resource.designer.cs

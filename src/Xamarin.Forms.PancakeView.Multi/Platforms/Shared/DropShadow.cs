@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Xamarin.Forms.PancakeView
 {
-    public class DropShadow : Element
+    public class DropShadow : BindableObject
     {
         public static readonly BindableProperty BlurRadiusProperty = BindableProperty.Create(
             nameof(BlurRadius), typeof(float), typeof(DropShadow), 10.0f);

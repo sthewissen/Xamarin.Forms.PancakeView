@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Xamarin.Forms.PancakeView
@@ -16,23 +14,23 @@ namespace Xamarin.Forms.PancakeView
         }
 
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness),
-            typeof(Thickness), typeof(PancakeView), default(Thickness));
+            typeof(Thickness), typeof(Border), default(Thickness));
 
         public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor),
-            typeof(Color), typeof(PancakeView), default(Color));
+            typeof(Color), typeof(Border), default(Color));
 
         public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern),
-            typeof(DashPattern), typeof(PancakeView), defaultValue: default(DashPattern),
+            typeof(DashPattern), typeof(Border), defaultValue: default(DashPattern),
             defaultValueCreator: bindable => { return new DashPattern(); });
 
         public static readonly BindableProperty BorderDrawingStyleProperty = BindableProperty.Create(nameof(BorderDrawingStyle),
-            typeof(BorderDrawingStyle), typeof(PancakeView), defaultValue: BorderDrawingStyle.Inside);
+            typeof(BorderDrawingStyle), typeof(Border), defaultValue: BorderDrawingStyle.Inside);
 
         public static readonly BindableProperty BorderGradientAngleProperty = BindableProperty.Create(nameof(BorderGradientAngle),
-            typeof(int), typeof(PancakeView), defaultValue: default(int));
+            typeof(int), typeof(Border), defaultValue: default(int));
 
         public static readonly BindableProperty BorderGradientStopsProperty = BindableProperty.Create(nameof(BorderGradientStops),
-            typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
+            typeof(GradientStopCollection), typeof(Border), defaultValue: default(GradientStopCollection),
             defaultValueCreator: bindable =>
             {
                 return new GradientStopCollection();
@@ -69,7 +67,7 @@ namespace Xamarin.Forms.PancakeView
             get { return (DashPattern)GetValue(BorderDashPatternProperty); }
             set
             {
-                if (value.Pattern.Length != 0 && (value.Pattern?.Length >= 2 && value.Pattern.Length % 2 != 0))
+                if (value.Pattern != null && value.Pattern.Length != 0 && (value.Pattern?.Length >= 2 && value.Pattern.Length % 2 != 0))
                     throw new ArgumentException($"{nameof(BorderDashPattern)} must contain an even number of entries (>=2).", nameof(BorderDashPattern));
 
                 SetValue(BorderDashPatternProperty, value);

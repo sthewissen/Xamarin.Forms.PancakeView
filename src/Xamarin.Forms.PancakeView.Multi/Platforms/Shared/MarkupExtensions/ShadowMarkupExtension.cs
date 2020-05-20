@@ -4,7 +4,7 @@ using Xamarin.Forms.Xaml;
 namespace Xamarin.Forms.PancakeView
 {
     [AcceptEmptyServiceProvider]
-    public class ShadowExtension : IMarkupExtension<DropShadow>
+    public class ShadowMarkupExtension : IMarkupExtension<DropShadow>
     {
         public float BlurRadius { set; get; } = (float)DropShadow.BlurRadiusProperty.DefaultValue;
 
