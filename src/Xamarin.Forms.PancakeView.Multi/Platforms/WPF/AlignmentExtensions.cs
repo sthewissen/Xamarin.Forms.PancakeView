@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Xamarin.Forms.PancakeView.Platforms.WPF.Utils
+namespace Xamarin.Forms.PancakeView.Platforms.WPF
 {
     public static class AlignmentExtensions
     {

@@ -40,7 +40,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             if (e.NewElement != null && e.OldElement == null)
             {
-                var pancake = (Element as PancakeView);
+                var pancake = Element as PancakeView;
 
                 // HACK: When there are no children we add a Grid element to trigger DrawChild.
                 // This should be improved upon, but I haven't found out a nice way to be able to clip
@@ -136,14 +136,14 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             if (Element == null) return;
 
-            var control = (PancakeView)Element;
+            var pancake = Element as PancakeView;
 
             SetClipChildren(true);
 
             //Create path to clip the child
-            if (control.Sides != 4)
+            if (pancake.Sides != 4)
             {
-                using (var path = DrawingExtensions.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                using (var path = DrawingExtensions.CreatePolygonPath(Width, Height, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -152,31 +152,31 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = DrawingExtensions.CreateRoundedRectPath(Width, Height,
-                    Context.ToPixels(control.CornerRadius.TopLeft),
-                    Context.ToPixels(control.CornerRadius.TopRight),
-                    Context.ToPixels(control.CornerRadius.BottomRight),
-                    Context.ToPixels(control.CornerRadius.BottomLeft)))
+                    Context.ToPixels(pancake.CornerRadius.TopLeft),
+                    Context.ToPixels(pancake.CornerRadius.TopRight),
+                    Context.ToPixels(pancake.CornerRadius.BottomRight),
+                    Context.ToPixels(pancake.CornerRadius.BottomLeft)))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
                 }
             }
 
-            DrawBorder(canvas, control);
+            DrawBorder(canvas, pancake);
         }
 
         protected override bool DrawChild(ACanvas canvas, global::Android.Views.View child, long drawingTime)
         {
             if (Element == null) return false;
 
-            var control = (PancakeView)Element;
+            var pancake = Element as PancakeView;
 
             SetClipChildren(true);
 
             //Create path to clip the child         
-            if (control.Sides != 4)
+            if (pancake.Sides != 4)
             {
-                using (var path = DrawingExtensions.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle))
+                using (var path = DrawingExtensions.CreatePolygonPath(Width, Height, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -185,10 +185,10 @@ namespace Xamarin.Forms.PancakeView.Droid
             else
             {
                 using (var path = DrawingExtensions.CreateRoundedRectPath(Width, Height,
-                        Context.ToPixels(control.CornerRadius.TopLeft),
-                        Context.ToPixels(control.CornerRadius.TopRight),
-                        Context.ToPixels(control.CornerRadius.BottomRight),
-                        Context.ToPixels(control.CornerRadius.BottomLeft)))
+                        Context.ToPixels(pancake.CornerRadius.TopLeft),
+                        Context.ToPixels(pancake.CornerRadius.TopRight),
+                        Context.ToPixels(pancake.CornerRadius.BottomRight),
+                        Context.ToPixels(pancake.CornerRadius.BottomLeft)))
                 {
                     canvas.Save();
                     canvas.ClipPath(path);
@@ -199,46 +199,46 @@ namespace Xamarin.Forms.PancakeView.Droid
             var result = base.DrawChild(canvas, child, drawingTime);
             canvas.Restore();
 
-            DrawBorder(canvas, control);
+            DrawBorder(canvas, pancake);
 
             return result;
         }
 
-        private void DrawBorder(ACanvas canvas, PancakeView control)
+        private void DrawBorder(ACanvas canvas, PancakeView pancake)
         {
-            if (control.Border != null && control.Border.BorderThickness.Left > 0)
+            if (pancake.Border != null && pancake.Border.BorderThickness != default)
             {
-                var borderThickness = Context.ToPixels(control.Border.BorderThickness.Left);
+                var borderThickness = Context.ToPixels(pancake.Border.BorderThickness.Left);
                 var halfBorderThickness = borderThickness / 2;
-                bool hasShadowOrElevation = control.Shadow != null && Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop;
+                bool hasShadowOrElevation = pancake.Shadow != null && Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop;
 
                 // TODO: This doesn't look entirely right yet when using it with rounded corners.
                 using (var paint = new Paint { AntiAlias = true })
                 using (Path.Direction direction = Path.Direction.Cw)
                 using (Paint.Style style = Paint.Style.Stroke)
-                using (var rect = new RectF(control.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
-                                            control.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
-                                            control.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
-                                            control.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
+                using (var rect = new RectF(pancake.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
+                                            pancake.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? -halfBorderThickness : halfBorderThickness,
+                                            pancake.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Width + halfBorderThickness : canvas.Width - halfBorderThickness,
+                                            pancake.Border.BorderDrawingStyle == BorderDrawingStyle.Outside && !hasShadowOrElevation ? canvas.Height + halfBorderThickness : canvas.Height - halfBorderThickness))
                 {
                     Path path = null;
-                    if (control.Sides != 4)
+                    if (pancake.Sides != 4)
                     {
-                        path = DrawingExtensions.CreatePolygonPath(Width, Height, control.Sides, control.CornerRadius.TopLeft, control.OffsetAngle);
+                        path = DrawingExtensions.CreatePolygonPath(Width, Height, pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
                     }
                     else
 
                     {
                         path = DrawingExtensions.CreateRoundedRectPath(Width, Height,
-                            Context.ToPixels(control.CornerRadius.TopLeft),
-                            Context.ToPixels(control.CornerRadius.TopRight),
-                            Context.ToPixels(control.CornerRadius.BottomRight),
-                            Context.ToPixels(control.CornerRadius.BottomLeft));
+                            Context.ToPixels(pancake.CornerRadius.TopLeft),
+                            Context.ToPixels(pancake.CornerRadius.TopRight),
+                            Context.ToPixels(pancake.CornerRadius.BottomRight),
+                            Context.ToPixels(pancake.CornerRadius.BottomLeft));
                     }
 
-                    if (control.Border.BorderDashPattern.Pattern != null && control.Border.BorderDashPattern.Pattern.Length > 0)
+                    if (pancake.Border.BorderDashPattern.Pattern != null && pancake.Border.BorderDashPattern.Pattern.Length > 0)
                     {
-                        var items = control.Border.BorderDashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToArray();
+                        var items = pancake.Border.BorderDashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToArray();
 
                         // dashes merge when thickness is increased
                         // off-distance should be scaled according to thickness
@@ -246,16 +246,16 @@ namespace Xamarin.Forms.PancakeView.Droid
                         {
                             if (i % 2 != 0)
                             {
-                                items[i] = items[i] * ((float)control.Border.BorderThickness.Left * 0.5f);
+                                items[i] = items[i] * ((float)pancake.Border.BorderThickness.Left * 0.5f);
                             }
                         }
 
                         paint.SetPathEffect(new DashPathEffect(items, 0));
                     }
 
-                    if (control.Border.BorderGradientStops != null && control.Border.BorderGradientStops.Any())
+                    if (pancake.Border.BorderGradientStops != null && pancake.Border.BorderGradientStops.Any())
                     {
-                        var angle = control.Border.BorderGradientAngle / 360.0;
+                        var angle = pancake.Border.BorderGradientAngle / 360.0;
 
                         // Calculate the new positions based on angle between 0-360.
                         var a = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
@@ -264,7 +264,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                         var d = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
 
                         // A range of colors is given. Let's add them.
-                        var orderedStops = control.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                        var orderedStops = pancake.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
                         var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
                         var locations = orderedStops.Select(x => x.Offset).ToArray();
 
@@ -273,7 +273,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                     }
                     else
                     {
-                        paint.Color = control.Border.BorderColor.ToAndroid();
+                        paint.Color = pancake.Border.BorderColor.ToAndroid();
                     }
 
                     paint.StrokeCap = Paint.Cap.Square;
