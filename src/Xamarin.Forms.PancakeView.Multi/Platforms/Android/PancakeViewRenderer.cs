@@ -114,11 +114,11 @@ namespace Xamarin.Forms.PancakeView.Droid
                 Invalidate();
                 SetupShadow(pancake);
             }
-            //else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
-            //{
-            //    _drawable.Dispose();
-            //    this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
-            //}
+            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
+            {
+                _drawable.Dispose();
+                this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
+            }
         }
 
         protected override void Dispose(bool disposing)
