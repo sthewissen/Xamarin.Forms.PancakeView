@@ -61,7 +61,8 @@
                 <Slider Grid.Row="4" Grid.Column="1" Maximum="5" Minimum="-5" Value="{Binding Offset, Source={x:Reference backgroundGradientColor2}}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="gradient" Margin="0,32,0,0" BackgroundGradientAngle="45" HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="10">
+            <yummy:PancakeView x:Name="gradient" Margin="0,32,0,0" BackgroundGradientAngle="45"
+                               HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="10">
                 <yummy:PancakeView.BackgroundGradientStops>
                     <yummy:GradientStopCollection>
                         <yummy:GradientStop x:Name="backgroundGradientColor1" Color="{Binding BackgroundGradientColor1}" Offset="0" />
@@ -149,20 +150,26 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderColor" />
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
 
                 <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" BackgroundColor="{Binding BorderColor}"
                         Text="{Binding BorderColor, Converter={StaticResource ColorToHexConverter}}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomColorCommand}"
                         CommandParameter="{x:Static helpers:SampleColorType.BorderColor}" />
+
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="DrawingStyle" />
+
+                <Button Grid.Row="2" Grid.Column="1" HorizontalOptions="Center"
+                        Text="{Binding BorderDrawingStyle}" Style="{StaticResource small_button}" Command="{Binding CycleBorderDrawingStyleCommand}" />
             </Grid>
 
-            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="{Binding BackgroundGradientColor1}"
+            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="Khaki" Shadow="{yummy:ShadowMarkup Color=#000000, Opacity=0.8}"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10">
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="border" BorderThickness="10,10,10,10" BorderColor="{Binding BorderColor}" />
+                    <yummy:Border x:Name="border" Thickness="10,10,10,10" Color="{Binding BorderColor}" DrawingStyle="{Binding BorderDrawingStyle}" />
                 </yummy:PancakeView.Border>
                 <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
             </yummy:PancakeView>
@@ -177,7 +184,7 @@
 
             <Grid ColumnSpacing="8" VerticalOptions="Start">
                 <Label Style="{StaticResource small}" Text="BorderDashPattern" VerticalOptions="Center" />
-                <Label Grid.Column="1" HorizontalTextAlignment="End" VerticalOptions="Center" Text="{Binding BorderDashPattern, Source={x:Reference borderDash}}" />
+                <Label Grid.Column="1" HorizontalTextAlignment="End" VerticalOptions="Center" Text="{Binding DashPattern, Source={x:Reference borderDash}}" />
             </Grid>
 
             <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="#78ABE7"
@@ -189,8 +196,8 @@
                 </yummy:PancakeView.GestureRecognizers>
 
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="borderDash" BorderThickness="8" BorderColor="#456287"
-                                  BorderDashPattern="{Binding BorderDashPattern, Mode=TwoWay}" />
+                    <yummy:Border x:Name="borderDash" Thickness="8" Color="#456287"
+                                  DashPattern="{Binding BorderDashPattern, Mode=TwoWay}" />
                 </yummy:PancakeView.Border>
 
                 <Label Text="This box has a nice dashed border. Tap me to cycle through various types of samples for you to gaze at." HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#ffffff" />
@@ -214,7 +221,7 @@
 
                 <Label Style="{StaticResource small}" Text="BorderGradientAngle" VerticalOptions="Center" />
                 <Slider Grid.Column="1" Maximum="360" Minimum="0"
-                        Value="{Binding BorderGradientAngle, Source={x:Reference borderGradient}}" />
+                        Value="{Binding GradientAngle, Source={x:Reference borderGradient}}" />
 
                 <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderGradientStops" />
                 <Button Grid.Row="1" Grid.Column="1"
@@ -227,7 +234,7 @@
                 <Label Text="This box has a gradient border." HorizontalOptions="Center" VerticalOptions="Center" />
 
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="borderGradient" BorderThickness="10" BorderGradientStops="{Binding BorderGradientStops}" />
+                    <yummy:Border x:Name="borderGradient" Thickness="10" GradientStops="{Binding BorderGradientStops}" />
                 </yummy:PancakeView.Border>
 
             </yummy:PancakeView>

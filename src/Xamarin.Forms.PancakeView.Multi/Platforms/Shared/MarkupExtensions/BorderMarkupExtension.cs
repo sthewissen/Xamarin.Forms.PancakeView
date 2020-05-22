@@ -6,22 +6,22 @@ namespace Xamarin.Forms.PancakeView
     [AcceptEmptyServiceProvider]
     public class BorderMarkupExtension : IMarkupExtension<Border>
     {
-        public Thickness BorderThickness { set; get; } = (Thickness)Border.BorderThicknessProperty.DefaultValue;
+        public Thickness Thickness { set; get; } = (Thickness)Border.ThicknessProperty.DefaultValue;
 
-        public Color BorderColor { set; get; } = (Color)Border.BorderColorProperty.DefaultValue;
+        public Color Color { set; get; } = (Color)Border.ColorProperty.DefaultValue;
 
-        public DashPattern BorderDashPattern { set; get; } = (DashPattern)Border.BorderDashPatternProperty.DefaultValue;
+        public DashPattern DashPattern { set; get; } = (DashPattern)Border.DashPatternProperty.DefaultValue;
 
-        public int BorderGradientAngle { set; get; } = (int)Border.BorderGradientAngleProperty.DefaultValue;
+        public int GradientAngle { set; get; } = (int)Border.GradientAngleProperty.DefaultValue;
 
         public Border ProvideValue(IServiceProvider serviceProvider)
         {
             return new Border
             {
-                BorderColor = BorderColor,
-                BorderDashPattern = BorderDashPattern,
-                BorderGradientAngle = BorderGradientAngle,
-                BorderThickness = BorderThickness
+                Color = Color,
+                DashPattern = DashPattern,
+                GradientAngle = GradientAngle,
+                Thickness = Thickness
             };
         }
 

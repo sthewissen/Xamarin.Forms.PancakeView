@@ -200,19 +200,33 @@ namespace Xamarin.Forms.PancakeView.iOS
         {
             var layerName = "borderLayer";
 
-            // remove previous background layer if any
+            // Remove previous border layers, if any
             var prevBorderLayer = _wrapperView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
             prevBorderLayer?.RemoveFromSuperLayer();
+            prevBorderLayer = _actualView.Layer.Sublayers?.FirstOrDefault(x => x.Name == layerName);
+            prevBorderLayer?.RemoveFromSuperLayer();
 
-            if (Element.Border != null && Element.Border.BorderThickness != default)
+            if (Element.Border != null && Element.Border.Thickness != default)
             {
                 var borderLayer = new CAShapeLayer
                 {
-                    StrokeColor = Element.Border.BorderColor == Color.Default ? UIColor.Clear.CGColor : Element.Border.BorderColor.ToCGColor(),
+                    StrokeColor = Element.Border.Color == Color.Default ? UIColor.Clear.CGColor : Element.Border.Color.ToCGColor(),
                     FillColor = null,
-                    LineWidth = (nfloat)Element.Border.BorderThickness.Left,
                     Name = layerName
                 };
+
+                switch (Element.Border.DrawingStyle)
+                {
+                    case BorderDrawingStyle.Inside:
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left * 2;
+                        break;
+                    case BorderDrawingStyle.Outside:
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left * 2;
+                        break;
+                    case BorderDrawingStyle.Centered:
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left;
+                        break;
+                }
 
                 borderLayer.Path = Element.Sides != 4 ?
                     Bounds.CreatePolygonPath(Element.Sides, Element.CornerRadius.TopLeft, Element.OffsetAngle).CGPath :
@@ -224,17 +238,17 @@ namespace Xamarin.Forms.PancakeView.iOS
                 borderLayer.Position = layerPosition;
 
                 // Dash pattern for the border.
-                if (Element.Border.BorderDashPattern.Pattern != null && Element.Border.BorderDashPattern.Pattern.Length > 0)
+                if (Element.Border.DashPattern.Pattern != null && Element.Border.DashPattern.Pattern.Length > 0)
                 {
-                    var items = Element.Border.BorderDashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
+                    var items = Element.Border.DashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
                     borderLayer.LineDashPattern = items;
                 }
 
-                if (Element.Border.BorderGradientStops != null && Element.Border.BorderGradientStops.Any())
+                if (Element.Border.GradientStops != null && Element.Border.GradientStops.Any())
                 {
-                    var gradientFrame = Bounds.Inset(-(nfloat)Element.Border.BorderThickness.Left, -(nfloat)Element.Border.BorderThickness.Left);
-                    var gradientLayer = CreateGradientLayer(Element.Border.BorderGradientAngle, gradientFrame);
-                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)Element.Border.BorderThickness.Left), (gradientFrame.Height / 2) - ((nfloat)Element.Border.BorderThickness.Left));
+                    var gradientFrame = Bounds.Inset(-(nfloat)Element.Border.Thickness.Left, -(nfloat)Element.Border.Thickness.Left);
+                    var gradientLayer = CreateGradientLayer(Element.Border.GradientAngle, gradientFrame);
+                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)Element.Border.Thickness.Left), (gradientFrame.Height / 2) - ((nfloat)Element.Border.Thickness.Left));
 
                     // Create a clone from the border layer and use that one as the mask.
                     // Why? Because the mask and the border somehow can't be the same, so
@@ -242,9 +256,9 @@ namespace Xamarin.Forms.PancakeView.iOS
                     var maskLayer = new CAShapeLayer()
                     {
                         Path = borderLayer.Path,
-                        Position = new CGPoint(Element.Border.BorderThickness.Left, Element.Border.BorderThickness.Left),
+                        Position = new CGPoint(Element.Border.Thickness.Left, Element.Border.Thickness.Left),
                         FillColor = null,
-                        LineWidth = (nfloat)Element.Border.BorderThickness.Left,
+                        LineWidth = (nfloat)Element.Border.Thickness.Left,
                         StrokeColor = UIColor.Red.CGColor,
                         LineDashPattern = borderLayer.LineDashPattern
                     };
@@ -253,15 +267,25 @@ namespace Xamarin.Forms.PancakeView.iOS
                     gradientLayer.Name = layerName;
 
                     // A range of colors is given. Let's add them.
-                    var orderedStops = Element.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                    var orderedStops = Element.Border.GradientStops.OrderBy(x => x.Offset).ToList();
                     gradientLayer.Colors = orderedStops.Select(x => x.Color.ToCGColor()).ToArray();
                     gradientLayer.Locations = orderedStops.Select(x => new NSNumber(x.Offset)).ToArray();
 
-                    AddLayer(gradientLayer, -1, _wrapperView);
+                    if (Element.Border.DrawingStyle == BorderDrawingStyle.Centered)
+                        AddLayer(gradientLayer, -1, _wrapperView);
+                    else if (Element.Border.DrawingStyle == BorderDrawingStyle.Inside)
+                        AddLayer(gradientLayer, -1, _actualView);
+                    else
+                        AddLayer(gradientLayer, 0, _wrapperView);
                 }
                 else
                 {
-                    AddLayer(borderLayer, -1, _wrapperView);
+                    if (Element.Border.DrawingStyle == BorderDrawingStyle.Centered)
+                        AddLayer(borderLayer, -1, _wrapperView);
+                    else if (Element.Border.DrawingStyle == BorderDrawingStyle.Inside)
+                        AddLayer(borderLayer, -1, _actualView);
+                    else
+                        AddLayer(borderLayer, 0, _wrapperView);
                 }
             }
         }

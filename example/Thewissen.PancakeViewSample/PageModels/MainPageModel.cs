@@ -14,10 +14,11 @@ namespace Thewissen.PancakeViewSample.PageModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private static readonly Random _randomGen = new Random();
+        static readonly Random _randomGen = new Random();
         public Color RandomColor => GetRandomColor();
 
         int currentBorderDashIndex = 0;
+        int currentBorderDrawingStyleIndex = 0;
 
         List<DashPattern> DashPatterns = new List<DashPattern>
         {
@@ -27,6 +28,14 @@ namespace Thewissen.PancakeViewSample.PageModels
             new DashPattern(5,2)
         };
 
+        List<BorderDrawingStyle> BorderDrawingStyles = new List<BorderDrawingStyle>
+        {
+           BorderDrawingStyle.Inside,
+           BorderDrawingStyle.Outside,
+           BorderDrawingStyle.Centered
+        };
+
+        public BorderDrawingStyle BorderDrawingStyle { get; set; }
         public DashPattern BorderDashPattern { get; set; }
         public Point ShadowOffset { get; set; } = new Point(20, 20);
         public Color ShadowColor { get; set; } = Color.Black;
@@ -51,6 +60,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         public CornerRadius CornerRadius => new CornerRadius(CornerRadiusTopLeft, CornerRadiusTopRight, CornerRadiusBottomLeft, CornerRadiusBottomRight);
 
         public ICommand CycleBorderDashPatternCommand { get; set; }
+        public ICommand CycleBorderDrawingStyleCommand { get; set; }
         public ICommand GenerateRandomColorCommand { get; set; }
         public ICommand GenerateRandomShadowOffsetCommand { get; set; }
         public ICommand GenerateRandomGradientCommand { get; set; }
@@ -59,6 +69,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         public MainPageModel()
         {
             CycleBorderDashPatternCommand = new Command(CycleBorderDash);
+            CycleBorderDrawingStyleCommand = new Command(CycleBorderDrawingStyle);
             GenerateRandomShadowOffsetCommand = new Command(GenerateRandomShadowOffset);
             GenerateRandomColorCommand = new Command<SampleColorType>(GenerateRandomColor);
             GenerateRandomGradientCommand = new Command(() => BackgroundGradientStops = GetRandomGradient());
@@ -105,6 +116,16 @@ namespace Thewissen.PancakeViewSample.PageModels
                 currentBorderDashIndex += 1;
 
             BorderDashPattern = DashPatterns[currentBorderDashIndex];
+        }
+
+        void CycleBorderDrawingStyle()
+        {
+            if (currentBorderDrawingStyleIndex == BorderDrawingStyles.Count - 1)
+                currentBorderDrawingStyleIndex = 0;
+            else
+                currentBorderDrawingStyleIndex += 1;
+
+            BorderDrawingStyle = BorderDrawingStyles[currentBorderDrawingStyleIndex];
         }
 
         public static GradientStopCollection GetRandomGradient()
