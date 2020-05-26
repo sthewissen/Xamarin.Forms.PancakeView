@@ -11,7 +11,13 @@ namespace Xamarin.Forms.PancakeView
         public float BlurRadius
         {
             get => (float)GetValue(BlurRadiusProperty);
-            set => SetValue(BlurRadiusProperty, value);
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException($"{nameof(BlurRadius)} must be a positive value.", nameof(BlurRadius));
+
+                SetValue(BlurRadiusProperty, value);
+            }
         }
 
         public static readonly BindableProperty OpacityProperty = BindableProperty.Create(
@@ -20,7 +26,13 @@ namespace Xamarin.Forms.PancakeView
         public float Opacity
         {
             get => (float)GetValue(OpacityProperty);
-            set => SetValue(OpacityProperty, value);
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentException($"{nameof(Opacity)} must be a value between 0 and 1.", nameof(Opacity));
+
+                SetValue(OpacityProperty, value);
+            }
         }
 
         public static readonly BindableProperty ColorProperty = BindableProperty.Create(
