@@ -20,7 +20,7 @@ namespace Xamarin.Forms.PancakeView.UWP
     public class PancakeViewRenderer : ViewRenderer<PancakeView, Windows.UI.Xaml.Controls.Border>
     {
         //create the shadow effect 
-        private Windows.UI.Xaml.Shapes.Rectangle rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
+        private Windows.UI.Xaml.Shapes.Rectangle rectangle;
         private Windows.UI.Xaml.Controls.Grid container;
         private Border content;
         private SpriteVisual visual;
@@ -83,17 +83,31 @@ namespace Xamarin.Forms.PancakeView.UWP
             container = new Windows.UI.Xaml.Controls.Grid { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
             content = new Border { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
 
-            if (Element.Content != null)
-            {
-                IVisualElementRenderer renderer = Element.Content.GetOrCreateRenderer();
-                content.Child = (renderer.ContainerElement);
-            }
+            rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
 
             container.Children.Add(rectangle);
             container.Children.Add(content);
             Control.Child = (container);
+
+            this.UpdateChild();
         }
 
+        void UpdateChild()
+        {
+            var container = Control.Child as Windows.UI.Xaml.Controls.Grid;
+            if (container != null && container.Children.Count == 2)
+            {
+                var content = container.Children[1] as Border;
+                if (content != null)
+                {
+                    if (Element.Content != null)
+                    {
+                        IVisualElementRenderer renderer = Element.Content.GetOrCreateRenderer();
+                        content.Child = (renderer.ContainerElement);
+                    }
+                }
+            }
+        }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -104,7 +118,7 @@ namespace Xamarin.Forms.PancakeView.UWP
             // If the border is changed, we need to change the border layer we created.
             if (e.PropertyName == PancakeView.ContentProperty.PropertyName)
             {
-                PackChild();
+                UpdateChild();
             }
             else if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
             {
