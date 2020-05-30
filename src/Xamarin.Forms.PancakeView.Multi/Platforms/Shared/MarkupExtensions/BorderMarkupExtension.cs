@@ -12,7 +12,9 @@ namespace Xamarin.Forms.PancakeView
 
         public DashPattern DashPattern { set; get; } = (DashPattern)Border.DashPatternProperty.DefaultValue;
 
-        public int GradientAngle { set; get; } = (int)Border.GradientAngleProperty.DefaultValue;
+        public Point GradientStartPoint { set; get; } = (Point)Border.GradientStartPointProperty.DefaultValue;
+
+        public Point GradientEndPoint { set; get; } = (Point)Border.GradientEndPointProperty.DefaultValue;
 
         public Border ProvideValue(IServiceProvider serviceProvider)
         {
@@ -20,7 +22,8 @@ namespace Xamarin.Forms.PancakeView
             {
                 Color = Color,
                 DashPattern = DashPattern,
-                GradientAngle = GradientAngle,
+                GradientStartPoint = GradientStartPoint,
+                GradientEndPoint = GradientEndPoint,
                 Thickness = Thickness
             };
         }

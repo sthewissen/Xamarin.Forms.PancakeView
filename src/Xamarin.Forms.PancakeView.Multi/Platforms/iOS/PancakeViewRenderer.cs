@@ -82,12 +82,13 @@ namespace Xamarin.Forms.PancakeView.iOS
             {
                 DrawBorder();
             }
-            else if ((e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
+            else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                    e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                    e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
-                    (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName))
+                    e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
+                    e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+                    e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
                 SetNeedsDisplay();
             }
@@ -170,7 +171,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             if (Element.BackgroundGradientStops != null && Element.BackgroundGradientStops.Any())
             {
                 // Create a gradient layer that draws our background.
-                var gradientLayer = CreateGradientLayer(Element.BackgroundGradientAngle, Bounds);
+                var gradientLayer = CreateGradientLayer(Element.BackgroundGradientStartPoint, Element.BackgroundGradientEndPoint, Bounds);
                 gradientLayer.Name = layerName;
 
                 // A range of colors is given. Let's add them.
@@ -247,7 +248,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 if (Element.Border.GradientStops != null && Element.Border.GradientStops.Any())
                 {
                     var gradientFrame = Bounds.Inset(-(nfloat)Element.Border.Thickness.Left, -(nfloat)Element.Border.Thickness.Left);
-                    var gradientLayer = CreateGradientLayer(Element.Border.GradientAngle, gradientFrame);
+                    var gradientLayer = CreateGradientLayer(Element.Border.GradientStartPoint, Element.Border.GradientEndPoint, gradientFrame);
                     gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)Element.Border.Thickness.Left), (gradientFrame.Height / 2) - ((nfloat)Element.Border.Thickness.Left));
 
                     // Create a clone from the border layer and use that one as the mask.
@@ -328,23 +329,15 @@ namespace Xamarin.Forms.PancakeView.iOS
             }
         }
 
-        private CAGradientLayer CreateGradientLayer(int angle, CGRect rect)
+        private CAGradientLayer CreateGradientLayer(Point startPoint, Point endPoint, CGRect rect)
         {
-            var totalAngle = angle / 360.0;
-
-            // Calculate the new positions based on angle between 0-360.
-            var a = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.75) / 2)), 2);
-            var b = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.0) / 2)), 2);
-            var c = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.25) / 2)), 2);
-            var d = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.5) / 2)), 2);
-
             // Create a gradient layer that draws our background.
             return new CAGradientLayer
             {
                 Frame = rect,
                 LayerType = CAGradientLayerType.Axial,
-                StartPoint = new CGPoint(1 - a, b),
-                EndPoint = new CGPoint(1 - c, d)
+                StartPoint = new CGPoint(startPoint.X, startPoint.Y),
+                EndPoint = new CGPoint(endPoint.X, endPoint.Y)
             };
         }
 

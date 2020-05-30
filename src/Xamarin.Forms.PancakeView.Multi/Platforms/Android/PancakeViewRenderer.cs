@@ -255,20 +255,16 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                     if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())
                     {
-                        var angle = pancake.Border.GradientAngle / 360.0;
-
-                        // Calculate the new positions based on angle between 0-360.
-                        var a = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
-                        var b = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
-                        var c = canvas.Width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
-                        var d = canvas.Height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
-
                         // A range of colors is given. Let's add them.
                         var orderedStops = pancake.Border.GradientStops.OrderBy(x => x.Offset).ToList();
                         var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
                         var locations = orderedStops.Select(x => x.Offset).ToArray();
 
-                        var shader = new LinearGradient(canvas.Width - (float)a, (float)b, canvas.Width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
+                        var shader = new LinearGradient((float)(canvas.Width * pancake.Border.GradientStartPoint.X),
+                             (float)(canvas.Height *pancake.Border.GradientStartPoint.Y),
+                             (float)(canvas.Width *pancake.Border.GradientEndPoint.X),
+                             (float)(canvas.Height * pancake.Border.GradientEndPoint.Y),
+                             colors, locations, Shader.TileMode.Clamp);
                         paint.SetShader(shader);
                     }
                     else

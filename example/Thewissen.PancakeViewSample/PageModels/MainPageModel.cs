@@ -41,6 +41,8 @@ namespace Thewissen.PancakeViewSample.PageModels
         public Color ShadowColor { get; set; } = Color.Black;
         public Color BackgroundGradientColor1 { get; set; } = Color.DeepPink;
         public Color BackgroundGradientColor2 { get; set; } = Color.Orange;
+        public Point BackgroundGradientStartPoint { get; set; } = new Point(0,0);
+        public Point BackgroundGradientEndPoint { get; set; } = new Point(1,1);
         public Color BorderColor { get; set; } = Color.BlueViolet;
         public GradientStopCollection BackgroundGradientStops { get; set; } = new GradientStopCollection();
         public GradientStopCollection BorderGradientStops { get; set; } = new GradientStopCollection();
@@ -65,6 +67,7 @@ namespace Thewissen.PancakeViewSample.PageModels
         public ICommand GenerateRandomShadowOffsetCommand { get; set; }
         public ICommand GenerateRandomGradientCommand { get; set; }
         public ICommand GenerateRandomBorderGradientCommand { get; set; }
+        public ICommand GenerateRandomPointCommand { get; set; }
 
         public MainPageModel()
         {
@@ -74,10 +77,28 @@ namespace Thewissen.PancakeViewSample.PageModels
             GenerateRandomColorCommand = new Command<SampleColorType>(GenerateRandomColor);
             GenerateRandomGradientCommand = new Command(() => BackgroundGradientStops = GetRandomGradient());
             GenerateRandomBorderGradientCommand = new Command(() => BorderGradientStops = GetRandomGradient());
+            GenerateRandomPointCommand = new Command<SamplePointType>(GenerateRandomPoint);
 
             BorderDashPattern = DashPatterns.FirstOrDefault();
             BackgroundGradientStops = GetRandomGradient();
             BorderGradientStops = GetRandomGradient();
+        }
+
+        private void GenerateRandomPoint(SamplePointType type)
+        {
+            var point = new Point(_randomGen.Next(0, 100) / 100f, _randomGen.Next(0, 100)/100f);
+
+            switch (type)
+            {
+                case SamplePointType.BackgroundGradientStartPoint:
+                    BackgroundGradientStartPoint = point;
+                    break;
+                case SamplePointType.BackgroundGradientEndPoint:
+                    BackgroundGradientEndPoint = point;
+                    break;
+                default:
+                    break;
+            }
         }
 
         void GenerateRandomColor(SampleColorType type)

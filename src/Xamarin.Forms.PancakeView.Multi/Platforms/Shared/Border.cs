@@ -26,9 +26,12 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty DrawingStyleProperty = BindableProperty.Create(nameof(DrawingStyle),
             typeof(BorderDrawingStyle), typeof(Border), defaultValue: BorderDrawingStyle.Inside);
 
-        public static readonly BindableProperty GradientAngleProperty = BindableProperty.Create(nameof(GradientAngle),
-            typeof(int), typeof(Border), defaultValue: default(int));
-
+        public static readonly BindableProperty GradientStartPointProperty = BindableProperty.Create(
+             nameof(GradientStartPoint), typeof(Point), typeof(Border), new Point(0, 0));
+        
+        public static readonly BindableProperty GradientEndPointProperty = BindableProperty.Create(
+            nameof(GradientEndPoint), typeof(Point), typeof(Border), new Point(1, 0));
+        
         public static readonly BindableProperty GradientStopsProperty = BindableProperty.Create(nameof(GradientStops),
             typeof(GradientStopCollection), typeof(Border), defaultValue: default(GradientStopCollection),
             defaultValueCreator: bindable =>
@@ -73,25 +76,25 @@ namespace Xamarin.Forms.PancakeView
                 SetValue(DashPatternProperty, value);
             }
         }
+        
+        public Point GradientStartPoint
+        {
+            get => (Point)GetValue(GradientStartPointProperty);
+            set => SetValue(GradientStartPointProperty, value);
+        }
+
+        public Point GradientEndPoint
+        {
+            get => (Point)GetValue(GradientEndPointProperty);
+            set => SetValue(GradientEndPointProperty, value);
+        }
 
         public BorderDrawingStyle DrawingStyle
         {
             get { return (BorderDrawingStyle)GetValue(DrawingStyleProperty); }
             set { SetValue(DrawingStyleProperty, value); }
         }
-
-        public int GradientAngle
-        {
-            get { return (int)GetValue(GradientAngleProperty); }
-            set
-            {
-                if (value < 0 || value > 360)
-                    throw new ArgumentException($"Please provide a valid {nameof(GradientAngle)}.", nameof(GradientAngle));
-
-                SetValue(GradientAngleProperty, value);
-            }
-        }
-
+        
         public GradientStopCollection GradientStops
         {
             get { return (GradientStopCollection)GetValue(GradientStopsProperty); }
@@ -119,7 +122,8 @@ namespace Xamarin.Forms.PancakeView
             if (propertyName == ColorProperty.PropertyName ||
                 propertyName == DashPatternProperty.PropertyName ||
                 propertyName == DrawingStyleProperty.PropertyName ||
-                propertyName == GradientAngleProperty.PropertyName ||
+                propertyName == GradientStartPointProperty.PropertyName ||
+                propertyName == GradientEndPointProperty.PropertyName ||
                 propertyName == ThicknessProperty.PropertyName ||
                 propertyName == nameof(GradientStops))
             {

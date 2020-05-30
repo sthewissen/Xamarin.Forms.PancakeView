@@ -12,8 +12,9 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
-
-        public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(int), typeof(PancakeView), defaultValue: default(int));
+        
+        public static readonly BindableProperty BackgroundGradientStartPointProperty = BindableProperty.Create(nameof(BackgroundGradientStartPoint), typeof(Point), typeof(Border), new Point(0, 0));
+        public static readonly BindableProperty BackgroundGradientEndPointProperty = BindableProperty.Create(nameof(BackgroundGradientEndPoint), typeof(Point), typeof(Border), new Point(1, 0));
 
         public static readonly BindableProperty BackgroundGradientStopsProperty = BindableProperty.Create(nameof(BackgroundGradientStops),
             typeof(GradientStopCollection), typeof(PancakeView), defaultValue: default(GradientStopCollection),
@@ -95,19 +96,6 @@ namespace Xamarin.Forms.PancakeView
             }
         }
 
-        public int BackgroundGradientAngle
-        {
-            get { return (int)GetValue(BackgroundGradientAngleProperty); }
-            set
-            {
-                // Angle needs to be between 0-360.
-                if (value < 0 || value > 360)
-                    throw new ArgumentException($"Please provide a valid {nameof(BackgroundGradientAngle)}.", nameof(BackgroundGradientAngle));
-
-                SetValue(BackgroundGradientAngleProperty, value);
-            }
-        }
-
         public GradientStopCollection BackgroundGradientStops
         {
             get { return (GradientStopCollection)GetValue(BackgroundGradientStopsProperty); }
@@ -130,6 +118,18 @@ namespace Xamarin.Forms.PancakeView
         {
             get { return (Border)GetValue(BorderProperty); }
             set { SetValue(BorderProperty, value); }
+        }
+
+        public Point BackgroundGradientStartPoint
+        {
+            get => (Point)GetValue(BackgroundGradientStartPointProperty);
+            set => SetValue(BackgroundGradientStartPointProperty, value);
+        }
+
+        public Point BackgroundGradientEndPoint
+        {
+            get => (Point)GetValue(BackgroundGradientEndPointProperty);
+            set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
         void SetupInternalCollectionPropertyPropagation(bool teardown = false)

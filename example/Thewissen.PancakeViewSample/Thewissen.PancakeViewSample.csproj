@@ -20,7 +20,6 @@
         <Folder Include="PageModels\" />
         <Folder Include="Resources\" />
         <Folder Include="Converters\" />
-        <Folder Include="Helpers\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />

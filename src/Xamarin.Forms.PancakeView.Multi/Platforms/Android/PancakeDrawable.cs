@@ -126,20 +126,17 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                 if (_pancake.BackgroundGradientStops != null && _pancake.BackgroundGradientStops.Any())
                 {
-                    var angle = _pancake.BackgroundGradientAngle / 360.0;
-
-                    // Calculate the new positions based on angle between 0-360.
-                    var a = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.75) / 2)), 2);
-                    var b = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.0) / 2)), 2);
-                    var c = width * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.25) / 2)), 2);
-                    var d = height * Math.Pow(Math.Sin(2 * Math.PI * ((angle + 0.5) / 2)), 2);
-
                     // A range of colors is given. Let's add them.
                     var orderedStops = _pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                     var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
                     var locations = orderedStops.Select(x => x.Offset).ToArray();
 
-                    var shader = new LinearGradient(width - (float)a, (float)b, width - (float)c, (float)d, colors, locations, Shader.TileMode.Clamp);
+                    var shader = new LinearGradient((float)(canvas.Width * _pancake.Border.GradientStartPoint.X),
+                         (float)(canvas.Height * _pancake.Border.GradientStartPoint.Y),
+                         (float)(canvas.Width * _pancake.Border.GradientEndPoint.X),
+                         (float)(canvas.Height * _pancake.Border.GradientEndPoint.Y),
+                         colors, locations, Shader.TileMode.Clamp);
+                    
                     paint.SetShader(shader);
                 }
                 else
@@ -157,7 +154,8 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName ||
                 e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                 e.PropertyName == PancakeView.SidesProperty.PropertyName ||
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName)

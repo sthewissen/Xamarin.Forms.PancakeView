@@ -38,30 +38,38 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Style="{StaticResource small}" Text="BackgroundGradientAngle" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="360" Minimum="0"
-                        Value="{Binding BackgroundGradientAngle, Source={x:Reference gradient}}" />
+                <Label Style="{StaticResource small}" Text="Gradient Start Point" VerticalOptions="Center" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Color 1" />
-                <Button Grid.Row="1" Grid.Column="1" BackgroundColor="{Binding BackgroundGradientColor1}"
+                <Button Grid.Column="1" HorizontalOptions="Center" Text="{Binding BackgroundGradientStartPoint}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BackgroundGradientStartPoint}" />
+
+                <Label Grid.Row="1" Style="{StaticResource small}" Text="Gradient End Point" VerticalOptions="Center" />
+
+                <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" Text="{Binding BackgroundGradientEndPoint}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BackgroundGradientEndPoint}" />
+
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color 1" />
+                <Button Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding BackgroundGradientColor1}"
                         HorizontalOptions="Center" Text="{Binding BackgroundGradientColor1, Converter={StaticResource ColorToHexConverter}}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomColorCommand}" CommandParameter="{x:Static helpers:SampleColorType.BackgroundGradientColor1}" />
 
-                <Label Grid.Row="2" Style="{StaticResource small}" Text="Offset Color 1" VerticalOptions="Center" />
-                <Slider Grid.Row="2" Grid.Column="1" Maximum="5" Minimum="-5" Value="{Binding Offset, Source={x:Reference backgroundGradientColor1}}" />
+                <Label Grid.Row="3" Style="{StaticResource small}" Text="Offset Color 1" VerticalOptions="Center" />
+                <Slider Grid.Row="3" Grid.Column="1" Maximum="5" Minimum="-5" Value="{Binding Offset, Source={x:Reference backgroundGradientColor1}}" />
 
-                <Label Grid.Row="3" Style="{StaticResource small}" VerticalOptions="Center" Text="Color 2" />
-                <Button Grid.Row="3" Grid.Column="1" BackgroundColor="{Binding BackgroundGradientColor2}"
+                <Label Grid.Row="4" Style="{StaticResource small}" VerticalOptions="Center" Text="Color 2" />
+                <Button Grid.Row="4" Grid.Column="1" BackgroundColor="{Binding BackgroundGradientColor2}"
                         HorizontalOptions="Center" Text="{Binding BackgroundGradientColor2, Converter={StaticResource ColorToHexConverter}}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomColorCommand}" CommandParameter="{x:Static helpers:SampleColorType.BackgroundGradientColor2}" />
 
-                <Label Grid.Row="4" Style="{StaticResource small}" Text="Offset Color 2" VerticalOptions="Center" />
-                <Slider Grid.Row="4" Grid.Column="1" Maximum="5" Minimum="-5" Value="{Binding Offset, Source={x:Reference backgroundGradientColor2}}" />
+                <Label Grid.Row="5" Style="{StaticResource small}" Text="Offset Color 2" VerticalOptions="Center" />
+                <Slider Grid.Row="5" Grid.Column="1" Maximum="5" Minimum="-5" Value="{Binding Offset, Source={x:Reference backgroundGradientColor2}}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="gradient" Margin="0,32,0,0" BackgroundGradientAngle="45"
+            <yummy:PancakeView x:Name="gradient" Margin="0,32,0,0" BackgroundGradientStartPoint="{Binding BackgroundGradientStartPoint}"
+                               BackgroundGradientEndPoint="{Binding BackgroundGradientEndPoint}"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="10">
                 <yummy:PancakeView.BackgroundGradientStops>
                     <yummy:GradientStopCollection>
@@ -99,7 +107,7 @@
                         Command="{Binding GenerateRandomGradientCommand}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="multiGradient" BackgroundGradientAngle="45" HorizontalOptions="FillAndExpand" HeightRequest="150"
+            <yummy:PancakeView x:Name="multiGradient" HorizontalOptions="FillAndExpand" HeightRequest="150"
                                CornerRadius="10" BackgroundGradientStops="{Binding BackgroundGradientStops}">
                 <Label Text="Let's get crazy." TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" />
             </yummy:PancakeView>

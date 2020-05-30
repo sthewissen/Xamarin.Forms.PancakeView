@@ -97,7 +97,8 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 UpdateShadow(pancake);
             }
-            else if (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName)
             {
                 UpdateBackground();
@@ -160,7 +161,11 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                     foreach (var item in orderedStops)
                         gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                    this.Control.BorderBrush = new LinearGradientBrush(gc, pancake.Border.GradientAngle);
+                    var gradient = new LinearGradientBrush(gc, 0);
+                    gradient.StartPoint = new System.Windows.Point(pancake.Border.GradientStartPoint.X, pancake.Border.GradientStartPoint.Y);
+                    gradient.EndPoint = new System.Windows.Point(pancake.Border.GradientEndPoint.X, pancake.Border.GradientEndPoint.Y);
+
+                    this.Control.BorderBrush = gradient;
                 }
                 else
                 {
@@ -187,7 +192,11 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                     foreach (var item in orderedStops)
                         gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                    this.Control.Background = new LinearGradientBrush(gc, pancake.BackgroundGradientAngle);
+                    var gradient = new LinearGradientBrush(gc, 0);
+                    gradient.StartPoint = new System.Windows.Point(pancake.BackgroundGradientStartPoint.X, pancake.BackgroundGradientStartPoint.Y);
+                    gradient.EndPoint = new System.Windows.Point(pancake.BackgroundGradientEndPoint.X, pancake.BackgroundGradientEndPoint.Y);
+
+                    this.Control.BorderBrush = gradient;
                 }
                 else
                 {

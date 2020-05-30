@@ -124,7 +124,8 @@ namespace Xamarin.Forms.PancakeView.UWP
             {
                 UpdateShadow(pancake);
             }
-            else if (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName)
             {
                 UpdateBackgroundColor();
@@ -202,9 +203,9 @@ namespace Xamarin.Forms.PancakeView.UWP
                     foreach (var item in orderedStops)
                         gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
-                    var gradient = new LinearGradientBrush(gc, pancake.Border.GradientAngle);
-                    gradient.StartPoint = new Windows.Foundation.Point(0.5, 0);
-                    gradient.EndPoint = new Windows.Foundation.Point(0.5, 1);
+                    var gradient = new LinearGradientBrush(gc, 0);
+                    gradient.StartPoint = new Windows.Foundation.Point(pancake.Border.GradientStartPoint.X, pancake.Border.GradientStartPoint.Y);
+                    gradient.EndPoint = new Windows.Foundation.Point(pancake.Border.GradientEndPoint.X, pancake.Border.GradientEndPoint.Y);
 
                     this.content.BorderBrush = gradient;
                 }
@@ -226,14 +227,6 @@ namespace Xamarin.Forms.PancakeView.UWP
             {
                 if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
                 {
-                    var totalAngle = pancake.BackgroundGradientAngle / 360.0;
-
-                    // Calculate the new positions based on angle between 0-360.
-                    var a = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.75) / 2)), 2);
-                    var b = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.0) / 2)), 2);
-                    var c = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.25) / 2)), 2);
-                    var d = Math.Pow(Math.Sin(2 * Math.PI * ((totalAngle + 0.5) / 2)), 2);
-
                     // A range of colors is given. Let's add them.
                     var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                     var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
@@ -242,8 +235,8 @@ namespace Xamarin.Forms.PancakeView.UWP
                         gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
                     var gradient = new LinearGradientBrush(gc, 0);
-                    gradient.StartPoint = new Windows.Foundation.Point(1-a, b);
-                    gradient.EndPoint = new Windows.Foundation.Point(1-c, d);
+                    gradient.StartPoint = new Windows.Foundation.Point(pancake.BackgroundGradientStartPoint.X, pancake.BackgroundGradientStartPoint.Y);
+                    gradient.EndPoint = new Windows.Foundation.Point(pancake.BackgroundGradientEndPoint.X, pancake.BackgroundGradientEndPoint.Y);
                     this.content.Background = gradient;
                 }
                 else
