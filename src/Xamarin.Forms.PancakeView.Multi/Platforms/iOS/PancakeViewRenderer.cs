@@ -342,6 +342,7 @@ namespace Xamarin.Forms.PancakeView.iOS
             return new CAGradientLayer
             {
                 Frame = rect,
+                LayerType = CAGradientLayerType.Axial,
                 StartPoint = new CGPoint(1 - a, b),
                 EndPoint = new CGPoint(1 - c, d)
             };

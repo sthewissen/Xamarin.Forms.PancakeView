@@ -6,18 +6,17 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Xamarin.Forms.PancakeView.Platforms.WPF;
-using Xamarin.Forms.PancakeView.Platforms.WPF.Utils;
 using Xamarin.Forms.Platform.WPF;
 using Controls = Xamarin.Forms.PancakeView;
 
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.Platforms.WPF
 {
-    public class PancakeViewRenderer : ViewRenderer<PancakeView, Border>
+    public class PancakeViewRenderer : ViewRenderer<PancakeView, System.Windows.Controls.Border>
     {
         VisualElement _currentView;
         readonly VisualBrush _mask;
-        readonly Border _rounding;
+        readonly System.Windows.Controls.Border _rounding;
 
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
@@ -32,13 +31,13 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
 
         public PancakeViewRenderer()
         {
-            _rounding = new Border
+            _rounding = new System.Windows.Controls.Border
             {
                 Background = Color.White.ToBrush(),
                 SnapsToDevicePixels = true
             };
 
-            var wb = new System.Windows.Data.Binding(nameof(Border.ActualWidth))
+            var wb = new System.Windows.Data.Binding(nameof(System.Windows.Controls.Border.ActualWidth))
             {
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
@@ -46,9 +45,9 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                 }
             };
 
-            _rounding.SetBinding(Border.WidthProperty, wb);
+            _rounding.SetBinding(System.Windows.Controls.Border.WidthProperty, wb);
 
-            var hb = new System.Windows.Data.Binding(nameof(Border.ActualHeight))
+            var hb = new System.Windows.Data.Binding(nameof(System.Windows.Controls.Border.ActualHeight))
             {
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
@@ -56,7 +55,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                 }
             };
 
-            _rounding.SetBinding(Border.HeightProperty, hb);
+            _rounding.SetBinding(System.Windows.Controls.Border.HeightProperty, hb);
             _mask = new VisualBrush(_rounding);
         }
 
@@ -67,7 +66,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             if (e.NewElement != null)
             {
                 if (Control == null)
-                    SetNativeControl(new Border());
+                    SetNativeControl(new System.Windows.Controls.Border());
 
                 var pancake = (Element as PancakeView);
 
@@ -103,13 +102,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 UpdateBackground();
             }
-            //else if (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-            //    e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
+            //else if (e.PropertyName == PancakeView.BorderProperty.PropertyName)
             //{
             //    UpdateBorder(pancake);
             //}
@@ -156,22 +149,22 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             //// Create the border layer
             if (Control != null)
             {
-                this.Control.BorderThickness = new System.Windows.Thickness(pancake.Border.BorderThickness);
+                this.Control.BorderThickness = new System.Windows.Thickness(pancake.Border.Thickness.Left);
 
-                if (pancake.Border.BorderGradientStops != null && pancake.Border.BorderGradientStops.Any())
+                if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())
                 {
                     // A range of colors is given. Let's add them.
-                    var orderedStops = pancake.Border.BorderGradientStops.OrderBy(x => x.Offset).ToList();
+                    var orderedStops = pancake.Border.GradientStops.OrderBy(x => x.Offset).ToList();
                     var gc = new System.Windows.Media.GradientStopCollection();
 
                     foreach (var item in orderedStops)
                         gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                    this.Control.BorderBrush = new LinearGradientBrush(gc, pancake.Border.BorderGradientAngle);
+                    this.Control.BorderBrush = new LinearGradientBrush(gc, pancake.Border.GradientAngle);
                 }
                 else
                 {
-                    this.Control.BorderBrush = pancake.BorderColor.IsDefault ? null : pancake.BorderColor.ToBrush();
+                    this.Control.BorderBrush = pancake.Border.Color.IsDefault ? null : pancake.Border.Color.ToBrush();
                 }
             }
         }
