@@ -11,11 +11,7 @@
             <Label Margin="0,32,0,0" Text="Hello PancakeView!" Style="{StaticResource heading}"
                    HorizontalTextAlignment="Center" HorizontalOptions="Center" FontSize="28" />
 
-            <Image Source="pancake.png" HorizontalOptions="Center" WidthRequest="200" Margin="0">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OpenDebugModeCommand}" NumberOfTapsRequired="2" />
-                </Image.GestureRecognizers>
-            </Image>
+            <Image Source="pancake.png" HorizontalOptions="Center" WidthRequest="200" Margin="0"/>
 
             <Label Text="An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!"
                    Margin="0,8,0,0" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
@@ -97,13 +93,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Style="{StaticResource small}" Text="BackgroundGradientAngle" VerticalOptions="Center" />
+                <Label Style="{StaticResource small}" Text="Gradient Angle" VerticalOptions="Center" />
                 <Slider Grid.Column="1" Maximum="360" Minimum="0"
                         Value="{Binding BackgroundGradientAngle, Source={x:Reference multiGradient}}" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BackgroundGradientStops" />
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
                 <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
-                        HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
+                        HorizontalOptions="Center" Text="Generate" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomGradientCommand}" />
             </Grid>
 
@@ -174,7 +170,7 @@
                         Text="{Binding BorderDrawingStyle}" Style="{StaticResource small_button}" Command="{Binding CycleBorderDrawingStyleCommand}" />
             </Grid>
 
-            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="Khaki" Shadow="{yummy:ShadowMarkup Color=#000000, Opacity=0.8}"
+            <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="Khaki"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10">
                 <yummy:PancakeView.Border>
                     <yummy:Border x:Name="border" Thickness="10,10,10,10" Color="{Binding BorderColor}" DrawingStyle="{Binding BorderDrawingStyle}" />
@@ -227,13 +223,13 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Style="{StaticResource small}" Text="BorderGradientAngle" VerticalOptions="Center" />
+                <Label Style="{StaticResource small}" Text="Gradient Angle" VerticalOptions="Center" />
                 <Slider Grid.Column="1" Maximum="360" Minimum="0"
                         Value="{Binding GradientAngle, Source={x:Reference borderGradient}}" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="BorderGradientStops" />
+                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
                 <Button Grid.Row="1" Grid.Column="1"
-                        HorizontalOptions="Center" Text="Generate gradient" Style="{StaticResource small_button}"
+                        HorizontalOptions="Center" Text="Generate" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomBorderGradientCommand}" />
             </Grid>
 
@@ -266,23 +262,22 @@
                 <Slider Grid.Column="1" Maximum="40" Minimum="0"
                         Value="{Binding BlurRadius, Source={x:Reference shadow}}" />
 
-                <Label IsVisible="{OnPlatform Android=false}" Grid.Row="1"
+                <Label Grid.Row="1"
                        Style="{StaticResource small}" Text="Opacity" VerticalOptions="Center" />
 
-                <Slider IsVisible="{OnPlatform Android=false}" Grid.Row="1" Grid.Column="1"
+                <Slider Grid.Row="1" Grid.Column="1"
                         Maximum="1" Minimum="0" Value="{Binding Opacity, Source={x:Reference shadow}}" />
 
-                <Label IsVisible="{OnPlatform Android=false}" Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
 
-                <Button IsVisible="{OnPlatform Android=false}" Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding ShadowColor}"
+                <Button Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding ShadowColor}"
                         HorizontalOptions="Center" Text="{Binding ShadowColor, Converter={StaticResource ColorToHexConverter}}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomColorCommand}" CommandParameter="{x:Static helpers:SampleColorType.ShadowColor}" />
 
-                <Label IsVisible="{OnPlatform Android=false}" Grid.Row="3" Style="{StaticResource small}"
+                <Label Grid.Row="3" Style="{StaticResource small}"
                        Text="Offset" VerticalOptions="Center" />
 
-                <Button IsVisible="{OnPlatform Android=false}"
-                        Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" Text="{Binding ShadowOffset}"
+                <Button Grid.Row="3" Grid.Column="1" HorizontalOptions="Center" Text="{Binding ShadowOffset}"
                         Style="{StaticResource small_button}" Command="{Binding GenerateRandomShadowOffsetCommand}" />
             </Grid>
 
@@ -293,7 +288,7 @@
                     <yummy:DropShadow x:Name="shadow" Color="{Binding ShadowColor}" Offset="{Binding ShadowOffset}" />
                 </yummy:PancakeView.Shadow>
 
-                <Label Text="Color, Offset and Opacity are currently not supported on Android." HorizontalTextAlignment="Center"
+                <Label Text="Not all of these are currently supported on Android." HorizontalTextAlignment="Center"
                        HorizontalOptions="Center" VerticalOptions="Center" TextColor="#000000" />
 
             </yummy:PancakeView>

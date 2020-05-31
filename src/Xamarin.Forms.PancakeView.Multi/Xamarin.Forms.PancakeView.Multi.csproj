@@ -7,9 +7,9 @@
         <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
         <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <AssemblyVersion>1.4.1</AssemblyVersion>
-        <AssemblyFileVersion>1.4.1</AssemblyFileVersion>
-        <Version>1.4.1</Version>
+        <AssemblyVersion>2.0.1</AssemblyVersion>
+        <AssemblyFileVersion>2.0.1</AssemblyFileVersion>
+        <Version>2.0.1</Version>
         <PackOnBuild>true</PackOnBuild>
         <NeutralLanguage>en</NeutralLanguage>
         <LangVersion>default</LangVersion>
@@ -27,7 +27,7 @@
         <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
         <Owners>Steven Thewissen</Owners>
         <Authors>Steven Thewissen</Authors>
-        <Copyright>Copyright 2019 Steven Thewissen</Copyright>
+        <Copyright>Copyright 2019-2020 Steven Thewissen</Copyright>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
@@ -41,12 +41,21 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <DebugType>pdbonly</DebugType>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Platforms\Shared\**\*.cs" />
         <!--NuGet that bring in good stuff -->
         <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
+        <!--<PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />-->
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
     </ItemGroup>
