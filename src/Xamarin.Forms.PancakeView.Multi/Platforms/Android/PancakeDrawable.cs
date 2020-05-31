@@ -33,41 +33,26 @@ namespace Xamarin.Forms.PancakeView.Droid
             int height = Bounds.Height();
 
             if (width <= 0 || height <= 0)
-            {
-                DisposeBitmap();
-
                 return;
-            }
 
-            try
-            {
-                if (_normalBitmap == null || _normalBitmap.Height != height || _normalBitmap.Width != width)
-                {
-                    // If the user changes the orientation of the screen, make sure to destroy reference before
-                    // reassigning a new bitmap reference.
-                    DisposeBitmap();
+            if (_normalBitmap == null || _normalBitmap.Handle == IntPtr.Zero ||
+                _normalBitmap.Height != height || _normalBitmap.Width != width)
+                Reset();
 
-                    _normalBitmap = CreateBitmap(false, width, height);
-                }
-            }
-            catch (ObjectDisposedException)
-            {
-                // This bitmap will sometimes be disposed as ListView/CollectionView scrolling or refreshing happens,
-                // so we re-create the bitmap again.
-                _normalBitmap = CreateBitmap(false, width, height);
-            }
+            _normalBitmap = _normalBitmap ?? CreateBitmap(width, height);
 
-            using (var paint = new Paint())
-            {
-                canvas.DrawBitmap(_normalBitmap, 0, 0, paint);
-            }
+            canvas.DrawBitmap(_normalBitmap, 0, 0, new Paint());
         }
 
-        private void DisposeBitmap()
+        public void Reset()
         {
             if (_normalBitmap != null)
             {
-                _normalBitmap.Dispose();
+                if (_normalBitmap.Handle != IntPtr.Zero)
+                {
+                    _normalBitmap.Recycle();
+                    _normalBitmap.Dispose();
+                }
                 _normalBitmap = null;
             }
         }
@@ -85,7 +70,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             return false;
         }
 
-        Bitmap CreateBitmap(bool pressed, int width, int height)
+        Bitmap CreateBitmap(int width, int height)
         {
             Bitmap bitmap;
 
@@ -96,13 +81,13 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             using (var canvas = new ACanvas(bitmap))
             {
-                DrawCanvas(canvas, width, height, pressed);
+                DrawCanvas(canvas, width, height);
             }
 
             return bitmap;
         }
 
-        void DrawBackground(ACanvas canvas, int width, int height, CornerRadius cornerRadius, bool pressed)
+        void DrawBackground(ACanvas canvas, int width, int height, CornerRadius cornerRadius)
         {
             using (var paint = new Paint { AntiAlias = true })
             using (Path.Direction direction = Path.Direction.Cw)
@@ -168,31 +153,27 @@ namespace Xamarin.Forms.PancakeView.Droid
                     int width = Bounds.Width();
                     int height = Bounds.Height();
                     canvas.DrawColor(global::Android.Graphics.Color.Black, PorterDuff.Mode.Clear);
-                    DrawCanvas(canvas, width, height, false);
+                    DrawCanvas(canvas, width, height);
                 }
 
                 InvalidateSelf();
             }
         }
 
-        void DrawCanvas(ACanvas canvas, int width, int height, bool pressed)
+        void DrawCanvas(ACanvas canvas, int width, int height)
         {
-            DrawBackground(canvas, width, height, _pancake.CornerRadius, pressed);
+            DrawBackground(canvas, width, height, _pancake.CornerRadius);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && !_isDisposed)
-            {
-                DisposeBitmap();
+            if (!_isDisposed)
+                return;
 
-                if (_pancake != null)
-                {
-                    _pancake.PropertyChanged -= PancakeViewOnPropertyChanged;
-                }
+            _isDisposed = true;
 
-                _isDisposed = true;
-            }
+            if (disposing)
+                Reset();
 
             base.Dispose(disposing);
         }

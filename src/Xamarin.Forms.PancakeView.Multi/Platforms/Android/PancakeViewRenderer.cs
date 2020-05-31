@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Support.V4.View;
 using Xamarin.Forms;
@@ -14,10 +15,12 @@ using Controls = Xamarin.Forms.PancakeView;
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.Droid
 {
-    public class PancakeViewRenderer : VisualElementRenderer<ContentView>
+    public class PancakeViewRenderer : VisualElementRenderer<PancakeView>
     {
         bool _disposed;
-        private PancakeDrawable _drawable;
+        bool _drawableEnabled;
+        PancakeDrawable _drawable;
+        Drawable _defaultDrawable;
 
         public PancakeViewRenderer(Context context) : base(context)
         {
@@ -34,25 +37,30 @@ namespace Xamarin.Forms.PancakeView.Droid
 #pragma warning restore 0219
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<ContentView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<PancakeView> e)
         {
             base.OnElementChanged(e);
 
-            if (e.NewElement != null && e.OldElement == null)
+            Reset();
+
+            // HACK: When there are no children we add a Grid element to trigger DrawChild.
+            // This should be improved upon, but I haven't found out a nice way to be able to clip
+            // the children and add the border on top without using DrawChild.
+            if (Element.Content == null)
             {
-                var pancake = Element as PancakeView;
+                Element.Content = new Grid();
+            }
 
-                // HACK: When there are no children we add a Grid element to trigger DrawChild.
-                // This should be improved upon, but I haven't found out a nice way to be able to clip
-                // the children and add the border on top without using DrawChild.
-                if (pancake.Content == null)
-                {
-                    pancake.Content = new Grid();
-                }
+            UpdateDrawable();
+        }
 
-                this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
-
-                SetupShadow(pancake);
+        public void Reset()
+        {
+            if (_drawableEnabled)
+            {
+                _drawableEnabled = false;
+                _drawable?.Reset();
+                _drawable = null;
             }
         }
 
@@ -99,6 +107,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             var pancake = Element as PancakeView;
 
             base.OnElementPropertyChanged(sender, e);
+
             if (e.PropertyName == PancakeView.BorderProperty.PropertyName)
             {
                 Invalidate();
@@ -116,19 +125,68 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
-                _drawable.Dispose();
-                this.SetBackground(_drawable = new PancakeDrawable(pancake, Context.ToPixels));
+                Reset();
+                UpdateDrawable();
             }
+        }
+
+        public void UpdateDrawable()
+        {
+            if (Element == null)
+                return;
+
+            bool cornerRadiusIsDefault = Element.CornerRadius == (CornerRadius)PancakeView.CornerRadiusProperty.DefaultValue;
+            bool backgroundColorIsDefault = !Element.BackgroundGradientStops.Any() && Element.BackgroundColor == (Color)VisualElement.BackgroundColorProperty.DefaultValue;
+            //bool borderColorIsDefault = Element.Border == null || Element.Border.Color == (Color)Border.ColorProperty.DefaultValue;
+            //bool borderWidthIsDefault = Element.Border == null || Element.Border.Thickness == (Thickness)Border.ThicknessProperty.DefaultValue;
+
+            if (backgroundColorIsDefault && cornerRadiusIsDefault)
+            //&& borderColorIsDefault && borderWidthIsDefault)
+            {
+                if (!_drawableEnabled)
+                    return;
+
+                if (_defaultDrawable != null)
+                    this.SetBackground(_defaultDrawable);
+
+                _drawableEnabled = false;
+                Reset();
+            }
+            else
+            {
+                if (_drawable == null)
+                    _drawable = new PancakeDrawable(Element, Context.ToPixels);
+
+                if (_drawableEnabled)
+                    return;
+
+                if (_defaultDrawable == null)
+                    _defaultDrawable = this.Background;
+
+                if (!backgroundColorIsDefault)
+                {
+                    this.SetBackground(_drawable);
+                }
+
+                _drawableEnabled = true;
+            }
+
+            this.Invalidate();
         }
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-
-            if (disposing && !_disposed)
+            if (!_disposed)
             {
-                _drawable?.Dispose();
-                _drawable = null;
+                if (disposing)
+                {
+                    _drawable?.Dispose();
+                    _drawable = null;
+
+                    _defaultDrawable?.Dispose();
+                    _defaultDrawable = null;
+                }
+
                 _disposed = true;
             }
         }
