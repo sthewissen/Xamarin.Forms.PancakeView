@@ -85,12 +85,13 @@ namespace Xamarin.Forms.PancakeView.MacOS
             {
                 DrawBorder();
             }
-            else if ((e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName) ||
+            else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                    e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
+                    e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
-                    (e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.SidesProperty.PropertyName) ||
-                    (e.PropertyName == PancakeView.ShadowProperty.PropertyName))
+                    e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
+                    e.PropertyName == PancakeView.SidesProperty.PropertyName ||
+                    e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
                 NeedsDisplay = true;
             }

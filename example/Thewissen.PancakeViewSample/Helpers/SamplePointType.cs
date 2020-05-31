@@ -5,6 +5,10 @@ namespace Thewissen.PancakeViewSample.Helpers
     public enum SamplePointType
     {
         BackgroundGradientStartPoint,
-        BackgroundGradientEndPoint
+        BackgroundGradientEndPoint,
+        BackgroundGradientStartPoint2,
+        BackgroundGradientEndPoint2,
+        BorderGradientStartPoint,
+        BorderGradientEndPoint
     }
 }

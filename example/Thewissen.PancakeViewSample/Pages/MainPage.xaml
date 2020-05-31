@@ -93,18 +93,26 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Style="{StaticResource small}" Text="Gradient Angle" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="360" Minimum="0"
-                        Value="{Binding BackgroundGradientAngle, Source={x:Reference multiGradient}}" />
+                <Label Style="{StaticResource small}" Text="Gradient Start Point" VerticalOptions="Center" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
-                <Button Grid.Row="1" Grid.Column="1" BackgroundColor="Tomato"
+                <Button Grid.Column="1" HorizontalOptions="Center" Text="{Binding BackgroundGradientStartPoint2}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BackgroundGradientStartPoint2}" />
+
+                <Label Grid.Row="1" Style="{StaticResource small}" Text="Gradient End Point" VerticalOptions="Center" />
+
+                <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" Text="{Binding BackgroundGradientEndPoint2}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BackgroundGradientEndPoint2}" />
+
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
+                <Button Grid.Row="2" Grid.Column="1" BackgroundColor="Tomato"
                         HorizontalOptions="Center" Text="Generate" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomGradientCommand}" />
             </Grid>
 
             <yummy:PancakeView x:Name="multiGradient" HorizontalOptions="FillAndExpand" HeightRequest="150"
-                               CornerRadius="10" BackgroundGradientStops="{Binding BackgroundGradientStops}">
+                               CornerRadius="10" BackgroundGradientStops="{Binding BackgroundGradientStops}"
+                               BackgroundGradientStartPoint="{Binding BackgroundGradientStartPoint2}"
+                               BackgroundGradientEndPoint="{Binding BackgroundGradientEndPoint2}">
                 <Label Text="Let's get crazy." TextColor="White" VerticalOptions="Center" HorizontalOptions="Center" />
             </yummy:PancakeView>
 
@@ -219,16 +227,20 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Label Style="{StaticResource small}" Text="Gradient Angle" VerticalOptions="Center" />
-                <Slider Grid.Column="1" Maximum="360" Minimum="0"
-                        Value="{Binding GradientAngle, Source={x:Reference borderGradient}}" />
+                <Label Style="{StaticResource small}" Text="Gradient Start Point" VerticalOptions="Center" />
 
-                <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
-                <Button Grid.Row="1" Grid.Column="1"
+                <Button Grid.Column="1" HorizontalOptions="Center" Text="{Binding BorderGradientStartPoint}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BorderGradientStartPoint}" />
+
+                <Label Grid.Row="1" Style="{StaticResource small}" Text="Gradient End Point" VerticalOptions="Center" />
+
+                <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" Text="{Binding BorderGradientEndPoint}"
+                        Style="{StaticResource small_button}" Command="{Binding GenerateRandomPointCommand}" CommandParameter="{x:Static helpers:SamplePointType.BorderGradientEndPoint}" />
+
+                <Label Grid.Row="2" Style="{StaticResource small}" VerticalOptions="Center" Text="Gradient Stops" />
+                <Button Grid.Row="2" Grid.Column="1"
                         HorizontalOptions="Center" Text="Generate" Style="{StaticResource small_button}"
                         Command="{Binding GenerateRandomBorderGradientCommand}" />
             </Grid>
@@ -238,7 +250,8 @@
                 <Label Text="This box has a gradient border." HorizontalOptions="Center" VerticalOptions="Center" />
 
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="borderGradient" Thickness="10" GradientStops="{Binding BorderGradientStops}" />
+                    <yummy:Border x:Name="borderGradient" Thickness="10" GradientStartPoint="{Binding BorderGradientStartPoint}"
+                                  GradientEndPoint="{Binding BorderGradientEndPoint}" GradientStops="{Binding BorderGradientStops}" />
                 </yummy:PancakeView.Border>
 
             </yummy:PancakeView>

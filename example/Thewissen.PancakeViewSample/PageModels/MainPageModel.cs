@@ -41,8 +41,12 @@ namespace Thewissen.PancakeViewSample.PageModels
         public Color ShadowColor { get; set; } = Color.Black;
         public Color BackgroundGradientColor1 { get; set; } = Color.DeepPink;
         public Color BackgroundGradientColor2 { get; set; } = Color.Orange;
-        public Point BackgroundGradientStartPoint { get; set; } = new Point(0,0);
-        public Point BackgroundGradientEndPoint { get; set; } = new Point(1,1);
+        public Point BackgroundGradientStartPoint { get; set; } = new Point(0, 0);
+        public Point BackgroundGradientEndPoint { get; set; } = new Point(1, 1);
+        public Point BackgroundGradientStartPoint2 { get; set; } = new Point(0, 0);
+        public Point BackgroundGradientEndPoint2 { get; set; } = new Point(1, 1);
+        public Point BorderGradientStartPoint { get; set; } = new Point(0, 0);
+        public Point BorderGradientEndPoint { get; set; } = new Point(1, 1);
         public Color BorderColor { get; set; } = Color.BlueViolet;
         public GradientStopCollection BackgroundGradientStops { get; set; } = new GradientStopCollection();
         public GradientStopCollection BorderGradientStops { get; set; } = new GradientStopCollection();
@@ -86,7 +90,7 @@ namespace Thewissen.PancakeViewSample.PageModels
 
         private void GenerateRandomPoint(SamplePointType type)
         {
-            var point = new Point(_randomGen.Next(0, 100) / 100f, _randomGen.Next(0, 100)/100f);
+            var point = new Point(Math.Round(_randomGen.Next(0, 100) / 100f, 2), Math.Round(_randomGen.Next(0, 100) / 100f, 2));
 
             switch (type)
             {
@@ -95,6 +99,18 @@ namespace Thewissen.PancakeViewSample.PageModels
                     break;
                 case SamplePointType.BackgroundGradientEndPoint:
                     BackgroundGradientEndPoint = point;
+                    break;
+                case SamplePointType.BackgroundGradientStartPoint2:
+                    BackgroundGradientStartPoint2 = point;
+                    break;
+                case SamplePointType.BackgroundGradientEndPoint2:
+                    BackgroundGradientEndPoint2 = point;
+                    break;
+                case SamplePointType.BorderGradientStartPoint:
+                    BorderGradientStartPoint = point;
+                    break;
+                case SamplePointType.BorderGradientEndPoint:
+                    BorderGradientEndPoint = point;
                     break;
                 default:
                     break;

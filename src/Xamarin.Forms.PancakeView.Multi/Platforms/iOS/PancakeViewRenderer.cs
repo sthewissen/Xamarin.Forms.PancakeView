@@ -83,7 +83,7 @@ namespace Xamarin.Forms.PancakeView.iOS
                 DrawBorder();
             }
             else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
-                    e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                    e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                     e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                     (e.PropertyName == VisualElement.IsVisibleProperty.PropertyName && Element.IsVisible) ||
                     e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
