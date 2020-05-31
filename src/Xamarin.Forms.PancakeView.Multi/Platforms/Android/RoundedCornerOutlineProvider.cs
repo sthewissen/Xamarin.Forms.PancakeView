@@ -17,28 +17,29 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         public override void GetOutline(global::Android.Views.View view, Outline outline)
         {
-            if (_pancake.Sides != 4)
-            {
-                var hexPath = DrawingExtensions.CreatePolygonPath(view.Width, view.Height, _pancake.Sides, _pancake.Shadow != null ? 0 : _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
+            //if (_pancake.Sides != 4)
+            //{
+            //    var hexPath = DrawingExtensions.CreatePolygonPath(view.Width, view.Height, _pancake.Sides,
+            //        _pancake.Shadow != null ? 0 : _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
 
-                if (hexPath.IsConvex)
-                {
-                    outline.SetConvexPath(hexPath);
-                }
-            }
-            else
-            {
-                var path = DrawingExtensions.CreateRoundedRectPath(view.Width, view.Height,
-                    _convertToPixels(_pancake.CornerRadius.TopLeft),
-                    _convertToPixels(_pancake.CornerRadius.TopRight),
-                    _convertToPixels(_pancake.CornerRadius.BottomRight),
-                    _convertToPixels(_pancake.CornerRadius.BottomLeft));
+            //    if (hexPath.IsConvex)
+            //    {
+            //        outline.SetConvexPath(hexPath);
+            //    }
+            //}
+            //else
+            //{
+            //    var path = DrawingExtensions.CreateRoundedRectPath(view.Width, view.Height,
+            //        _convertToPixels(_pancake.CornerRadius.TopLeft),
+            //        _convertToPixels(_pancake.CornerRadius.TopRight),
+            //        _convertToPixels(_pancake.CornerRadius.BottomRight),
+            //        _convertToPixels(_pancake.CornerRadius.BottomLeft));
 
-                if (path.IsConvex)
-                {
-                    outline.SetConvexPath(path);
-                }
-            }
+            //    if (path.IsConvex)
+            //    {
+            //        outline.SetConvexPath(path);
+            //    }
+            //}
         }
     }
 }
