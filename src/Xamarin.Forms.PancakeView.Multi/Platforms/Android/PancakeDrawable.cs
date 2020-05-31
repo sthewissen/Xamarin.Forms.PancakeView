@@ -131,12 +131,12 @@ namespace Xamarin.Forms.PancakeView.Droid
                     var colors = orderedStops.Select(x => x.Color.ToAndroid().ToArgb()).ToArray();
                     var locations = orderedStops.Select(x => x.Offset).ToArray();
 
-                    var shader = new LinearGradient((float)(canvas.Width * _pancake.Border.GradientStartPoint.X),
-                         (float)(canvas.Height * _pancake.Border.GradientStartPoint.Y),
-                         (float)(canvas.Width * _pancake.Border.GradientEndPoint.X),
-                         (float)(canvas.Height * _pancake.Border.GradientEndPoint.Y),
+                    var shader = new LinearGradient((float)(canvas.Width * _pancake.BackgroundGradientStartPoint.X),
+                         (float)(canvas.Height * _pancake.BackgroundGradientStartPoint.Y),
+                         (float)(canvas.Width * _pancake.BackgroundGradientEndPoint.X),
+                         (float)(canvas.Height * _pancake.BackgroundGradientEndPoint.Y),
                          colors, locations, Shader.TileMode.Clamp);
-                    
+
                     paint.SetShader(shader);
                 }
                 else

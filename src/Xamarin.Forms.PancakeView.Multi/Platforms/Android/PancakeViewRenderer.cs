@@ -128,6 +128,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             if (disposing && !_disposed)
             {
                 _drawable?.Dispose();
+                _drawable = null;
                 _disposed = true;
             }
         }
@@ -261,8 +262,8 @@ namespace Xamarin.Forms.PancakeView.Droid
                         var locations = orderedStops.Select(x => x.Offset).ToArray();
 
                         var shader = new LinearGradient((float)(canvas.Width * pancake.Border.GradientStartPoint.X),
-                             (float)(canvas.Height *pancake.Border.GradientStartPoint.Y),
-                             (float)(canvas.Width *pancake.Border.GradientEndPoint.X),
+                             (float)(canvas.Height * pancake.Border.GradientStartPoint.Y),
+                             (float)(canvas.Width * pancake.Border.GradientEndPoint.X),
                              (float)(canvas.Height * pancake.Border.GradientEndPoint.Y),
                              colors, locations, Shader.TileMode.Clamp);
                         paint.SetShader(shader);

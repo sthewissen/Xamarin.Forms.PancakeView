@@ -143,7 +143,7 @@
                 <Slider Grid.Row="3" Grid.Column="1" Maximum="100" Minimum="0" Value="{Binding CornerRadiusBottomRight}" />
             </Grid>
 
-            <yummy:PancakeView x:Name="cornerRadius" BackgroundColor="Purple" Margin="0,32,0,0"
+            <yummy:PancakeView x:Name="cornerRadius" BackgroundColor="Purple" Margin="0,32,0,0" Border="{yummy:BorderMarkup Color=Orange, Thickness=10}"
                 CornerRadius="{Binding CornerRadius}" HorizontalOptions="FillAndExpand" HeightRequest="150">
                 <Grid>
                     <Image Source="pancakes4.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
