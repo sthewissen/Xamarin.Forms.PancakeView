@@ -52,6 +52,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
 
             UpdateDrawable();
+            SetupShadow();
         }
 
         public void Reset()
@@ -64,7 +65,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
         }
 
-        private void SetupShadow(PancakeView pancake)
+        private void SetupShadow()
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
@@ -72,18 +73,18 @@ namespace Xamarin.Forms.PancakeView.Droid
                 this.Elevation = 0;
                 this.TranslationZ = 0;
 
-                bool hasShadowOrElevation = pancake.Shadow != null;
+                bool hasShadowOrElevation = Element.Shadow != null;
 
-                if (pancake.Shadow != null)
+                if (Element.Shadow != null)
                 {
-                    ViewCompat.SetElevation(this, Context.ToPixels(pancake.Shadow.BlurRadius));
+                    ViewCompat.SetElevation(this, Context.ToPixels(Element.Shadow.BlurRadius));
 
 #if MONOANDROID90
                     // Color only exists on Pie and beyond.
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
                     {
-                        this.SetOutlineAmbientShadowColor(pancake.Shadow.Color.ToAndroid());
-                        this.SetOutlineSpotShadowColor(pancake.Shadow.Color.ToAndroid());
+                        this.SetOutlineAmbientShadowColor(Element.Shadow.Color.ToAndroid());
+                        this.SetOutlineSpotShadowColor(Element.Shadow.Color.ToAndroid());
                     }
 #endif
                 }
@@ -91,7 +92,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                 if (hasShadowOrElevation)
                 {
                     // To have shadow show up, we need to clip.
-                    this.OutlineProvider = new RoundedCornerOutlineProvider(pancake, Context.ToPixels);
+                    this.OutlineProvider = new RoundedCornerOutlineProvider(Element, Context.ToPixels);
                     this.ClipToOutline = true;
                 }
                 else
@@ -116,12 +117,13 @@ namespace Xamarin.Forms.PancakeView.Droid
                 e.PropertyName == PancakeView.OffsetAngleProperty.PropertyName ||
                 e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
-                SetupShadow(pancake);
+                Invalidate();
+                SetupShadow();
             }
             else if (e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName)
             {
                 Invalidate();
-                SetupShadow(pancake);
+                SetupShadow();
             }
             else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
@@ -137,11 +139,8 @@ namespace Xamarin.Forms.PancakeView.Droid
 
             bool cornerRadiusIsDefault = Element.CornerRadius == (CornerRadius)PancakeView.CornerRadiusProperty.DefaultValue;
             bool backgroundColorIsDefault = !Element.BackgroundGradientStops.Any() && Element.BackgroundColor == (Color)VisualElement.BackgroundColorProperty.DefaultValue;
-            //bool borderColorIsDefault = Element.Border == null || Element.Border.Color == (Color)Border.ColorProperty.DefaultValue;
-            //bool borderWidthIsDefault = Element.Border == null || Element.Border.Thickness == (Thickness)Border.ThicknessProperty.DefaultValue;
 
             if (backgroundColorIsDefault && cornerRadiusIsDefault)
-            //&& borderColorIsDefault && borderWidthIsDefault)
             {
                 if (!_drawableEnabled)
                     return;
