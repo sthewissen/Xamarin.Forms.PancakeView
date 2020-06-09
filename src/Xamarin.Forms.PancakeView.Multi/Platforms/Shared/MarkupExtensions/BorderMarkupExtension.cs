@@ -6,7 +6,7 @@ namespace Xamarin.Forms.PancakeView
     [AcceptEmptyServiceProvider]
     public class BorderMarkupExtension : IMarkupExtension<Border>
     {
-        public Thickness Thickness { set; get; } = (Thickness)Border.ThicknessProperty.DefaultValue;
+        public int Thickness { set; get; } = (int)Border.ThicknessProperty.DefaultValue;
 
         public Color Color { set; get; } = (Color)Border.ColorProperty.DefaultValue;
 
