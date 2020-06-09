@@ -20,7 +20,7 @@ namespace Xamarin.Forms.PancakeView.UWP
     public class PancakeViewRenderer : ViewRenderer<PancakeView, Windows.UI.Xaml.Controls.Border>
     {
         //create the shadow effect 
-        private Windows.UI.Xaml.Shapes.Rectangle rectangle; 
+        private Windows.UI.Xaml.Shapes.Rectangle rectangle;
         private Windows.UI.Xaml.Controls.Grid container;
         private Windows.UI.Xaml.Controls.Border content;
         private SpriteVisual visual;
@@ -77,7 +77,7 @@ namespace Xamarin.Forms.PancakeView.UWP
             content = new Windows.UI.Xaml.Controls.Border { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
 
             rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
-            
+
             container.Children.Add(rectangle);
             container.Children.Add(content);
             Control.Child = (container);
@@ -192,7 +192,7 @@ namespace Xamarin.Forms.PancakeView.UWP
             //// Create the border layer
             if (content != null && pancake.Border != null)
             {
-                this.content.BorderThickness = new Windows.UI.Xaml.Thickness(pancake.Border.Thickness.Left);
+                this.content.BorderThickness = new Windows.UI.Xaml.Thickness(pancake.Border.Thickness);
 
                 if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())
                 {

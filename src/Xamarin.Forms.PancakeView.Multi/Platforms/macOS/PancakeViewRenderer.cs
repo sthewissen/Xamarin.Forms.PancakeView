@@ -222,13 +222,13 @@ namespace Xamarin.Forms.PancakeView.MacOS
                 switch (Element.Border.DrawingStyle)
                 {
                     case BorderDrawingStyle.Inside:
-                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left * 2;
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness * 2;
                         break;
                     case BorderDrawingStyle.Outside:
-                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left * 2;
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness * 2;
                         break;
                     case BorderDrawingStyle.Centered:
-                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness.Left;
+                        borderLayer.LineWidth = (nfloat)Element.Border.Thickness;
                         break;
                 }
 
@@ -252,9 +252,9 @@ namespace Xamarin.Forms.PancakeView.MacOS
 
                 if (Element.Border.GradientStops != null && Element.Border.GradientStops.Any())
                 {
-                    var gradientFrame = Bounds.Inset(-(nfloat)Element.Border.Thickness.Left, -(nfloat)Element.Border.Thickness.Left);
+                    var gradientFrame = Bounds.Inset(-(nfloat)Element.Border.Thickness, -(nfloat)Element.Border.Thickness);
                     var gradientLayer = CreateGradientLayer(Element.Border.GradientStartPoint, Element.Border.GradientEndPoint, gradientFrame);
-                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)Element.Border.Thickness.Left), (gradientFrame.Height / 2) - ((nfloat)Element.Border.Thickness.Left));
+                    gradientLayer.Position = new CGPoint((gradientFrame.Width / 2) - ((nfloat)Element.Border.Thickness), (gradientFrame.Height / 2) - ((nfloat)Element.Border.Thickness));
 
                     // Create a clone from the border layer and use that one as the mask.
                     // Why? Because the mask and the border somehow can't be the same, so
@@ -262,9 +262,9 @@ namespace Xamarin.Forms.PancakeView.MacOS
                     var maskLayer = new CAShapeLayer()
                     {
                         Path = borderLayer.Path,
-                        Position = new CGPoint(Element.Border.Thickness.Left, Element.Border.Thickness.Left),
+                        Position = new CGPoint(Element.Border.Thickness, Element.Border.Thickness),
                         FillColor = null,
-                        LineWidth = (nfloat)Element.Border.Thickness.Left,
+                        LineWidth = (nfloat)Element.Border.Thickness,
                         StrokeColor = NSColor.Red.CGColor,
                         LineDashPattern = borderLayer.LineDashPattern
                     };

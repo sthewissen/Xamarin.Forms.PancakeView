@@ -14,7 +14,7 @@ namespace Xamarin.Forms.PancakeView
         }
 
         public static readonly BindableProperty ThicknessProperty = BindableProperty.Create(nameof(Thickness),
-            typeof(Thickness), typeof(Border), default(Thickness));
+            typeof(int), typeof(Border), default(int));
 
         public static readonly BindableProperty ColorProperty = BindableProperty.Create(nameof(Color),
             typeof(Color), typeof(Border), default(Color));
@@ -28,10 +28,10 @@ namespace Xamarin.Forms.PancakeView
 
         public static readonly BindableProperty GradientStartPointProperty = BindableProperty.Create(
              nameof(GradientStartPoint), typeof(Point), typeof(Border), new Point(0, 0));
-        
+
         public static readonly BindableProperty GradientEndPointProperty = BindableProperty.Create(
             nameof(GradientEndPoint), typeof(Point), typeof(Border), new Point(1, 0));
-        
+
         public static readonly BindableProperty GradientStopsProperty = BindableProperty.Create(nameof(GradientStops),
             typeof(GradientStopCollection), typeof(Border), defaultValue: default(GradientStopCollection),
             defaultValueCreator: bindable =>
@@ -53,10 +53,16 @@ namespace Xamarin.Forms.PancakeView
                 }
             });
 
-        public Thickness Thickness
+        public int Thickness
         {
-            get { return (Thickness)GetValue(ThicknessProperty); }
-            set { SetValue(ThicknessProperty, value); }
+            get { return (int)GetValue(ThicknessProperty); }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException($"{nameof(Thickness)} must be greater than or equal to zero.", nameof(Thickness));
+
+                SetValue(ThicknessProperty, value);
+            }
         }
 
         public Color Color
@@ -76,7 +82,7 @@ namespace Xamarin.Forms.PancakeView
                 SetValue(DashPatternProperty, value);
             }
         }
-        
+
         public Point GradientStartPoint
         {
             get => (Point)GetValue(GradientStartPointProperty);
@@ -94,7 +100,7 @@ namespace Xamarin.Forms.PancakeView
             get { return (BorderDrawingStyle)GetValue(DrawingStyleProperty); }
             set { SetValue(DrawingStyleProperty, value); }
         }
-        
+
         public GradientStopCollection GradientStops
         {
             get { return (GradientStopCollection)GetValue(GradientStopsProperty); }

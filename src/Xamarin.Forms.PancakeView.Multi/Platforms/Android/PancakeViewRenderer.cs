@@ -266,7 +266,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             if (pancake.Border != null && pancake.Border.Thickness != default)
             {
-                var borderThickness = Context.ToPixels(pancake.Border.Thickness.Left);
+                var borderThickness = Context.ToPixels(pancake.Border.Thickness);
                 var halfBorderThickness = borderThickness / 2;
                 bool hasShadowOrElevation = pancake.Shadow != null && Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop;
 
@@ -304,7 +304,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                         {
                             if (i % 2 != 0)
                             {
-                                items[i] = items[i] * ((float)pancake.Border.Thickness.Left * 0.5f);
+                                items[i] = items[i] * ((float)pancake.Border.Thickness * 0.5f);
                             }
                         }
 

@@ -150,7 +150,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             //// Create the border layer
             if (Control != null)
             {
-                this.Control.BorderThickness = new System.Windows.Thickness(pancake.Border.Thickness.Left);
+                this.Control.BorderThickness = new System.Windows.Thickness(pancake.Border.Thickness);
 
                 if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())
                 {
