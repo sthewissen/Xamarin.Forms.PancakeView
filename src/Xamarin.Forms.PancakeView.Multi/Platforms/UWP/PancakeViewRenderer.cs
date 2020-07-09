@@ -88,6 +88,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         void UpdateChild()
         {
             var updateContainer = Control.Child as Windows.UI.Xaml.Controls.Grid;
+
             if (updateContainer != null && updateContainer.Children.Count == 2)
             {
                 if (updateContainer.Children[1] is Windows.UI.Xaml.Controls.Border updateContent)
@@ -124,7 +125,8 @@ namespace Xamarin.Forms.PancakeView.UWP
             {
                 UpdateShadow(pancake);
             }
-            else if (e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.BackgroundColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName)
             {
