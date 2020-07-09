@@ -1,91 +1,43 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace Xamarin.Forms.PancakeView
 {
-    public class GradientStopCollection : IList<GradientStop>
+    public class GradientStopCollection : ObservableCollection<GradientStop>
     {
-        readonly IList<GradientStop> _internalList;
+        protected override void InsertItem(int index, GradientStop item) => base.InsertItem(index, item ?? throw new ArgumentNullException(nameof(item)));
+        protected override void SetItem(int index, GradientStop item) => base.SetItem(index, item ?? throw new ArgumentNullException(nameof(item)));
 
-        public int Count => _internalList.Count;
-
-        public bool IsReadOnly => false;
-
-        public GradientStop this[int index]
+        protected override void ClearItems()
         {
-            get => _internalList[index];
-            set => _internalList[index] = value;
+            foreach (var item in this)
+                if (item is INotifyPropertyChanged i)
+                    i.PropertyChanged -= CollectionItem_PropertyChanged;
+
+            var removed = new List<GradientStop>(this);
+            base.ClearItems();
+            base.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, removed));
         }
 
-        public GradientStopCollection()
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            _internalList = new List<GradientStop>();
+            if (e.OldItems != null)
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                    item.PropertyChanged -= CollectionItem_PropertyChanged;
+
+            if (e.NewItems != null)
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                    item.PropertyChanged += CollectionItem_PropertyChanged;
+
+            base.OnCollectionChanged(e);
         }
 
-        public int IndexOf(GradientStop item)
+        void CollectionItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            return _internalList.IndexOf(item);
-        }
-
-        public void Insert(int index, GradientStop item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            _internalList.Insert(index, item);
-        }
-
-        public void RemoveAt(int index)
-        {
-            _internalList.RemoveAt(index);
-        }
-
-        public void Add(GradientStop item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            _internalList.Add(item);
-        }
-
-        public void Clear()
-        {
-            _internalList.Clear();
-        }
-
-        public bool Contains(GradientStop item)
-        {
-            return _internalList.Contains(item);
-        }
-
-        public void CopyTo(GradientStop[] array, int arrayIndex)
-        {
-            _internalList.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(GradientStop item)
-        {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            return _internalList.Remove(item);
-        }
-
-        public IEnumerator<GradientStop> GetEnumerator()
-        {
-            return _internalList.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_internalList).GetEnumerator();
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, null));
         }
     }
 }

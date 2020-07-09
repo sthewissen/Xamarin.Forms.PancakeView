@@ -19,7 +19,7 @@ namespace Xamarin.Forms.PancakeView.Droid
         {
             if (_pancake.Sides != 4)
             {
-                var hexPath = ShapeUtils.CreatePolygonPath(view.Width, view.Height, _pancake.Sides, _pancake.HasShadow ? 0 : _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
+                var hexPath = DrawingExtensions.CreatePolygonPath(view.Width, view.Height, _pancake.Sides, _pancake.Shadow != null ? 0 : _pancake.CornerRadius.TopLeft, _pancake.OffsetAngle);
 
                 if (hexPath.IsConvex)
                 {
@@ -28,7 +28,7 @@ namespace Xamarin.Forms.PancakeView.Droid
             }
             else
             {
-                var path = ShapeUtils.CreateRoundedRectPath(view.Width, view.Height,
+                var path = DrawingExtensions.CreateRoundedRectPath(view.Width, view.Height,
                     _convertToPixels(_pancake.CornerRadius.TopLeft),
                     _convertToPixels(_pancake.CornerRadius.TopRight),
                     _convertToPixels(_pancake.CornerRadius.BottomRight),

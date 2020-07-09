@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="MSBuild.Sdk.Extras/2.0.54">
     <PropertyGroup>
-        <TargetFrameworks>
-        </TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;xamarin.mac20;MonoAndroid81;MonoAndroid90</TargetFrameworks>
         <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90;uap10.0.16299;NET461</TargetFrameworks>
-        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid81;MonoAndroid90</TargetFrameworks>
         <!--Assembly and Namespace info -->
         <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
         <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
         <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <AssemblyVersion>1.4.1</AssemblyVersion>
-        <AssemblyFileVersion>1.4.1</AssemblyFileVersion>
-        <Version>1.4.1</Version>
+        <AssemblyVersion>2.0.1</AssemblyVersion>
+        <AssemblyFileVersion>2.0.1</AssemblyFileVersion>
+        <Version>2.0.1</Version>
         <PackOnBuild>true</PackOnBuild>
         <NeutralLanguage>en</NeutralLanguage>
         <LangVersion>default</LangVersion>
@@ -29,7 +27,7 @@
         <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
         <Owners>Steven Thewissen</Owners>
         <Authors>Steven Thewissen</Authors>
-        <Copyright>Copyright 2019 Steven Thewissen</Copyright>
+        <Copyright>Copyright 2019-2020 Steven Thewissen</Copyright>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
@@ -43,12 +41,21 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <DebugType>pdbonly</DebugType>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Platforms\Shared\**\*.cs" />
         <!--NuGet that bring in good stuff -->
-        <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
+        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />
+        <!--<PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />-->
         <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
     </ItemGroup>
@@ -58,14 +65,17 @@
     <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
         <Compile Include="Platforms\Android\**\*.cs" />
     </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
+        <Compile Include="Platforms\macOS\**\*.cs" />
+    </ItemGroup>
     <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
         <Compile Include="Platforms\UWP\**\*.cs" />
         <!--
-    If you need to add sdk references:
-     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
-    -->
+        If you need to add sdk references:
+         <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+          <Name>Windows Mobile Extensions for the UWP</Name>
+        </SDKReference>
+        -->
     </ItemGroup>
     <ItemGroup Condition=" $(TargetFramework.StartsWith('NET461')) ">
         <Compile Include="Platforms\WPF\**\*.cs" />
@@ -77,14 +87,11 @@
         <Reference Include="WindowsBase" />
         <Reference Include="System.Xaml" />
         <!--
-    If you need to add sdk references:
-     <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
-    -->
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Platforms\Shared\MarkupExtensions\" />
+        If you need to add sdk references:
+         <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
+          <Name>Windows Mobile Extensions for the UWP</Name>
+        </SDKReference>
+        -->
     </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>

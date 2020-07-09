@@ -22,7 +22,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         //create the shadow effect 
         private Windows.UI.Xaml.Shapes.Rectangle rectangle;
         private Windows.UI.Xaml.Controls.Grid container;
-        private Border content;
+        private Windows.UI.Xaml.Controls.Border content;
         private SpriteVisual visual;
 
         /// <summary>
@@ -63,13 +63,6 @@ namespace Xamarin.Forms.PancakeView.UWP
 
                 var pancake = (Element as PancakeView);
 
-                // Angle needs to be between 0-360.
-                if (pancake.BackgroundGradientAngle < 0 || pancake.BackgroundGradientAngle > 360)
-                    throw new ArgumentException("Please provide a valid background gradient angle.", nameof(PancakeView.BackgroundGradientAngle));
-
-                if (pancake.BorderGradientAngle < 0 || pancake.BorderGradientAngle > 360)
-                    throw new ArgumentException("Please provide a valid border gradient angle.", nameof(PancakeView.BorderGradientAngle));
-
                 PackChild();
                 UpdateBackgroundColor();
                 UpdateBorder(pancake);
@@ -81,8 +74,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         void PackChild()
         {
             container = new Windows.UI.Xaml.Controls.Grid { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
-            content = new Border { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
-
+            content = new Windows.UI.Xaml.Controls.Border { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
             rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
 
             container.Children.Add(rectangle);
@@ -95,9 +87,11 @@ namespace Xamarin.Forms.PancakeView.UWP
         void UpdateChild()
         {
             var container = Control.Child as Windows.UI.Xaml.Controls.Grid;
+
             if (container != null && container.Children.Count == 2)
             {
-                var content = container.Children[1] as Border;
+                var content = container.Children[1] as Windows.UI.Xaml.Controls.Border;
+
                 if (content != null)
                 {
                     if (Element.Content != null)
@@ -125,28 +119,20 @@ namespace Xamarin.Forms.PancakeView.UWP
                 UpdateCornerRadius(pancake);
                 UpdateShadow(pancake);
             }
-            else if (e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
-                e.PropertyName == PancakeView.ElevationProperty.PropertyName ||
-                e.PropertyName == PancakeView.WidthProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.WidthProperty.PropertyName ||
                 e.PropertyName == PancakeView.HeightProperty.PropertyName ||
                 e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
                 UpdateShadow(pancake);
             }
-            else if (e.PropertyName == PancakeView.BackgroundGradientAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BackgroundGradientEndColorProperty.PropertyName ||
+            else if (e.PropertyName == PancakeView.BackgroundColorProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
+                e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName)
             {
                 UpdateBackgroundColor();
             }
-            else if (e.PropertyName == PancakeView.BorderGradientAngleProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStartColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientEndColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderGradientStopsProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderColorProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderThicknessProperty.PropertyName ||
-                e.PropertyName == PancakeView.BorderIsDashedProperty.PropertyName)
+            else if (e.PropertyName == PancakeView.BorderProperty.PropertyName)
             {
                 UpdateBorder(pancake);
             }
@@ -206,35 +192,28 @@ namespace Xamarin.Forms.PancakeView.UWP
         private void UpdateBorder(PancakeView pancake)
         {
             //// Create the border layer
-            if (content != null)
+            if (content != null && pancake.Border != null)
             {
-                this.content.BorderThickness = new Windows.UI.Xaml.Thickness(pancake.BorderThickness);
+                this.content.BorderThickness = new Windows.UI.Xaml.Thickness(pancake.Border.Thickness);
 
-                if ((pancake.BorderGradientStartColor != default(Color) && pancake.BorderGradientEndColor != default(Color)) || (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Any()))
+                if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())
                 {
-                    // Create a gradient layer that draws our background.
-                    if (pancake.BorderGradientStops != null && pancake.BorderGradientStops.Count > 0)
-                    {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = pancake.BorderGradientStops.OrderBy(x => x.Offset).ToList();
-                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
+                    // A range of colors is given. Let's add them.
+                    var orderedStops = pancake.Border.GradientStops.OrderBy(x => x.Offset).ToList();
+                    var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
 
-                        foreach (var item in orderedStops)
-                            gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
+                    foreach (var item in orderedStops)
+                        gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
-                        this.content.BorderBrush = new LinearGradientBrush(gc, pancake.BorderGradientAngle);
-                    }
-                    else
-                    {
-                        var gs1 = new Windows.UI.Xaml.Media.GradientStop { Offset = 0, Color = pancake.BorderGradientStartColor.ToWindowsColor() };
-                        var gs2 = new Windows.UI.Xaml.Media.GradientStop { Offset = 1, Color = pancake.BorderGradientEndColor.ToWindowsColor() };
-                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection { gs1, gs2 };
-                        this.content.BorderBrush = new LinearGradientBrush(gc, pancake.BorderGradientAngle);
-                    }
+                    var gradient = new LinearGradientBrush(gc, 0);
+                    gradient.StartPoint = new Windows.Foundation.Point(pancake.Border.GradientStartPoint.X, pancake.Border.GradientStartPoint.Y);
+                    gradient.EndPoint = new Windows.Foundation.Point(pancake.Border.GradientEndPoint.X, pancake.Border.GradientEndPoint.Y);
+
+                    this.content.BorderBrush = gradient;
                 }
                 else
                 {
-                    this.content.BorderBrush = pancake.BorderColor.IsDefault ? null : pancake.BorderColor.ToBrush();
+                    this.content.BorderBrush = pancake.Border.Color.IsDefault ? null : pancake.Border.Color.ToBrush();
                 }
             }
         }
@@ -248,27 +227,19 @@ namespace Xamarin.Forms.PancakeView.UWP
 
             if (content != null)
             {
-                if ((pancake.BackgroundGradientStartColor != default(Color) && pancake.BackgroundGradientEndColor != default(Color)) || (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any()))
+                if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
                 {
-                    // Create a gradient layer that draws our background.
-                    if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Count > 0)
-                    {
-                        // A range of colors is given. Let's add them.
-                        var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
-                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
+                    // A range of colors is given. Let's add them.
+                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
+                    var gc = new Windows.UI.Xaml.Media.GradientStopCollection();
 
-                        foreach (var item in orderedStops)
-                            gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
+                    foreach (var item in orderedStops)
+                        gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
-                        this.content.Background = new LinearGradientBrush(gc, pancake.BackgroundGradientAngle);
-                    }
-                    else
-                    {
-                        var gs1 = new Windows.UI.Xaml.Media.GradientStop { Offset = 0, Color = pancake.BackgroundGradientStartColor.ToWindowsColor() };
-                        var gs2 = new Windows.UI.Xaml.Media.GradientStop { Offset = 1, Color = pancake.BackgroundGradientEndColor.ToWindowsColor() };
-                        var gc = new Windows.UI.Xaml.Media.GradientStopCollection { gs1, gs2 };
-                        this.content.Background = new LinearGradientBrush(gc, pancake.BackgroundGradientAngle);
-                    }
+                    var gradient = new LinearGradientBrush(gc, 0);
+                    gradient.StartPoint = new Windows.Foundation.Point(pancake.BackgroundGradientStartPoint.X, pancake.BackgroundGradientStartPoint.Y);
+                    gradient.EndPoint = new Windows.Foundation.Point(pancake.BackgroundGradientEndPoint.X, pancake.BackgroundGradientEndPoint.Y);
+                    this.content.Background = gradient;
                 }
                 else
                 {

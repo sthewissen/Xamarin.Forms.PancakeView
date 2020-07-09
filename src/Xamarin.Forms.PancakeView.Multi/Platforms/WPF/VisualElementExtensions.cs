@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms.Platform.WPF;
 
-namespace Xamarin.Forms.PancakeView.Platforms.WPF.Utils
+namespace Xamarin.Forms.PancakeView.Platforms.WPF
 {
     public static class VisualElementExtensions
     {

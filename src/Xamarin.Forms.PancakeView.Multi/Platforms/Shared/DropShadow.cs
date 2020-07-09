@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
 namespace Xamarin.Forms.PancakeView
 {
     public class DropShadow : BindableObject
@@ -9,7 +11,13 @@ namespace Xamarin.Forms.PancakeView
         public float BlurRadius
         {
             get => (float)GetValue(BlurRadiusProperty);
-            set => SetValue(BlurRadiusProperty, value);
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException($"{nameof(BlurRadius)} must be a positive value.", nameof(BlurRadius));
+
+                SetValue(BlurRadiusProperty, value);
+            }
         }
 
         public static readonly BindableProperty OpacityProperty = BindableProperty.Create(
@@ -18,7 +26,13 @@ namespace Xamarin.Forms.PancakeView
         public float Opacity
         {
             get => (float)GetValue(OpacityProperty);
-            set => SetValue(OpacityProperty, value);
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentException($"{nameof(Opacity)} must be a value between 0 and 1.", nameof(Opacity));
+
+                SetValue(OpacityProperty, value);
+            }
         }
 
         public static readonly BindableProperty ColorProperty = BindableProperty.Create(
@@ -37,6 +51,19 @@ namespace Xamarin.Forms.PancakeView
         {
             get => (Point)GetValue(OffsetProperty);
             set => SetValue(OffsetProperty, value);
+        }
+
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            base.OnPropertyChanged(propertyName);
+
+            if (propertyName == OffsetProperty.PropertyName ||
+                propertyName == ColorProperty.PropertyName ||
+                propertyName == BlurRadiusProperty.PropertyName ||
+                propertyName == OpacityProperty.PropertyName)
+            {
+                OnPropertyChanged(PancakeView.ShadowProperty.PropertyName);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
     public enum BorderDrawingStyle
     {
         Inside,
-        Outside
+        Outside,
+        Centered
     }
 }
