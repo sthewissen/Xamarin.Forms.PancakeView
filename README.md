@@ -16,7 +16,7 @@ In a lot of Xamarin.Forms UI work I do I have the need for a layout/view that I 
 We have [a great wiki article](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki/Setup) explaining exactly that!
 
 ## Platform support
-The platform support for each individual feature is maintained on (our wiki](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki).
+The platform support for each individual feature is maintained on [our wiki](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki).
 
 ## Property reference
-The property reference for each individual feature is maintained on (our wiki](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki).
+The property reference for each individual feature is maintained on [our wiki](https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki).
