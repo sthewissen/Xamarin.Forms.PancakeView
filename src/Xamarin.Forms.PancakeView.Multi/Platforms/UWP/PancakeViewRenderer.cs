@@ -86,27 +86,12 @@ namespace Xamarin.Forms.PancakeView.UWP
 
         void UpdateChild()
         {
-            var updateContainer = Control.Child as Windows.UI.Xaml.Controls.Grid;
-
-            if (updateContainer != null && updateContainer.Children.Count == 2)
-            {
-                if (updateContainer.Children[1] is Windows.UI.Xaml.Controls.Border updateContent)
-                {
-                    if (Element.Content != null)
-                    {
-                        IVisualElementRenderer renderer = Element.Content.GetOrCreateRenderer();
-                        updateContent.Child = (renderer.ContainerElement);
-                    }
-                }
-            }
-        }
-
-        void UpdateChild()
-        {
             var container = Control.Child as Windows.UI.Xaml.Controls.Grid;
+
             if (container != null && container.Children.Count == 2)
             {
-                var content = container.Children[1] as Border;
+                var content = container.Children[1] as Windows.UI.Xaml.Controls.Border;
+
                 if (content != null)
                 {
                     if (Element.Content != null)
