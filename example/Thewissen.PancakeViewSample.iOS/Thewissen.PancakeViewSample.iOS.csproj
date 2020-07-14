@@ -217,11 +217,11 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1080" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
-      <Project>{73bd51e9-02a0-4562-a0a7-bb83e54500cc}</Project>
+      <Project>{B178CFA1-03F5-45F0-ACDC-33149B2D4631}</Project>
       <Name>Xamarin.Forms.PancakeView.Multi</Name>
     </ProjectReference>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">

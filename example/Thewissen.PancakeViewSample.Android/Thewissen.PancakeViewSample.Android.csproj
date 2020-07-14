@@ -49,7 +49,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="4.5.0.657" />
+        <PackageReference Include="Xamarin.Forms" Version="4.7.0.1080" />
         <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
         <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
         <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
@@ -321,7 +321,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
-            <Project>{73BD51E9-02A0-4562-A0A7-BB83E54500CC}</Project>
+            <Project>{B178CFA1-03F5-45F0-ACDC-33149B2D4631}</Project>
             <Name>Xamarin.Forms.PancakeView.Multi</Name>
         </ProjectReference>
         <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj">

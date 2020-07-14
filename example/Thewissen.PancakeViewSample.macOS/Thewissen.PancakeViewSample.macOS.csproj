@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.props" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.props')" />
+  <Import Project="..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.props" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -100,7 +100,7 @@
       <Name>Thewissen.PancakeViewSample</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">
-      <Project>{73BD51E9-02A0-4562-A0A7-BB83E54500CC}</Project>
+      <Project>{B178CFA1-03F5-45F0-ACDC-33149B2D4631}</Project>
       <Name>Xamarin.Forms.PancakeView.Multi</Name>
     </ProjectReference>
   </ItemGroup>
@@ -114,5 +114,5 @@
     <BundleResource Include="Resources\xamalogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Import Project="..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.targets" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.5.0.657\build\Xamarin.Forms.targets')" />
+  <Import Project="..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.targets" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.targets')" />
 </Project>
