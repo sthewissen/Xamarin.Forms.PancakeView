@@ -4,11 +4,17 @@ using Xamarin.Forms.Xaml;
 namespace Xamarin.Forms.PancakeView
 {
     [AcceptEmptyServiceProvider]
-    public class ShadowMarkupExtension : IMarkupExtension<DropShadow>
+    public class ShadowMarkupExtension : BindableObject, IMarkupExtension<DropShadow>
     {
+        public static BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Color), typeof(ShadowMarkupExtension), DropShadow.ColorProperty.DefaultValue); 
+
         public float BlurRadius { set; get; } = (float)DropShadow.BlurRadiusProperty.DefaultValue;
 
-        public Color Color { set; get; } = (Color)DropShadow.ColorProperty.DefaultValue;
+        public Color Color
+        {
+            set => SetValue(ColorProperty, value);
+            get => (Color)GetValue(ColorProperty);
+        }
 
         public Point Offset { set; get; } = (Point)DropShadow.OffsetProperty.DefaultValue;
 

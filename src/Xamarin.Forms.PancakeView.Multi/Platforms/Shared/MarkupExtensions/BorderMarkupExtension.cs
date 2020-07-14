@@ -4,11 +4,17 @@ using Xamarin.Forms.Xaml;
 namespace Xamarin.Forms.PancakeView
 {
     [AcceptEmptyServiceProvider]
-    public class BorderMarkupExtension : IMarkupExtension<Border>
+    public class BorderMarkupExtension : BindableObject, IMarkupExtension<Border>
     {
+        public static BindableProperty ColorProperty = BindableProperty.Create(nameof(Color), typeof(Color), typeof(BorderMarkupExtension), DropShadow.ColorProperty.DefaultValue);
+
         public int Thickness { set; get; } = (int)Border.ThicknessProperty.DefaultValue;
 
-        public Color Color { set; get; } = (Color)Border.ColorProperty.DefaultValue;
+        public Color Color
+        {
+            set => SetValue(ColorProperty, value);
+            get => (Color)GetValue(ColorProperty);
+        }
 
         public DashPattern DashPattern { set; get; } = (DashPattern)Border.DashPatternProperty.DefaultValue;
 
