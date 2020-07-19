@@ -12,7 +12,7 @@ namespace Xamarin.Forms.PancakeView
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
 
         public static readonly BindableProperty CornerRadiusProperty = BindableProperty.Create(nameof(CornerRadius), typeof(CornerRadius), typeof(PancakeView), default(CornerRadius));
-        
+
         public static readonly BindableProperty BackgroundGradientStartPointProperty = BindableProperty.Create(nameof(BackgroundGradientStartPoint), typeof(Point), typeof(Border), new Point(0, 0));
         public static readonly BindableProperty BackgroundGradientEndPointProperty = BindableProperty.Create(nameof(BackgroundGradientEndPoint), typeof(Point), typeof(Border), new Point(1, 0));
 
@@ -200,6 +200,8 @@ namespace Xamarin.Forms.PancakeView
 
         #region SOON TO BE DEPRECATED
 
+        public static readonly BindableProperty BackgroundGradientAngleProperty = BindableProperty.Create(nameof(BackgroundGradientAngle), typeof(double), typeof(PancakeView), default(double));
+
         public static readonly BindableProperty BorderThicknessProperty = BindableProperty.Create(nameof(BorderThickness), typeof(float), typeof(PancakeView), default(float));
 
         public static readonly BindableProperty BorderDashPatternProperty = BindableProperty.Create(nameof(BorderDashPattern), typeof(DashPattern), typeof(PancakeView), defaultValue: default(DashPattern), defaultValueCreator: bindable => { return new DashPattern(); });
@@ -237,6 +239,20 @@ namespace Xamarin.Forms.PancakeView
 
         public static readonly BindableProperty ElevationProperty = BindableProperty.Create(nameof(Elevation),
             typeof(int), typeof(PancakeView), 0);
+
+
+        [Obsolete("This property has been obsoleted. Please use BackgroundGradientStartPoint and BackgroundGradientEndPoint instead.")]
+        public double BackgroundGradientAngle
+        {
+            get { return (double)GetValue(BackgroundGradientAngleProperty); }
+            set
+            {
+                if (value < 0 || value > 360)
+                    throw new ArgumentException($"Please provide a valid {nameof(BackgroundGradientAngle)}.", nameof(BackgroundGradientAngle));
+
+                SetValue(BackgroundGradientAngleProperty, value);
+            }
+        }
 
         [Obsolete("This property has been obsoleted. Please use Border instead.")]
         public float BorderThickness
