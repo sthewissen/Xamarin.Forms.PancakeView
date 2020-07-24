@@ -132,6 +132,8 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
+        public new IVisual Visual => VisualMarker.Default;
+
         void SetupInternalCollectionPropertyPropagation(bool teardown = false)
         {
             if (teardown && BackgroundGradientStops != null)

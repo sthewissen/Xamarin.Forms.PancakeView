@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.View;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.Droid;
@@ -23,6 +24,11 @@ namespace Xamarin.Forms.PancakeView.Droid
         Drawable _defaultDrawable;
 
         public PancakeViewRenderer(Context context) : base(context)
+        {
+        }
+
+        [Obsolete]
+        public PancakeViewRenderer(IntPtr handle, JniHandleOwnership transfer) : base(Xamarin.Forms.Forms.Context)
         {
         }
 
@@ -105,7 +111,7 @@ namespace Xamarin.Forms.PancakeView.Droid
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var pancake = Element as PancakeView;
+            if (_disposed) return;
 
             base.OnElementPropertyChanged(sender, e);
 

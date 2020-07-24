@@ -168,14 +168,15 @@ namespace Xamarin.Forms.PancakeView.Droid
         protected override void Dispose(bool disposing)
         {
             if (!_isDisposed)
-                return;
+            {
+                _pancake.PropertyChanged -= PancakeViewOnPropertyChanged;
+                _isDisposed = true;
 
-            _isDisposed = true;
+                if (disposing)
+                    Reset();
 
-            if (disposing)
-                Reset();
-
-            base.Dispose(disposing);
+                base.Dispose(disposing);
+            }
         }
     }
 }
