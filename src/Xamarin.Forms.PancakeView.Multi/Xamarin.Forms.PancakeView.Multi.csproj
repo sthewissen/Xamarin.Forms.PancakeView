@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="MSBuild.Sdk.Extras/2.0.54">
     <PropertyGroup>
-        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;xamarin.mac20;MonoAndroid90</TargetFrameworks>
-        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid90;uap10.0.16299;NET461</TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;xamarin.mac20;MonoAndroid90;tizen40</TargetFrameworks>
+        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid90;uap10.0.16299;NET461;tizen40</TargetFrameworks>
+      
         <!--Assembly and Namespace info -->
         <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
         <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
@@ -93,6 +94,11 @@
           <Name>Windows Mobile Extensions for the UWP</Name>
         </SDKReference>
         -->
+    </ItemGroup>
+    <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
+      <Compile Include="Platforms\Tizen\**\*.cs" />
+      <PackageReference Include="SkiaSharp.Views" Version="1.68.3" />
+      <PackageReference Include="Xamarin.Forms" Version="4.6.0.847" />
     </ItemGroup>
     <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
