@@ -15,7 +15,6 @@ namespace Xamarin.Forms.PancakeView.Tizen
     public class PancakeViewRenderer : LayoutRenderer
     {
         SKCanvasView _skCanvasView;
-        PancakeView PancakeViewElement => Element as PancakeView;
 
         public PancakeViewRenderer() : base()
         {
@@ -66,13 +65,15 @@ namespace Xamarin.Forms.PancakeView.Tizen
 
         protected override void UpdateBackgroundColor(bool initialize)
         {
+            if(!initialize)
+            {
+                Invalidate();
+            }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-
-            var pancake = Element as PancakeView;
 
             if (e.PropertyName == PancakeView.BorderProperty.PropertyName ||
                 e.PropertyName == PancakeView.CornerRadiusProperty.PropertyName ||
@@ -81,10 +82,6 @@ namespace Xamarin.Forms.PancakeView.Tizen
                 e.PropertyName == PancakeView.BackgroundGradientStopsProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientStartPointProperty.PropertyName ||
                 e.PropertyName == PancakeView.BackgroundGradientEndPointProperty.PropertyName)
-            {
-                Invalidate();
-            }
-            else if (e.PropertyName == VisualElement.BackgroundColorProperty.PropertyName)
             {
                 Invalidate();
             }
@@ -111,29 +108,30 @@ namespace Xamarin.Forms.PancakeView.Tizen
                 paint.Style = SKPaintStyle.Fill;
                 paint.IsAntialias = true;
 
+                var pancake = Element as PancakeView;
                 SKPath path;
-                if (PancakeViewElement.Sides != 4)
+                if (pancake.Sides != 4)
                 {
                     path = DrawingExtensions.CreatePolygonPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height,
-                        PancakeViewElement.Sides, PancakeViewElement.CornerRadius.TopLeft, PancakeViewElement.OffsetAngle);
+                        pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
                 }
                 else
                 {
-                    path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, PancakeViewElement.CornerRadius);
+                    path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, pancake.CornerRadius);
                 }
 
-                if (PancakeViewElement.BackgroundGradientStops != null && PancakeViewElement.BackgroundGradientStops.Any())
+                if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
                 {
-                    var orderedStops = PancakeViewElement.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
+                    var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                     var gradientColors = orderedStops.Select(x => x.Color.ToNative().ToSKColor()).ToArray();
                     var gradientColorPos = orderedStops.Select(x => x.Offset).ToArray();
-                    var startPoint = new SKPoint((float)(PancakeViewElement.BackgroundGradientStartPoint.X * _skCanvasView.Geometry.Width), (float)(PancakeViewElement.BackgroundGradientStartPoint.Y * _skCanvasView.Geometry.Height));
-                    var endPoint = new SKPoint((float)(PancakeViewElement.BackgroundGradientEndPoint.X * _skCanvasView.Geometry.Width), (float)(PancakeViewElement.BackgroundGradientEndPoint.Y * _skCanvasView.Geometry.Height));
+                    var startPoint = new SKPoint((float)(pancake.BackgroundGradientStartPoint.X * _skCanvasView.Geometry.Width), (float)(pancake.BackgroundGradientStartPoint.Y * _skCanvasView.Geometry.Height));
+                    var endPoint = new SKPoint((float)(pancake.BackgroundGradientEndPoint.X * _skCanvasView.Geometry.Width), (float)(pancake.BackgroundGradientEndPoint.Y * _skCanvasView.Geometry.Height));
                     paint.Shader = SKShader.CreateLinearGradient(startPoint, endPoint, gradientColors, gradientColorPos, SKShaderTileMode.Clamp);
                 }
                 else
                 {
-                    paint.Color = PancakeViewElement.BackgroundColor.ToNative().ToSKColor();
+                    paint.Color = pancake.BackgroundColor.ToNative().ToSKColor();
                 }
                 canvas.ClipPath(path, SKClipOperation.Intersect, true);
                 canvas.DrawPath(path, paint);
@@ -144,24 +142,25 @@ namespace Xamarin.Forms.PancakeView.Tizen
         {
             using (var paint = new SKPaint())
             {
-                if (PancakeViewElement.Border != null && PancakeViewElement.Border.Thickness != default)
+                var pancake = Element as PancakeView;
+                if (pancake.Border != null && pancake.Border.Thickness != default)
                 {
-                    var border = PancakeViewElement.Border;
+                    var border = pancake.Border;
                     var boderColor = border.Color == Color.Default ? Color.Default : border.Color;
                     paint.Style = SKPaintStyle.Stroke;
                     paint.Color = boderColor.ToNative().ToSKColor();
-                    paint.StrokeWidth = (float)border.Thickness;
+                    paint.StrokeWidth = border.Thickness;
                     paint.IsAntialias = true;
 
                     SKPath path;
-                    if (PancakeViewElement.Sides != 4)
+                    if (pancake.Sides != 4)
                     {
                         path = DrawingExtensions.CreatePolygonPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height,
-                            PancakeViewElement.Sides, PancakeViewElement.CornerRadius.TopLeft, PancakeViewElement.OffsetAngle);
+                            pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
                     }
                     else
                     {
-                        path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, PancakeViewElement.CornerRadius);
+                        path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, pancake.CornerRadius);
                     }
 
                     if (border.DashPattern.Pattern != null && border.DashPattern.Pattern.Length > 0)

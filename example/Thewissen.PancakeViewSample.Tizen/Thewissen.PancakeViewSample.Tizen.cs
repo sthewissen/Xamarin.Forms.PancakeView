@@ -9,13 +9,16 @@ namespace Thewissen.PancakeViewSample.Tizen
         {
             base.OnCreate();
             ElmSharp.Utility.AppendGlobalFontPath(this.DirectoryInfo.Resource);
-            LoadApplication(new App());
+            MainWindow.IndicatorMode = ElmSharp.IndicatorMode.Hide;
+            var app = new App();
+            app.MainPage.BackgroundColor = Color.White;
+            LoadApplication(app);
         }
 
         static void Main(string[] args)
         {
             var app = new Program();
-            Forms.Init(app);
+            Forms.Init(app, true);
             app.Run(args);
         }
     }
