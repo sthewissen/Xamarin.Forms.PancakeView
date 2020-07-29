@@ -132,7 +132,7 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
-        public new IVisual Visual => VisualMarker.Default;
+        //public new IVisual Visual => VisualMarker.Default;
 
         public PancakeView()
         {
