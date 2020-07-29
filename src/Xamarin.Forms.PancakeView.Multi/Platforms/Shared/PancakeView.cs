@@ -134,6 +134,11 @@ namespace Xamarin.Forms.PancakeView
 
         public new IVisual Visual => VisualMarker.Default;
 
+        public PancakeView()
+        {
+            Visual = VisualMarker.Default;
+        }
+
         void SetupInternalCollectionPropertyPropagation(bool teardown = false)
         {
             if (teardown && BackgroundGradientStops != null)
