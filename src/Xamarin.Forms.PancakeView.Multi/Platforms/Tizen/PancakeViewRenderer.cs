@@ -40,6 +40,7 @@ namespace Xamarin.Forms.PancakeView.Tizen
                 _skCanvasView.PaintSurface += OnPaintSurface;
                 _skCanvasView.Show();
                 Control.Children.Add(_skCanvasView);
+                Interop.evas_object_clip_unset(_skCanvasView);
                 Control.LayoutUpdated += OnLayoutUpdated;
             }
             base.OnElementChanged(e);
@@ -85,11 +86,47 @@ namespace Xamarin.Forms.PancakeView.Tizen
             {
                 Invalidate();
             }
+            else if (e.PropertyName == PancakeView.ShadowProperty.PropertyName)
+            {
+                UpdateCanvasGeometry();
+                Invalidate();
+            }
         }
 
         private void OnLayoutUpdated(object sender, LayoutEventArgs e)
         {
-            _skCanvasView.Geometry = Control.Geometry;
+            UpdateCanvasGeometry();
+        }
+
+        private void UpdateCanvasGeometry()
+        {
+            var pancake = Element as PancakeView;
+            if (pancake.Shadow != null)
+            {
+                double left = 0;
+                double top = 0;
+                double right = 0;
+                double bottom = 0;
+                var scaledOffsetX = Forms.ConvertToScaledPixel(pancake.Shadow.Offset.X);
+                var scaledOffsetY = Forms.ConvertToScaledPixel(pancake.Shadow.Offset.Y);
+                var scaledBlurRadius = Forms.ConvertToScaledPixel(pancake.Shadow.BlurRadius);
+                var spreadSize = scaledBlurRadius * 2 + scaledBlurRadius;
+                var sl = scaledOffsetX - spreadSize;
+                var sr = scaledOffsetX + spreadSize;
+                var st = scaledOffsetY - spreadSize;
+                var sb = scaledOffsetY + spreadSize;
+                if (left > sl) left = sl;
+                if (top > st) top = st;
+                if (right < sr) right = sr;
+                if (bottom < sb) bottom = sb;
+
+                var geometry = Control.Geometry;
+                _skCanvasView.Geometry = new ElmSharp.Rect(geometry.X + (int)left, geometry.Y + (int)top, geometry.Width + (int)right - (int)left, geometry.Height + (int)bottom - (int)top);
+            }
+            else
+            {
+                _skCanvasView.Geometry = Control.Geometry;
+            }
         }
 
         private void OnPaintSurface(object sender, SKPaintSurfaceEventArgs e)
@@ -97,8 +134,57 @@ namespace Xamarin.Forms.PancakeView.Tizen
             var surface = e.Surface;
             var canvas = surface.Canvas;
             canvas.Clear();
+            DrawShadow(canvas);
             DrawBackground(canvas);
             DrawBorder(canvas);
+        }
+
+        private void DrawShadow(SKCanvas canvas)
+        {
+            var pancake = Element as PancakeView;
+            if (pancake.Shadow != null)
+            {
+                SKPath path;
+                if (pancake.Sides != 4)
+                {
+                    path = DrawingExtensions.CreatePolygonPath(Control.Geometry.Width, Control.Geometry.Height,
+                        pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
+                }
+                else
+                {
+                    var left = Control.Geometry.Left - _skCanvasView.Geometry.Left;
+                    var top = Control.Geometry.Top - _skCanvasView.Geometry.Top;
+                    path = DrawingExtensions.CreateRoundedRectPath(left, top, left + Control.Geometry.Width, top + Control.Geometry.Height, pancake.CornerRadius);
+                }
+
+                using (var paint = new SKPaint())
+                {
+                    paint.IsAntialias = true;
+                    paint.Style = SKPaintStyle.StrokeAndFill;
+
+                    var shadow = pancake.Shadow;
+                    var scaledOffsetX = Forms.ConvertToScaledPixel(shadow.Offset.X);
+                    var scaledOffsetY = Forms.ConvertToScaledPixel(shadow.Offset.Y);
+                    var scaledBlurRadius = Forms.ConvertToScaledPixel(shadow.BlurRadius);
+
+                    canvas.Save();
+                    canvas.ClipPath(path, SKClipOperation.Difference, true);
+                    paint.ImageFilter = SKImageFilter.CreateDropShadow(
+                        scaledOffsetX,
+                        scaledOffsetY,
+                        scaledBlurRadius,
+                        scaledBlurRadius,
+                        shadow.Color.MultiplyAlpha(shadow.Opacity).ToNative().ToSKColor(),
+                        SKDropShadowImageFilterShadowMode.DrawShadowOnly);
+                    canvas.DrawPath(path, paint);
+                    canvas.Restore();
+
+                    canvas.Save();
+                    canvas.ClipPath(path, SKClipOperation.Intersect, true);
+                    canvas.DrawPath(path, paint);
+                    canvas.Restore();
+                }
+            }
         }
 
         private void DrawBackground(SKCanvas canvas)
@@ -112,12 +198,14 @@ namespace Xamarin.Forms.PancakeView.Tizen
                 SKPath path;
                 if (pancake.Sides != 4)
                 {
-                    path = DrawingExtensions.CreatePolygonPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height,
+                    path = DrawingExtensions.CreatePolygonPath(Control.Geometry.Width, Control.Geometry.Height,
                         pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
                 }
                 else
                 {
-                    path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, pancake.CornerRadius);
+                    var left = Control.Geometry.Left - _skCanvasView.Geometry.Left;
+                    var top = Control.Geometry.Top - _skCanvasView.Geometry.Top;
+                    path = DrawingExtensions.CreateRoundedRectPath(left, top, left + Control.Geometry.Width, top + Control.Geometry.Height, pancake.CornerRadius);
                 }
 
                 if (pancake.BackgroundGradientStops != null && pancake.BackgroundGradientStops.Any())
@@ -125,8 +213,8 @@ namespace Xamarin.Forms.PancakeView.Tizen
                     var orderedStops = pancake.BackgroundGradientStops.OrderBy(x => x.Offset).ToList();
                     var gradientColors = orderedStops.Select(x => x.Color.ToNative().ToSKColor()).ToArray();
                     var gradientColorPos = orderedStops.Select(x => x.Offset).ToArray();
-                    var startPoint = new SKPoint((float)(pancake.BackgroundGradientStartPoint.X * _skCanvasView.Geometry.Width), (float)(pancake.BackgroundGradientStartPoint.Y * _skCanvasView.Geometry.Height));
-                    var endPoint = new SKPoint((float)(pancake.BackgroundGradientEndPoint.X * _skCanvasView.Geometry.Width), (float)(pancake.BackgroundGradientEndPoint.Y * _skCanvasView.Geometry.Height));
+                    var startPoint = new SKPoint((float)(pancake.BackgroundGradientStartPoint.X * Control.Geometry.Width), (float)(pancake.BackgroundGradientStartPoint.Y * Control.Geometry.Height));
+                    var endPoint = new SKPoint((float)(pancake.BackgroundGradientEndPoint.X * Control.Geometry.Width), (float)(pancake.BackgroundGradientEndPoint.Y * Control.Geometry.Height));
                     paint.Shader = SKShader.CreateLinearGradient(startPoint, endPoint, gradientColors, gradientColorPos, SKShaderTileMode.Clamp);
                 }
                 else
@@ -140,27 +228,28 @@ namespace Xamarin.Forms.PancakeView.Tizen
 
         private void DrawBorder(SKCanvas canvas)
         {
-            using (var paint = new SKPaint())
+            var pancake = Element as PancakeView;
+            if (pancake.Border != null && pancake.Border.Thickness != default)
             {
-                var pancake = Element as PancakeView;
-                if (pancake.Border != null && pancake.Border.Thickness != default)
+                using (var paint = new SKPaint())
                 {
                     var border = pancake.Border;
-                    var boderColor = border.Color == Color.Default ? Color.Default : border.Color;
                     paint.Style = SKPaintStyle.Stroke;
-                    paint.Color = boderColor.ToNative().ToSKColor();
-                    paint.StrokeWidth = border.Thickness;
+                    paint.Color = border.Color.ToNative().ToSKColor();
+                    paint.StrokeWidth = Forms.ConvertToScaledPixel(border.Thickness);
                     paint.IsAntialias = true;
 
                     SKPath path;
                     if (pancake.Sides != 4)
                     {
-                        path = DrawingExtensions.CreatePolygonPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height,
+                        path = DrawingExtensions.CreatePolygonPath(Control.Geometry.Width, Control.Geometry.Height,
                             pancake.Sides, pancake.CornerRadius.TopLeft, pancake.OffsetAngle);
                     }
                     else
                     {
-                        path = DrawingExtensions.CreateRoundedRectPath(_skCanvasView.Geometry.Width, _skCanvasView.Geometry.Height, pancake.CornerRadius);
+                        var left = Control.Geometry.Left - _skCanvasView.Geometry.Left;
+                        var top = Control.Geometry.Top - _skCanvasView.Geometry.Top;
+                        path = DrawingExtensions.CreateRoundedRectPath(left, top, left + Control.Geometry.Width, top + Control.Geometry.Height, pancake.CornerRadius);
                     }
 
                     if (border.DashPattern.Pattern != null && border.DashPattern.Pattern.Length > 0)
@@ -173,8 +262,8 @@ namespace Xamarin.Forms.PancakeView.Tizen
 
                     if (border.GradientStops != null && border.GradientStops.Any())
                     {
-                        var startPoint = new SKPoint((float)(border.GradientStartPoint.X * _skCanvasView.Geometry.Width), (float)(border.GradientStartPoint.Y * _skCanvasView.Geometry.Height));
-                        var endPoint = new SKPoint((float)(border.GradientEndPoint.X * _skCanvasView.Geometry.Width), (float)(border.GradientEndPoint.Y * _skCanvasView.Geometry.Height));
+                        var startPoint = new SKPoint((float)(border.GradientStartPoint.X * Control.Geometry.Width), (float)(border.GradientStartPoint.Y * Control.Geometry.Height));
+                        var endPoint = new SKPoint((float)(border.GradientEndPoint.X * Control.Geometry.Width), (float)(border.GradientEndPoint.Y * Control.Geometry.Height));
                         var orderedStops = border.GradientStops.OrderBy(x => x.Offset).ToList();
                         var gradientColors = orderedStops.Select(x => x.Color.ToNative().ToSKColor()).ToArray();
                         var gradientColorPos = orderedStops.Select(x => x.Offset).ToArray();

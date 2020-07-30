@@ -5,10 +5,10 @@ namespace Xamarin.Forms.PancakeView.Tizen
 {
     public static class DrawingExtensions
     {
-        static public SKPath CreateRoundedRectPath(float rectWidth, float rectHeight, CornerRadius cornerRadius)
+        static public SKPath CreateRoundedRectPath(int left, int top, int width, int height, CornerRadius cornerRadius)
         {
             var path = new SKPath();
-            var skRoundRect = new SKRoundRect(new SKRect(0, 0, rectWidth, rectHeight));
+            var skRoundRect = new SKRoundRect(new SKRect(left, top, width, height));
             SKPoint[] radii = new SKPoint[4]
             {
                 new SKPoint((float)cornerRadius.TopLeft, (float)cornerRadius.TopLeft),
