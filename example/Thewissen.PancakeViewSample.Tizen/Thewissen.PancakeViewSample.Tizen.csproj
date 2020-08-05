@@ -13,8 +13,12 @@
     <DebugType>None</DebugType>
   </PropertyGroup>
 
+  <!-- PackageReference as a workaround for SkiaSharp to be run on Tizen 4.0 Emulator -->
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Thewissen.PancakeViewSample\Thewissen.PancakeViewSample.csproj" />
   </ItemGroup>
 
