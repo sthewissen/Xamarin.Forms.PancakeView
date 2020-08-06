@@ -17,7 +17,7 @@
         <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
         <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
         <LangVersion>latest</LangVersion>
-        <PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/wiki/Xamarin.Forms.PancakeView-Release-Notes</PackageReleaseNotes>
+        <PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/releases</PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
         <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
         <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
