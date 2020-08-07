@@ -1,5 +1,5 @@
 # set the version numbering, this results in 1.0.1 for the first build incrementing that way.
-name: 2.0.1.$(Build.BuildId)
+name: 2.1.0.$(Build.BuildId)
 
 trigger:
   branches:
