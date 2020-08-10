@@ -48,8 +48,8 @@ namespace Thewissen.PancakeViewSample.PageModels
         public Point BorderGradientStartPoint { get; set; } = new Point(0, 0);
         public Point BorderGradientEndPoint { get; set; } = new Point(1, 1);
         public Color BorderColor { get; set; } = Color.BlueViolet;
-        public GradientStopCollection BackgroundGradientStops { get; set; } = new GradientStopCollection();
-        public GradientStopCollection BorderGradientStops { get; set; } = new GradientStopCollection();
+        public Xamarin.Forms.PancakeView.GradientStopCollection BackgroundGradientStops { get; set; } = new Xamarin.Forms.PancakeView.GradientStopCollection();
+        public Xamarin.Forms.PancakeView.GradientStopCollection BorderGradientStops { get; set; } = new Xamarin.Forms.PancakeView.GradientStopCollection();
 
         [AlsoNotifyFor(nameof(CornerRadius))]
         public double CornerRadiusTopLeft { get; set; } = 40;
@@ -165,14 +165,14 @@ namespace Thewissen.PancakeViewSample.PageModels
             BorderDrawingStyle = BorderDrawingStyles[currentBorderDrawingStyleIndex];
         }
 
-        public static GradientStopCollection GetRandomGradient()
+        public static Xamarin.Forms.PancakeView.GradientStopCollection GetRandomGradient()
         {
-            var gradient = new GradientStopCollection();
+            var gradient = new Xamarin.Forms.PancakeView.GradientStopCollection();
             var itemCount = _randomGen.Next(2, 7);
 
             for (int i = 0; i < itemCount; i++)
             {
-                gradient.Add(new GradientStop { Color = GetRandomColor(), Offset = (1.0f / itemCount) * i });
+                gradient.Add(new Xamarin.Forms.PancakeView.GradientStop { Color = GetRandomColor(), Offset = (1.0f / itemCount) * i });
             }
 
             return gradient;

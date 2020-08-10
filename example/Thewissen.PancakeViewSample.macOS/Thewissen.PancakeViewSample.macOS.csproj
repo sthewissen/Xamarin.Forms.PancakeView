@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.props" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.props')" />
+  <Import Project="..\..\src\packages\Xamarin.Forms.4.8.0.1269\build\Xamarin.Forms.props" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.8.0.1269\build\Xamarin.Forms.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -57,13 +57,13 @@
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Xamarin.Forms.Core">
-      <HintPath>..\..\src\packages\Xamarin.Forms.4.5.0.657\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
+      <HintPath>..\..\src\packages\Xamarin.Forms.4.8.0.1269\lib\Xamarin.Mac\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Platform">
-      <HintPath>..\..\src\packages\Xamarin.Forms.4.5.0.657\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
+      <HintPath>..\..\src\packages\Xamarin.Forms.4.8.0.1269\lib\Xamarin.Mac\Xamarin.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml">
-      <HintPath>..\..\src\packages\Xamarin.Forms.4.5.0.657\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
+      <HintPath>..\..\src\packages\Xamarin.Forms.4.8.0.1269\lib\Xamarin.Mac\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -114,5 +114,5 @@
     <BundleResource Include="Resources\xamalogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
-  <Import Project="..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.targets" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.7.0.1080\build\Xamarin.Forms.targets')" />
+  <Import Project="..\..\src\packages\Xamarin.Forms.4.8.0.1269\build\Xamarin.Forms.targets" Condition="Exists('..\..\src\packages\Xamarin.Forms.4.8.0.1269\build\Xamarin.Forms.targets')" />
 </Project>

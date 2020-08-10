@@ -165,6 +165,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
+                <Label Style="{StaticResource small}" Text="BorderThickness" VerticalOptions="Center" />
+
+                <Slider Grid.Column="1" Maximum="40" Minimum="0"
+                        Value="{Binding Thickness, Source={x:Reference border}}" />
+
                 <Label Grid.Row="1" Style="{StaticResource small}" VerticalOptions="Center" Text="Color" />
 
                 <Button Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" BackgroundColor="{Binding BorderColor}"
@@ -181,7 +186,7 @@
             <yummy:PancakeView Margin="0,32,0,0" BackgroundColor="Khaki"
                                HorizontalOptions="FillAndExpand" HeightRequest="150" CornerRadius="40,10,40,10">
                 <yummy:PancakeView.Border>
-                    <yummy:Border x:Name="border" Thickness="10" Color="{Binding BorderColor}" DrawingStyle="{Binding BorderDrawingStyle}" />
+                    <yummy:Border x:Name="border" Thickness="3" Color="{Binding BorderColor}" DrawingStyle="{Binding BorderDrawingStyle}" />
                 </yummy:PancakeView.Border>
                 <Label Text="This box has a nice border." HorizontalOptions="Center" VerticalOptions="Center" TextColor="#456287" />
             </yummy:PancakeView>
