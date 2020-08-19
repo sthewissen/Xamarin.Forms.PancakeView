@@ -239,7 +239,9 @@ namespace Xamarin.Forms.PancakeView.iOS
                 borderLayer.Position = layerPosition;
 
                 // Dash pattern for the border.
-                if (Element.Border.DashPattern.Pattern != null && Element.Border.DashPattern.Pattern.Length > 0)
+                if (Element.Border.DashPattern.Pattern != null &&
+                    Element.Border.DashPattern.Pattern.Length > 0 &&
+                    Element.Border.DashPattern.Pattern.Length % 2 == 0)
                 {
                     var items = Element.Border.DashPattern.Pattern.Select(x => new NSNumber(x)).ToArray();
                     borderLayer.LineDashPattern = items;

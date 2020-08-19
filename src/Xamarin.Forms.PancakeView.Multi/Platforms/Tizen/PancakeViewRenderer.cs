@@ -66,7 +66,7 @@ namespace Xamarin.Forms.PancakeView.Tizen
 
         protected override void UpdateBackgroundColor(bool initialize)
         {
-            if(!initialize)
+            if (!initialize)
             {
                 Invalidate();
             }
@@ -252,7 +252,9 @@ namespace Xamarin.Forms.PancakeView.Tizen
                         path = DrawingExtensions.CreateRoundedRectPath(left, top, left + Control.Geometry.Width, top + Control.Geometry.Height, pancake.CornerRadius);
                     }
 
-                    if (border.DashPattern.Pattern != null && border.DashPattern.Pattern.Length > 0)
+                    if (border.DashPattern.Pattern != null &&
+                        border.DashPattern.Pattern.Length > 0 &&
+                        border.DashPattern.Pattern.Length % 2 == 0)
                     {
                         var dashPattern = border.DashPattern.Pattern;
                         float[] patternInFloat = new float[dashPattern.Length];

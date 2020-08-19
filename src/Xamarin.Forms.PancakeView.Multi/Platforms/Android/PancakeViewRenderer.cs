@@ -300,7 +300,9 @@ namespace Xamarin.Forms.PancakeView.Droid
                             Context.ToPixels(pancake.CornerRadius.BottomLeft));
                     }
 
-                    if (pancake.Border.DashPattern.Pattern != null && pancake.Border.DashPattern.Pattern.Length > 0)
+                    if (pancake.Border.DashPattern.Pattern != null &&
+                        pancake.Border.DashPattern.Pattern.Length > 0 &&
+                        pancake.Border.DashPattern.Pattern.Length % 2 == 0)
                     {
                         var items = pancake.Border.DashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToArray();
 
