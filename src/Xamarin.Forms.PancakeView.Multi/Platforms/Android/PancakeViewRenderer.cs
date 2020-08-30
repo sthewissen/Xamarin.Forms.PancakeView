@@ -302,9 +302,12 @@ namespace Xamarin.Forms.PancakeView.Droid
 
                     if (pancake.Border.DashPattern.Pattern != null &&
                         pancake.Border.DashPattern.Pattern.Length > 0 &&
-                        pancake.Border.DashPattern.Pattern.Length % 2 == 0)
+                        (pancake.Border.DashPattern.Pattern.Length % 2 == 0 || pancake.Border.DashPattern.Pattern.Length == 1))
                     {
-                        var items = pancake.Border.DashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToArray();
+                        var items = pancake.Border.DashPattern.Pattern.Select(x => Context.ToPixels(Convert.ToSingle(x))).ToList();
+
+                        if (items.Count == 1)
+                            items.Add(items[0]);
 
                         // dashes merge when thickness is increased
                         // off-distance should be scaled according to thickness
@@ -316,7 +319,7 @@ namespace Xamarin.Forms.PancakeView.Droid
                             }
                         }
 
-                        paint.SetPathEffect(new DashPathEffect(items, 0));
+                        paint.SetPathEffect(new DashPathEffect(items.ToArray(), 0));
                     }
 
                     if (pancake.Border.GradientStops != null && pancake.Border.GradientStops.Any())

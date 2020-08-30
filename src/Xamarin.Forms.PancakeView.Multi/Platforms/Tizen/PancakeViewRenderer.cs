@@ -254,12 +254,14 @@ namespace Xamarin.Forms.PancakeView.Tizen
 
                     if (border.DashPattern.Pattern != null &&
                         border.DashPattern.Pattern.Length > 0 &&
-                        border.DashPattern.Pattern.Length % 2 == 0)
+                        (border.DashPattern.Pattern.Length % 2 == 0 || border.DashPattern.Pattern.Length == 1))
                     {
-                        var dashPattern = border.DashPattern.Pattern;
-                        float[] patternInFloat = new float[dashPattern.Length];
-                        patternInFloat = Array.ConvertAll(dashPattern, item => (float)item);
-                        paint.PathEffect = SKPathEffect.CreateDash(patternInFloat, 0);
+                        var items = border.DashPattern.Pattern.Select(x => Convert.ToSingle(x)).ToList();
+
+                        if (items.Count == 1)
+                            items.Add(items[0]);
+
+                        paint.PathEffect = SKPathEffect.CreateDash(items.ToArray(), 0);
                     }
 
                     if (border.GradientStops != null && border.GradientStops.Any())
