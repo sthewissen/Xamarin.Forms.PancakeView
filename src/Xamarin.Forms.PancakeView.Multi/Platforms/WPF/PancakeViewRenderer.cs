@@ -88,8 +88,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 UpdateCornerRadius(pancake);
             }
-            else if (e.PropertyName == PancakeView.HasShadowProperty.PropertyName ||
-                e.PropertyName == PancakeView.ElevationProperty.PropertyName)
+            else if (e.PropertyName == PancakeView.ShadowProperty.PropertyName)
             {
                 UpdateShadow(pancake);
             }
