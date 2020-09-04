@@ -1,4 +1,8 @@
-# set the version numbering, this results in 1.0.1 for the first build incrementing that way.
+variables:
+  MONO_VERSION: 6_8_0
+  XCODE_VERSION: 11.3
+  NETCORE_VERSION: '3.1.x'
+  
 name: 2.2.0.$(Build.BuildId)
 
 trigger:
@@ -16,39 +20,80 @@ pool:
   name: Hosted VS2017
   demands: msbuild
 
-#Your build pipeline references an undefined variable named ‘BuildConfiguration’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+jobs:
 
-steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.3'
-  inputs:
-    versionSpec: 4.9.3
+  - job: build_windows
+    displayName: Build Windows Library
+    pool:
+      vmImage: windows-2019
+    steps:
+      - task: MSBuild@1
+        displayName: Build Beta
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber)-beta /p:PackageOutputPath=$(build.artifactstagingdirectory)/beta /p:AssemblyFileVersion=$(Build.BuildNumber)'
+          clean: true
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: 'src\**\*.sln'
+      - task: MSBuild@1
+        displayName: 'Build final'
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber) /p:PackageOutputPath=$(build.artifactstagingdirectory)/final /p:AssemblyFileVersion=$(Build.BuildNumber) '
+          clean: true
 
-- task: MSBuild@1
-  displayName: 'Build beta'
-  inputs:
-    solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
-    msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber)-beta /p:PackageOutputPath=$(build.artifactstagingdirectory)/beta /p:AssemblyFileVersion=$(Build.BuildNumber)  '
-    clean: true
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        inputs:
+          SourceFolder: '$(build.sourcesdirectory)'
+          Contents: '**\bin\$(BuildConfiguration)\**\*.nupkg'
+          TargetFolder: '$(build.artifactstagingdirectory)'
 
-- task: MSBuild@1
-  displayName: 'Build final'
-  inputs:
-    solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
-    msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber) /p:PackageOutputPath=$(build.artifactstagingdirectory)/final /p:AssemblyFileVersion=$(Build.BuildNumber) '
-    clean: true
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+        
+  - job: build_macos
+    displayName: Build macOS Library
+    pool:
+      vmImage: macos-10.14
+    steps:
+    
+      # make sure to select the correct Xamarin and mono
+      - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MONO_VERSION)
+        displayName: Switch to the latest Xamarin SDK
+      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(XCODE_VERSION).app;sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
+        displayName: Switch to the latest Xcode
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: '$(build.sourcesdirectory)'
-    Contents: '**\bin\$(BuildConfiguration)\**\*.nupkg'
-    TargetFolder: '$(build.artifactstagingdirectory)'
+      # restore, build and pack the packages
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core sdk'
+        inputs:
+          version: $(NETCORE_VERSION)
+          includePreviewVersions: false
+          
+      - task: MSBuild@1
+        displayName: Build Beta
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber)-beta /p:PackageOutputPath=$(build.artifactstagingdirectory)/beta /p:AssemblyFileVersion=$(Build.BuildNumber)'
+          clean: true
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+      - task: MSBuild@1
+        displayName: 'Build final'
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/t:restore;build;pack /p:PackageVersion=$(Build.BuildNumber) /p:PackageOutputPath=$(build.artifactstagingdirectory)/final /p:AssemblyFileVersion=$(Build.BuildNumber) '
+          clean: true
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        inputs:
+          SourceFolder: '$(build.sourcesdirectory)'
+          Contents: '**\bin\$(BuildConfiguration)\**\*.nupkg'
+          TargetFolder: '$(build.artifactstagingdirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
