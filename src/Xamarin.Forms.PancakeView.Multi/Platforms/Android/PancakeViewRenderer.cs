@@ -6,7 +6,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.View;
+using AndroidX.Core.View;
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.Droid;
 using Xamarin.Forms.Platform.Android;
@@ -84,15 +84,12 @@ namespace Xamarin.Forms.PancakeView.Droid
                 if (Element.Shadow != null)
                 {
                     ViewCompat.SetElevation(this, Context.ToPixels(Element.Shadow.BlurRadius));
-
-#if MONOANDROID90
                     // Color only exists on Pie and beyond.
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.P)
                     {
                         this.SetOutlineAmbientShadowColor(Element.Shadow.Color.ToAndroid());
                         this.SetOutlineSpotShadowColor(Element.Shadow.Color.ToAndroid());
                     }
-#endif
                 }
 
                 if (hasShadowOrElevation)
