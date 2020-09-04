@@ -1,3 +1,8 @@
+variables:
+  MONO_VERSION: 6_8_0
+  XCODE_VERSION: 11.3
+  NETCORE_VERSION: '3.1.x'
+
 # Defines that a commit to the master branch should trigger this build
 trigger:
   branches:
@@ -14,53 +19,92 @@ trigger:
 pr:
   - master
 
-pool:
-  name: Azure Pipelines
-  vmImage: 'windows-latest'
-  demands: msbuild
+jobs:
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use .Net Core sdk 3.0.x'
-  inputs:
-    version: 3.0.x
+  - job: build_windows
+    displayName: Build Windows Library
+    pool:
+      vmImage: windows-2019
+    steps:
+      - task: MSBuild@1
+        displayName: Build Solution
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/restore /t:Build /p:ContinuousIntegrationBuild=true /p:Deterministic=false'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 5.4'
-  inputs:
-    versionSpec: 5.4
+  - job: build_macos
+    displayName: Build macOS Library
+    pool:
+      vmImage: macos-10.14
+    steps:
+    
+      # make sure to select the correct Xamarin and mono
+      - bash: sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MONO_VERSION)
+        displayName: Switch to the latest Xamarin SDK
+      - bash: echo '##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]'/Applications/Xcode_$(XCODE_VERSION).app;sudo xcode-select --switch /Applications/Xcode_$(XCODE_VERSION).app/Contents/Developer
+        displayName: Switch to the latest Xcode
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: 'src/**/*.sln'
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
-  inputs:
-    command: restore
-    projects: src/**/*.sln
+      # restore, build and pack the packages
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core sdk'
+        inputs:
+          version: $(NETCORE_VERSION)
+          includePreviewVersions: false
+      - task: UseDotNet@2
+        displayName: 'Use .Net Core sdk'
+        inputs:
+          version: $(NETCORE_TEST_VERSION)
+          includePreviewVersions: false
+      - task: MSBuild@1
+        displayName: Build Solution
+        inputs:
+          solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+          configuration: Release
+          msbuildArguments: '/restore /t:Build /p:ContinuousIntegrationBuild=true /p:Deterministic=false'
 
-# - script: 'echo ''##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]''/Applications/Xcode_$(XCodeVersion).app;sudo xcode-select --switch /Applications/Xcode_$(XCodeVersion).app/Contents/Developer'
-#   displayName: 'Update XCode version'
+# steps:
+# - task: UseDotNet@2
+#   displayName: 'Use .Net Core sdk 3.0.x'
+#   inputs:
+#     version: 3.0.x
 
-# - script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MonoVersion)'
-#   displayName: 'Select Xamarin SDK'
+# - task: NuGetToolInstaller@0
+#   displayName: 'Use NuGet 5.4'
+#   inputs:
+#     versionSpec: 5.4
+
+# - task: NuGetCommand@2
+#   displayName: 'NuGet restore'
+#   inputs:
+#     restoreSolution: 'src/**/*.sln'
+# - task: DotNetCoreCLI@2
+#   displayName: 'dotnet restore'
+#   inputs:
+#     command: restore
+#     projects: src/**/*.sln
+
+# # - script: 'echo ''##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]''/Applications/Xcode_$(XCodeVersion).app;sudo xcode-select --switch /Applications/Xcode_$(XCodeVersion).app/Contents/Developer'
+# #   displayName: 'Update XCode version'
+
+# # - script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MonoVersion)'
+# #   displayName: 'Select Xamarin SDK'
   
-# - script: |
-#    echo "Setting mono version" 
+# # - script: |
+# #    echo "Setting mono version" 
    
-#    sudo xcodebuild -showsdks
+# #    sudo xcodebuild -showsdks
    
-#    SYMLINK=$(MonoVersion)
-#    MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-#    echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
-#    echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-#    echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
-#   displayName: 'Fix Mono version'
+# #    SYMLINK=$(MonoVersion)
+# #    MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+# #    echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+# #    echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+# #    echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+# #   displayName: 'Fix Mono version'
 
-- task: MSBuild@1
-  displayName: 'Build solution'
-  inputs:
-    solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
-    msbuildArguments: '/t:restore;build /p:PackageOutputPath=$(build.artifactstagingdirectory)'
-    clean: true
+# - task: MSBuild@1
+#   displayName: 'Build solution'
+#   inputs:
+#     solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
+#     msbuildArguments: '/t:restore;build /p:PackageOutputPath=$(build.artifactstagingdirectory)'
+#     clean: true
