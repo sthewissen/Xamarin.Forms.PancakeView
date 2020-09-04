@@ -15,7 +15,8 @@ pr:
   - master
 
 pool:
-  name: Hosted VS2017
+  name: Azure Pipelines
+  vmImage: 'windows-latest'
   demands: msbuild
 
 steps:
