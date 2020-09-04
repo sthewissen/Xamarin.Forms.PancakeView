@@ -19,15 +19,38 @@ pool:
   demands: msbuild
 
 steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.9.3'
+- task: UseDotNet@2
+  displayName: 'Use .Net Core sdk 3.0.x'
   inputs:
-    versionSpec: 4.9.3
+    version: 3.0.x
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 5.4'
+  inputs:
+    versionSpec: 5.4
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: 'src/**/*.sln'
+
+- script: 'echo ''##vso[task.setvariable variable=MD_APPLE_SDK_ROOT;]''/Applications/Xcode_$(XCodeVersion).app;sudo xcode-select --switch /Applications/Xcode_$(XCodeVersion).app/Contents/Developer'
+  displayName: 'Update XCode version'
+
+- script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh $(MonoVersion)'
+  displayName: 'Select Xamarin SDK'
+  
+- script: |
+   echo "Setting mono version" 
+   
+   sudo xcodebuild -showsdks
+   
+   SYMLINK=$(MonoVersion)
+   MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
+   echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;]$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+   echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
+   echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
+  displayName: 'Fix Mono version'
 
 - task: MSBuild@1
   displayName: 'Build solution'
