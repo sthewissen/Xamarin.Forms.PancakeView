@@ -91,14 +91,14 @@ jobs:
         inputs:
           solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
           configuration: Release
-          msbuildArguments: '/t:Pack /p:PackageVersion=$(NugetPackageVersion) /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/beta"'
+          msbuildArguments: '/t:Pack /p:PackageVersion=$(Build.BuildNumber)-beta /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/beta"'
 
       - task: MSBuild@1
         displayName: Pack NuGets Final
         inputs:
           solution: src/Xamarin.Forms.PancakeView.Multi/Xamarin.Forms.PancakeView.Multi.csproj
           configuration: Release
-          msbuildArguments: '/t:Pack /p:PackageVersion=$(NugetPackageVersion) /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/final"'
+          msbuildArguments: '/t:Pack /p:PackageVersion=$(Build.BuildNumber) /p:PackageOutputPath="$(Build.ArtifactStagingDirectory)/final"'
 
       - task: CopyFiles@2
         displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
