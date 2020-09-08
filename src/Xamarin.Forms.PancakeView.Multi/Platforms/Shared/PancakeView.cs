@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Xamarin.Forms.PancakeView
 {
-    public class PancakeView : ContentView
+    public class PancakeView : ContentView, IBorderElement
     {
         public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides), typeof(int), typeof(PancakeView), defaultValue: 4);
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
@@ -132,6 +132,18 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
+        public Color BorderColor => throw new NotImplementedException();
+
+        int IBorderElement.CornerRadius => throw new NotImplementedException();
+
+        public double BorderWidth => throw new NotImplementedException();
+
+        public int CornerRadiusDefaultValue => throw new NotImplementedException();
+
+        public Color BorderColorDefaultValue => throw new NotImplementedException();
+
+        public double BorderWidthDefaultValue => throw new NotImplementedException();
+
         //public new IVisual Visual => VisualMarker.Default;
 
         public PancakeView()
@@ -196,5 +208,18 @@ namespace Xamarin.Forms.PancakeView
                     SetInheritedBindingContext(item, BindingContext);
             }
         }
+
+        public void OnBorderColorPropertyChanged(Color oldValue, Color newValue)
+        {
+            // Leave empty. Nothing to do here.
+        }
+
+        public bool IsCornerRadiusSet() => false;
+
+        public bool IsBackgroundColorSet() => false;
+
+        public bool IsBorderColorSet() => false;
+
+        public bool IsBorderWidthSet() => false;
     }
 }
