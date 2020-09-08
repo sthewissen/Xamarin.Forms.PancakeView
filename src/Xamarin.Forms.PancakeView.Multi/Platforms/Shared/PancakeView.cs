@@ -132,18 +132,6 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
-        public Color BorderColor => throw new NotImplementedException();
-
-        int IBorderElement.CornerRadius => throw new NotImplementedException();
-
-        public double BorderWidth => throw new NotImplementedException();
-
-        public int CornerRadiusDefaultValue => throw new NotImplementedException();
-
-        public Color BorderColorDefaultValue => throw new NotImplementedException();
-
-        public double BorderWidthDefaultValue => throw new NotImplementedException();
-
         //public new IVisual Visual => VisualMarker.Default;
 
         public PancakeView()
@@ -213,6 +201,18 @@ namespace Xamarin.Forms.PancakeView
         {
             // Leave empty. Nothing to do here.
         }
+
+        public Color BorderColor => default(Color);
+
+        int IBorderElement.CornerRadius => 0;
+
+        public double BorderWidth => 0;
+
+        public int CornerRadiusDefaultValue => 0;
+
+        public Color BorderColorDefaultValue => default(Color);
+
+        public double BorderWidthDefaultValue => 0;
 
         public bool IsCornerRadiusSet() => false;
 
