@@ -3,7 +3,7 @@ variables:
   XCODE_VERSION: 11.3
   NETCORE_VERSION: '3.1.x'
 
-name: 2.2.0.$(Build.BuildId)
+name: 2.3.0.$(Build.BuildId)
 
 trigger:
   branches:
