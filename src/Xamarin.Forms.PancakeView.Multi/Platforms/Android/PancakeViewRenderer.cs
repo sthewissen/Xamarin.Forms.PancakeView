@@ -6,7 +6,11 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+#if MONOANDROID10_0
+using AndroidX.Core.View;
+#else
 using Android.Support.V4.View;
+#endif
 using Xamarin.Forms;
 using Xamarin.Forms.PancakeView.Droid;
 using Xamarin.Forms.Platform.Android;

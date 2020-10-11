@@ -1,103 +1,146 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="MSBuild.Sdk.Extras/2.0.54">
-    <PropertyGroup>
-        <TargetFrameworks Condition=" '$(OS)' != 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;xamarin.mac20;MonoAndroid90;tizen40</TargetFrameworks>
-        <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">netstandard1.0;netstandard2.0;Xamarin.iOS10;MonoAndroid90;uap10.0.16299;NET461;tizen40</TargetFrameworks>
-        <!--Assembly and Namespace info -->
-        <AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
-        <RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
-        <Product>$(AssemblyName) ($(TargetFramework))</Product>
-        <AssemblyVersion>2.0.1</AssemblyVersion>
-        <AssemblyFileVersion>2.0.1</AssemblyFileVersion>
-        <Version>2.0.1</Version>
-        <PackOnBuild>true</PackOnBuild>
-        <NeutralLanguage>en</NeutralLanguage>
-        <LangVersion>default</LangVersion>
-        <DefineConstants>$(DefineConstants);</DefineConstants>
-        <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-        <LangVersion>latest</LangVersion>
-        <PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/releases</PackageReleaseNotes>
-        <PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
-        <RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
-        <PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
-        <Title>PancakeView for Xamarin.Forms</Title>
-        <Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
-        <Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
-        <Owners>Steven Thewissen</Owners>
-        <Authors>Steven Thewissen</Authors>
-        <Copyright>Copyright 2019-2020 Steven Thewissen</Copyright>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    </PropertyGroup>
-    <!-- Define what happens on build and release -->
-    <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
-        <DebugType>full</DebugType>
-        <DebugSymbols>true</DebugSymbols>
-        <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)'=='Release' ">
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <DebugType>pdbonly</DebugType>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    </PropertyGroup>
-    <PropertyGroup>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="Platforms\Shared\**\*.cs" />
-        <!--NuGet that bring in good stuff -->
-        <!--        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />-->
-        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991757" />
-        <PackageReference Include="System.ComponentModel" Version="4.3.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-        <Compile Include="Platforms\iOS\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-        <Compile Include="Platforms\Android\**\*.cs" />
-        <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('xamarin.mac')) ">
-        <Compile Include="Platforms\macOS\**\*.cs" />
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
-        <Compile Include="Platforms\UWP\**\*.cs" />
-        <!--
+	<PropertyGroup>
+		<TargetFrameworks>netstandard1.0;netstandard2.0;netstandard2.1;Xamarin.iOS10;MonoAndroid90;MonoAndroid10.0;Xamarin.Mac20;tizen40</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.17763;netcoreapp3.1;net472;net471</TargetFrameworks>
+		<!--Assembly and Namespace info -->
+		<AssemblyName>Xamarin.Forms.PancakeView</AssemblyName>
+		<RootNamespace>Xamarin.Forms.PancakeView</RootNamespace>
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<AssemblyVersion>2.0.1</AssemblyVersion>
+		<AssemblyFileVersion>2.0.1</AssemblyFileVersion>
+		<Version>2.0.1</Version>
+		<PackOnBuild>true</PackOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<LangVersion>default</LangVersion>
+		<DefineConstants>$(DefineConstants);</DefineConstants>
+		<UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<LangVersion>latest</LangVersion>
+		<PackageReleaseNotes>https://github.com/sthewissen/Xamarin.Forms.PancakeView/releases</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</PackageProjectUrl>
+		<PackageIconUrl>https://raw.githubusercontent.com/sthewissen/Xamarin.Forms.PancakeView/master/images/icon.png</PackageIconUrl>
+		<RepositoryUrl>https://github.com/sthewissen/Xamarin.Forms.PancakeView</RepositoryUrl>
+		<PackageTags>xamarin, ios, android, xamarin.forms, control, rounded corners, gradient, shadow, border, uwp, shape, polygon, view</PackageTags>
+		<Title>PancakeView for Xamarin.Forms</Title>
+		<Summary>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Summary>
+		<Description>An extended ContentView for Xamarin.Forms with rounded corners, borders, shadows and more!</Description>
+		<Owners>Steven Thewissen</Owners>
+		<Authors>Steven Thewissen</Authors>
+		<Copyright>Copyright 2019-2020 Steven Thewissen</Copyright>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+	<!-- Define what happens on build and release -->
+	<PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)'=='Release' ">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<DebugType>pdbonly</DebugType>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="Platforms\Shared\**\*.cs" />
+		<!--NuGet that bring in good stuff -->
+		<!--        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />-->
+		<PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
+		<PackageReference Include="System.ComponentModel" Version="4.3.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('netstandard')) ">
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+		<Compile Include="Platforms\iOS\**\*.cs" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid9')) ">
+		<Compile Include="Platforms\Android\**\*.cs" />
+		<PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid10')) ">
+		<Compile Include="Platforms\Android\**\*.cs" />
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.2.0.4" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.Mac')) ">
+		<Reference Include="netstandard" Condition=" '$(OS)' == 'Windows_NT' " />
+		<Compile Include="Platforms\macOS\**\*.cs" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+		<Compile Include="Platforms\UWP\**\*.cs" />
+		<!--
         If you need to add sdk references:
          <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
           <Name>Windows Mobile Extensions for the UWP</Name>
         </SDKReference>
         -->
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('NET461')) ">
-        <Compile Include="Platforms\WPF\**\*.cs" />
-        <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.4.0.991757" />
-        <!--        <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.7.0.1080" />-->
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Data" />
-        <Reference Include="WindowsBase" />
-        <Reference Include="System.Xaml" />
-        <!--
-        If you need to add sdk references:
-         <SDKReference Include="WindowsMobile, Version=10.0.16299.0">
-          <Name>Windows Mobile Extensions for the UWP</Name>
-        </SDKReference>
-        -->
-    </ItemGroup>
-    <ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
-        <Compile Include="Platforms\Tizen\**\*.cs" />
-        <PackageReference Include="SkiaSharp.Views" Version="1.68.3" />
-    </ItemGroup>
-    <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net472')) ">
+		<Compile Include="Platforms\WPF\**\*.cs" />
+		<PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.7.0.968" />
+		<Reference Include="PresentationCore" />
+		<Reference Include="PresentationFramework" />
+		<Reference Include="WindowsBase" />
+		<Reference Include="System.Xaml" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
+		<Compile Include="Platforms\WPF\**\*.cs" />
+		<PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.7.0.968" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net471')) ">
+		<Compile Include="Platforms\GTK\**\*.cs" />
+		<PackageReference Include="Xamarin.Forms.Platform.GTK" Version="4.7.0.968" />
+		<Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\atk-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\gdk-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\glade-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\glib-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\gtk-dotnet.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\gtk-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
+			<SpecificVersion>False</SpecificVersion>
+			<HintPath>..\Libs\gtk-sharp\gtk-sharp-2.0\pango-sharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('tizen')) ">
+		<Compile Include="Platforms\Tizen\**\*.cs" />
+		<PackageReference Include="SkiaSharp.Views" Version="1.68.3" />
+	</ItemGroup>
+	<Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
 </Project>
