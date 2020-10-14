@@ -154,7 +154,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                         foreach (var item in orderedStops)
                             gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                        var gradient = new LinearGradientBrush(gc, 0)
+                        var gradient = new System.Windows.Media.LinearGradientBrush(gc, 0)
                         {
 	                        StartPoint = new System.Windows.Point(pancake.Border.GradientStartPoint.X,
 		                        pancake.Border.GradientStartPoint.Y),
@@ -193,7 +193,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                         foreach (var item in orderedStops)
                             gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                        var gradient = new LinearGradientBrush(gc, 0)
+                        var gradient = new System.Windows.Media.LinearGradientBrush(gc, 0)
                         {
 	                        StartPoint = new System.Windows.Point(pancake.BackgroundGradientStartPoint.X,
 		                        pancake.BackgroundGradientStartPoint.Y),

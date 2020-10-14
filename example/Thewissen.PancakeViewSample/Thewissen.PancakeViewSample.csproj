@@ -8,7 +8,7 @@
         <DebugSymbols>true</DebugSymbols>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />
+        <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
         <PackageReference Include="PropertyChanged.Fody" Version="3.2.8" />
         <PackageReference Include="Fody" Version="6.2.1">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

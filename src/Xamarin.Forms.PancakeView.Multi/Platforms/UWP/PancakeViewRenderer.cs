@@ -75,7 +75,7 @@ namespace Xamarin.Forms.PancakeView.UWP
         {
             container = new Windows.UI.Xaml.Controls.Grid { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
             content = new Windows.UI.Xaml.Controls.Border { HorizontalAlignment = Control.HorizontalAlignment, VerticalAlignment = Control.VerticalAlignment };
-            rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new SolidColorBrush(Windows.UI.Colors.Transparent) };
+            rectangle = new Windows.UI.Xaml.Shapes.Rectangle { Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Colors.Transparent) };
 
             container.Children.Add(rectangle);
             container.Children.Add(content);
@@ -146,7 +146,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                 pancake.CornerRadius.TopLeft == pancake.CornerRadius.BottomLeft &&
                 pancake.CornerRadius.BottomRight == pancake.CornerRadius.TopRight)
             {
-                rectangle.Fill = new SolidColorBrush(Windows.UI.Colors.Black);
+                rectangle.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Colors.Black);
                 rectangle.Width = pancake.Width;
                 rectangle.Height = pancake.Height;
                 rectangle.RadiusX = pancake.CornerRadius.TopRight + 5;
@@ -170,7 +170,7 @@ namespace Xamarin.Forms.PancakeView.UWP
             {
                 if (rectangle != null)
                 {
-                    rectangle.Fill = new SolidColorBrush(Windows.UI.Colors.Transparent);
+                    rectangle.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(Windows.UI.Colors.Transparent);
                 }
 
                 if (visual != null)
@@ -205,7 +205,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     foreach (var item in orderedStops)
                         gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
-                    var gradient = new LinearGradientBrush(gc, 0);
+                    var gradient = new Windows.UI.Xaml.Media.LinearGradientBrush(gc, 0);
                     gradient.StartPoint = new Windows.Foundation.Point(pancake.Border.GradientStartPoint.X, pancake.Border.GradientStartPoint.Y);
                     gradient.EndPoint = new Windows.Foundation.Point(pancake.Border.GradientEndPoint.X, pancake.Border.GradientEndPoint.Y);
 
@@ -236,7 +236,7 @@ namespace Xamarin.Forms.PancakeView.UWP
                     foreach (var item in orderedStops)
                         gc.Add(new Windows.UI.Xaml.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToWindowsColor() });
 
-                    var gradient = new LinearGradientBrush(gc, 0);
+                    var gradient = new Windows.UI.Xaml.Media.LinearGradientBrush(gc, 0);
                     gradient.StartPoint = new Windows.Foundation.Point(pancake.BackgroundGradientStartPoint.X, pancake.BackgroundGradientStartPoint.Y);
                     gradient.EndPoint = new Windows.Foundation.Point(pancake.BackgroundGradientEndPoint.X, pancake.BackgroundGradientEndPoint.Y);
                     this.content.Background = gradient;
