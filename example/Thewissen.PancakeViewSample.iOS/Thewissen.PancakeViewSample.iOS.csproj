@@ -203,9 +203,15 @@
     <ImageAsset Include="Assets.xcassets\monkey.imageset\monkey.png">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo.png" />
+    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\xamalogo.imageset\xamalogo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\xamalogo.imageset\Contents.json">
       <Visible>False</Visible>
     </ImageAsset>
@@ -217,7 +223,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Xamarin.Forms.PancakeView.Multi\Xamarin.Forms.PancakeView.Multi.csproj">

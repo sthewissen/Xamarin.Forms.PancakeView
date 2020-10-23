@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Xamarin.Forms.PancakeView.Platforms.WPF;
@@ -12,11 +10,12 @@ using Controls = Xamarin.Forms.PancakeView;
 [assembly: ExportRenderer(typeof(Controls.PancakeView), typeof(PancakeViewRenderer))]
 namespace Xamarin.Forms.PancakeView.Platforms.WPF
 {
-    public class PancakeViewRenderer : ViewRenderer<PancakeView, System.Windows.Controls.Border>
+	using System.Windows.Controls;
+
+	public class PancakeViewRenderer : ViewRenderer<PancakeView, Border>
     {
         VisualElement _currentView;
-        readonly VisualBrush _mask;
-        readonly System.Windows.Controls.Border _rounding;
+        readonly Border _rounding;
         /// <summary>
         /// This method ensures that we don't get stripped out by the linker.
         /// </summary>
@@ -30,8 +29,8 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
 
         public PancakeViewRenderer()
         {
-            _rounding = new System.Windows.Controls.Border
-            {
+            _rounding = new Border
+			{
                 Background = Color.White.ToBrush(),
                 SnapsToDevicePixels = true
             };
@@ -39,7 +38,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
-                    AncestorType = typeof(Border)
+                    AncestorType = typeof(Controls.Border)
                 }
             };
             _rounding.SetBinding(FrameworkElement.WidthProperty, wb);
@@ -47,11 +46,10 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             {
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
-                    AncestorType = typeof(Border)
+                    AncestorType = typeof(Controls.Border)
                 }
             };
             _rounding.SetBinding(FrameworkElement.HeightProperty, hb);
-            _mask = new VisualBrush(_rounding);
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<PancakeView> e)
@@ -61,7 +59,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
             if (e.NewElement != null)
             {
                 if (Control == null)
-                    SetNativeControl(new System.Windows.Controls.Border());
+                    SetNativeControl(_rounding);
 
                 var pancake = (Element as PancakeView);
 
@@ -124,13 +122,9 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
 
         void UpdateContent()
         {
-            if (_currentView != null)
-            {
-                _currentView.Cleanup(); // cleanup old view
-            }
+	        _currentView?.Cleanup(); // cleanup old view
 
             _currentView = Element.Content;
-            Control.OpacityMask = _mask;
             Control.Child = _currentView != null ? Platform.WPF.Platform.GetOrCreateRenderer(_currentView).GetNativeElement() : null;
 
             //Update vertical content Alignment
@@ -144,7 +138,7 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
         private void UpdateBorder(PancakeView pancake)
         {
             //// Create the border layer
-            if (Control != null && pancake != null && pancake.Border != null)
+            if (Control != null && pancake?.Border != null)
             {
                 this.Control.BorderThickness = new System.Windows.Thickness(pancake.Border.Thickness);
 
@@ -160,9 +154,13 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                         foreach (var item in orderedStops)
                             gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                        var gradient = new LinearGradientBrush(gc, 0);
-                        gradient.StartPoint = new System.Windows.Point(pancake.Border.GradientStartPoint.X, pancake.Border.GradientStartPoint.Y);
-                        gradient.EndPoint = new System.Windows.Point(pancake.Border.GradientEndPoint.X, pancake.Border.GradientEndPoint.Y);
+                        var gradient = new System.Windows.Media.LinearGradientBrush(gc, 0)
+                        {
+	                        StartPoint = new System.Windows.Point(pancake.Border.GradientStartPoint.X,
+		                        pancake.Border.GradientStartPoint.Y),
+	                        EndPoint = new System.Windows.Point(pancake.Border.GradientEndPoint.X,
+		                        pancake.Border.GradientEndPoint.Y)
+                        };
 
                         this.Control.BorderBrush = gradient;
                     }
@@ -195,9 +193,13 @@ namespace Xamarin.Forms.PancakeView.Platforms.WPF
                         foreach (var item in orderedStops)
                             gc.Add(new System.Windows.Media.GradientStop { Offset = item.Offset, Color = item.Color.ToMediaColor() });
 
-                        var gradient = new LinearGradientBrush(gc, 0);
-                        gradient.StartPoint = new System.Windows.Point(pancake.BackgroundGradientStartPoint.X, pancake.BackgroundGradientStartPoint.Y);
-                        gradient.EndPoint = new System.Windows.Point(pancake.BackgroundGradientEndPoint.X, pancake.BackgroundGradientEndPoint.Y);
+                        var gradient = new System.Windows.Media.LinearGradientBrush(gc, 0)
+                        {
+	                        StartPoint = new System.Windows.Point(pancake.BackgroundGradientStartPoint.X,
+		                        pancake.BackgroundGradientStartPoint.Y),
+	                        EndPoint = new System.Windows.Point(pancake.BackgroundGradientEndPoint.X,
+		                        pancake.BackgroundGradientEndPoint.Y)
+                        };
 
                         this.Control.Background = gradient;
                     }
