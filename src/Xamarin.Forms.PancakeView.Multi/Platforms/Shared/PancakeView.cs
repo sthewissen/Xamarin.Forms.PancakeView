@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Xamarin.Forms.PancakeView
 {
@@ -135,7 +134,7 @@ namespace Xamarin.Forms.PancakeView
         int IBorderElement.CornerRadiusDefaultValue => default;
         Color IBorderElement.BorderColorDefaultValue => default;
         double IBorderElement.BorderWidthDefaultValue => default;
-        int IBorderElement.CornerRadius => (int)CornerRadius.TopLeft;
+        int IBorderElement.CornerRadius => (int)Enumerable.Average(new[] { CornerRadius.TopLeft, CornerRadius.TopRight, CornerRadius.BottomLeft, CornerRadius.BottomRight });
         Color IBorderElement.BorderColor => Border.Color;
         double IBorderElement.BorderWidth => Border.Thickness;
 
