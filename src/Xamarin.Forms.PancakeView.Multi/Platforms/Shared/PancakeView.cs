@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Xamarin.Forms.PancakeView
 {
-    public class PancakeView : ContentView
+    public class PancakeView : ContentView, IBorderElement
     {
         public static readonly BindableProperty SidesProperty = BindableProperty.Create(nameof(Sides), typeof(int), typeof(PancakeView), defaultValue: 4);
         public static readonly BindableProperty OffsetAngleProperty = BindableProperty.Create(nameof(OffsetAngle), typeof(double), typeof(PancakeView), default(double));
@@ -132,6 +131,13 @@ namespace Xamarin.Forms.PancakeView
             set => SetValue(BackgroundGradientEndPointProperty, value);
         }
 
+        int IBorderElement.CornerRadiusDefaultValue => default;
+        Color IBorderElement.BorderColorDefaultValue => default;
+        double IBorderElement.BorderWidthDefaultValue => default;
+        int IBorderElement.CornerRadius => (int)Enumerable.Average(new[] { CornerRadius.TopLeft, CornerRadius.TopRight, CornerRadius.BottomLeft, CornerRadius.BottomRight });
+        Color IBorderElement.BorderColor => Border.Color;
+        double IBorderElement.BorderWidth => Border.Thickness;
+
         public PancakeView()
         {
             Visual = VisualMarker.Default;
@@ -194,5 +200,12 @@ namespace Xamarin.Forms.PancakeView
                     SetInheritedBindingContext(item, BindingContext);
             }
         }
+
+        bool IBorderElement.IsCornerRadiusSet() => true;
+        bool IBorderElement.IsBackgroundColorSet() => true;
+        bool IBorderElement.IsBackgroundSet() => true;
+        bool IBorderElement.IsBorderColorSet() => true;
+        bool IBorderElement.IsBorderWidthSet() => true;
+        void IBorderElement.OnBorderColorPropertyChanged(Color oldValue, Color newValue) => Border.Color = newValue;
     }
 }
