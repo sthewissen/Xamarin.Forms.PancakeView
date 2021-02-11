@@ -1,3 +1,6 @@
+# Important before you get started.
+This package is provided as-is. I simply don't have the time anymore to do further work on it. Other projects are taking up my time, which means this one is slowly falling below the radar. However, I'll gladly look at PRs for fixes and feature improvements though. It is open-source after all. So, with that being said, I do want to thank everyone who’s supported the package over the last few years. The fact that so many people have been using it amazes me to this day, as that was definitely not what I expected when I set out making it ❤️
+
 <img src="https://github.com/sthewissen/Xamarin.Forms.PancakeView/blob/master/images/icon.png" width="150px" />
 
 # Xamarin.Forms.PancakeView
