@@ -1,4 +1,4 @@
-# Important information before you get started (PLEASE READ)
+# PLEASE READ: Important information before you start
 This package is provided as-is. I simply don't have the time anymore to do further work on it. Other projects are taking up my time, which means this one is simply falling below the radar. 
 
 Feel free to take it as a basis for moving it forward, it is open-source after all. A lot of the features this package added are currently also available in the new .NET MAUI, so seeing as how that will be supported for some time to come I would advise slowly making the transition. 
